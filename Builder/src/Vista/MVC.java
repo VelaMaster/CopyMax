@@ -144,9 +144,9 @@ public void setVisible(boolean visible) {
 
         try {
             conn = new Conexion().getConnection();
-            String query = "SELECT productos.Nombre_producto, SUM(venta.Items) as CantidadVendida FROM venta " +
-                    "JOIN productos ON venta.idVenta = productos.idProductos " +
-                    "GROUP BY productos.Nombre_producto ORDER BY CantidadVendida DESC LIMIT 1";
+            String query = "SELECT Productos.Nombre_producto, SUM(venta.Items) as CantidadVendida FROM venta " +
+                    "JOIN Productos ON venta.idVenta = Productos.idProductos " +
+                    "GROUP BY Productos.Nombre_producto ORDER BY CantidadVendida DESC LIMIT 1";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
 
