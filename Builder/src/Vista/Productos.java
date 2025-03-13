@@ -99,7 +99,6 @@ public class Productos extends javax.swing.JPanel {
         jScrollPane1.setViewportView(Tablacproductos);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/clasificacion (Custom).png"))); // NOI18N
         jLabel1.setText("Registro de Productos");
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
@@ -123,7 +122,6 @@ public class Productos extends javax.swing.JPanel {
 
         BtnNuevo.setBackground(new java.awt.Color(102, 153, 255));
         BtnNuevo.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
-        BtnNuevo.setForeground(new java.awt.Color(0, 0, 0));
         BtnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/agregar-producto.png"))); // NOI18N
         BtnNuevo.setText("Nuevo");
         BtnNuevo.addActionListener(new java.awt.event.ActionListener() {
@@ -134,7 +132,6 @@ public class Productos extends javax.swing.JPanel {
 
         BtnModificar.setBackground(new java.awt.Color(153, 153, 255));
         BtnModificar.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
-        BtnModificar.setForeground(new java.awt.Color(0, 0, 0));
         BtnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/editar.png"))); // NOI18N
         BtnModificar.setText("Modificar");
         BtnModificar.addActionListener(new java.awt.event.ActionListener() {
@@ -145,7 +142,6 @@ public class Productos extends javax.swing.JPanel {
 
         BtnEliminar.setBackground(new java.awt.Color(255, 102, 102));
         BtnEliminar.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
-        BtnEliminar.setForeground(new java.awt.Color(0, 0, 0));
         BtnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/borrar.png"))); // NOI18N
         BtnEliminar.setText("Eliminar");
         BtnEliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -156,7 +152,6 @@ public class Productos extends javax.swing.JPanel {
 
         Btnactualizar.setBackground(new java.awt.Color(153, 255, 153));
         Btnactualizar.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
-        Btnactualizar.setForeground(new java.awt.Color(0, 0, 0));
         Btnactualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/actualizar-flecha.png"))); // NOI18N
         Btnactualizar.setText("Actualizar");
         Btnactualizar.addActionListener(new java.awt.event.ActionListener() {
@@ -170,15 +165,6 @@ public class Productos extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(52, 52, 52)
-                        .addComponent(txtregprocategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 798, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(31, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addGap(64, 64, 64)
                 .addComponent(BtnNuevo)
                 .addGap(60, 60, 60)
@@ -188,6 +174,17 @@ public class Productos extends javax.swing.JPanel {
                 .addGap(65, 65, 65)
                 .addComponent(Btnactualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(44, 44, 44))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1)
+                        .addGap(52, 52, 52)
+                        .addComponent(txtregprocategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(55, 55, 55)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 798, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -343,7 +340,7 @@ public class Productos extends javax.swing.JPanel {
       
       private void eliminarProductoBD(int idProducto) {
         Conexion conex = new Conexion();
-        String consulta = "DELETE FROM productos WHERE idProductos = ?";
+        String consulta = "DELETE FROM Productos WHERE idProductos = ?";
         try (
                 PreparedStatement pst = conex.getConnection().prepareCall(consulta)) {
             pst.setInt(1, idProducto);

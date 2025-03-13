@@ -69,7 +69,7 @@ public class Productoclass {
    public List<Productoclass> obtenerProductos() {
     List<Productoclass> productos = new ArrayList<>();
     Conexion conex = new Conexion();
-    String sql = "SELECT idProductos, Nombre_producto, Precio, Cantidad, Categoria FROM productos";
+    String sql = "SELECT idProductos, Nombre_producto, Precio, Cantidad, Categoria FROM Productos";
 
     try (Connection con = conex.getConnection(); 
          PreparedStatement pst = con.prepareStatement(sql);
@@ -96,7 +96,7 @@ public class Productoclass {
     public List<Productoclass> obtenerClientesProductoscatego(String categoria) {
         List<Productoclass> productos = new ArrayList<>();
         Conexion conex = new Conexion();
-        String sql = "SELECT idProductos, Nombre_producto, Precio, Cantidad, Categoria FROM productos WHERE Categoria LIKE ?";
+        String sql = "SELECT idProductos, Nombre_producto, Precio, Cantidad, Categoria FROM Productos WHERE Categoria LIKE ?";
         try (Connection con = conex.getConnection(); 
              PreparedStatement pst = con.prepareStatement(sql)) {
             // Configurar el parámetro de la consulta con el número de celular proporcionado
