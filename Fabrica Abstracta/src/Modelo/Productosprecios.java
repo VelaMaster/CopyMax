@@ -3,11 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Modelo;
-
-/**
- *
- * @author Artorias<maxstell5549@hotmail.com>
- */
 public class Productosprecios {
     
     private String nombre,direccionicon;

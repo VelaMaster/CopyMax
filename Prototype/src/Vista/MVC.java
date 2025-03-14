@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Vista;
-
 import Conexion.Conexion;
 import Modelo.Usuariosesion;
 import Vista.Corte;
@@ -28,16 +27,10 @@ import java.util.Date;
 public class MVC extends javax.swing.JFrame {
 
     Interfazprincipal interfazprincipal;
-     
    /*
-    
     Clase donde se inician los componentes y se verifica el tipo de usuario al momento de ingresar en la 
     ventana principal
-       
-    
-    */
-    
-    
+    */    
     public MVC() {
         initComponents();
          createCharts();

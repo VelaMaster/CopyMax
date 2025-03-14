@@ -8,11 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
-
-/**
- * @author Artorias<maxstell5549@hotmail.com>
- */
-public class Productoclass {
+public class Productoclass implements Producto{
 
     int id,cantidad;
     String Nombre,Categoria,icono;

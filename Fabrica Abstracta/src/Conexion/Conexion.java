@@ -31,21 +31,9 @@ public class Conexion {
             JOptionPane.showMessageDialog(null, "No se pudo conectar a la base de datos, error: " + e.toString());
         }
     }
-    
-    /**
-     * Obtiene la conexión actual.
-     * 
-     * @return Connection la conexión actual a la base de datos.
-     */
     public Connection getConnection() {
         return connection;
     }
-    
-    /**
-     * Verifica si la conexión a la base de datos está activa y disponible.
-     * 
-     * @return boolean true si la conexión está activa; false si está cerrada o nula.
-     */
     public boolean verificarConexion() {
         try {
             return connection != null && !connection.isClosed();
@@ -106,8 +94,6 @@ public class Conexion {
     } catch (SQLException e) {
         e.printStackTrace(); // Imprimir el error de la excepción
     }
-
-    
     return productos; // Retornar la lista de productos
 }
     
