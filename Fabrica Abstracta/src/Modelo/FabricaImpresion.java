@@ -8,7 +8,7 @@ public class FabricaImpresion implements FabricaProductos {
         producto.setNombre(nombre);
         producto.setPrecio(precio);
         producto.setCantidad(cantidad);
-        producto.setCategoria("Impresión");
+        producto.setCategoria("Copia / Impresion");
         return producto;
     }
 }

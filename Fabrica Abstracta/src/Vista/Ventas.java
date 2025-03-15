@@ -11,6 +11,7 @@ import Modelo.Productosprecios;
 import Modelo.Usuariosesion;
 import Modelo.Venta;
 import Modelo.Numeroseditor;
+import Modelo.Producto;
 import Vista.Agregarproductos;
 import java.sql.ResultSet;
 import Vista.Clientesticket;
@@ -647,11 +648,6 @@ private void revertirIVA() {
         }
     }
 }
-  /**
- * Obtiene los datos de la venta actual en un objeto Venta.
- * Incluye los ítems del ticket, subtotal, descuento, impuesto, y total.
- * @return Un objeto Venta con los datos de la venta.
- */  
     public Venta getVentadatos(){
         ventadatos.setItems(obtenerItemsDeJTable());
         ventadatos.setSubtotal(subtotalOriginal);
@@ -660,32 +656,31 @@ private void revertirIVA() {
         ventadatos.setTotal(total);
         return ventadatos;
                    
+    }    
+private void cobro() {
+    // Obtener los productos disponibles
+    List<Producto> listaProductos = new Productoclass().obtenerProductos();
+
+    // Validar el stock antes de continuar
+    if (!validarStockEnTicket(listaProductos)) {
+        JOptionPane.showMessageDialog(null, "No hay suficiente stock para completar la venta", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
     }
-   
-/**
- * Realiza el proceso de cobro.
- * Verifica que haya productos en el ticket antes de abrir la ventana de métodos de pago.
- */
-    
-    private void cobro(){
-   // Validar el stock antes de continuar
-    Productoclass listaProductos = new Productoclass();
-    
-    if (!validarStockEnTicket(listaProductos.obtenerProductos())) {
-        return; // Rompe el método si alguna cantidad excede el stock
-    }
+
+    // Actualizar la vista de la tabla
     jTableticket.repaint();
     jTableticket.revalidate();
 
+    // Verificar si hay productos en el ticket
     if (this.jTableticket.getRowCount() == 0) {
-        // La tabla está vacía
-        JOptionPane.showMessageDialog(null, "Agregue un producto a la venta");
-    } else {
-        // La tabla tiene productos
-        abrirMetodoPagoFrame();
+        JOptionPane.showMessageDialog(null, "Agregue un producto a la venta", "Aviso", JOptionPane.WARNING_MESSAGE);
+        return;
     }
-    
-    }
+
+    // Proceder al método de pago
+    abrirMetodoPagoFrame();
+}
+
     
     private void txtTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalActionPerformed
         // TODO add your handling code here:
@@ -847,46 +842,14 @@ public void agregarProductoAlTicket(Productosprecios producto) {
     
     // Actualizar el subtotal y el total
     recalcularTotales();
-} 
-   
-// Método para validar que las cantidades en el ticket no excedan el stock disponible
-public boolean validarStockEnTicket(List<Productoclass> productos) {
-    int filas = modelo.getRowCount();
-
-    // Recorrer cada fila del ticket (tabla)
-    for (int i = 0; i < filas; i++) {
-        String nombreProductoTicket = (String) modelo.getValueAt(i, 1); // Nombre del producto
-        int cantidadSolicitada;
-
-        try {
-            // Convertir el valor de la tabla a entero
-            cantidadSolicitada = Integer.parseInt(modelo.getValueAt(i, 0).toString());
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, 
-                "La cantidad en la fila " + (i + 1) + " no es un número válido.", 
-                "Error de Formato", JOptionPane.ERROR_MESSAGE);
-            return false; // Stock no válido debido a error en el formato
-        }
-
-        // Buscar el producto correspondiente en la lista de productos
-        for (Productoclass producto : productos) {
-            if (producto.getNombre().equals(nombreProductoTicket)) {
-                if (cantidadSolicitada > producto.getCantidad()) {
-                    // Si la cantidad excede el stock, muestra un mensaje y rompe el flujo
-                    cantidadSolicitada = 1;
-                    modelo.setValueAt(cantidadSolicitada, i, 0); // Actualizar la tabla
-                    JOptionPane.showMessageDialog(null, 
-                        "La cantidad solicitada para '" + nombreProductoTicket + "' excede el stock disponible (" 
-                        + producto.getCantidad() + ").", 
-                        "Error de Stock", JOptionPane.ERROR_MESSAGE);
-                    return false; // Stock no válido
-                }
-            }
-        }
-    }
-
-    return true; // Stock válido
 }
+// Método para validar que las cantidades en el ticket no excedan el stock disponible
+    /**
+     *
+     * @param productos
+     * @return
+     */
+
     
     public void agregarProductoAlTicketstocl(Productoclass producto) {
     boolean productoExistente = false;
@@ -1190,4 +1153,15 @@ private List<String> dividirDescripcionEnLineas(String descripcion, int maxLengt
     private javax.swing.JTextField txtimpuesto;
     private javax.swing.JTextField txtsubtotal;
     // End of variables declaration//GEN-END:variables
+
+    private boolean validarStockEnTicket(List<Producto> listaProductos) {
+    // Suponiendo que hay una lista de productos en el ticket
+    for (Producto producto : listaProductos) {
+        if (producto.getStock() < 1) { // Verifica si el stock es insuficiente
+            return false;
+        }
+    }
+    return true; // Si todos los productos tienen stock suficiente, retorna true
+}
+
 }

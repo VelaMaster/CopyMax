@@ -1,5 +1,4 @@
 package Modelo;
-
 import Conexion.Conexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,14 +7,19 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
-public class Productoclass implements Producto{
 
-    int id,cantidad;
-    String Nombre,Categoria,icono;
-    double precio;
-    
+public class Productoclass implements Producto {
+    private int id, cantidad, stock;
+    private String Nombre, Categoria, icono;
+    private double precio;
+
+    // Getters y Setters
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getIcono() {
@@ -24,10 +28,6 @@ public class Productoclass implements Producto{
 
     public void setIcono(String icono) {
         this.icono = icono;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getCantidad() {
@@ -61,62 +61,92 @@ public class Productoclass implements Producto{
     public void setPrecio(double precio) {
         this.precio = precio;
     }
-    
-   public List<Productoclass> obtenerProductos() {
-    List<Productoclass> productos = new ArrayList<>();
-    Conexion conex = new Conexion();
-    String sql = "SELECT idProductos, Nombre_producto, Precio, Cantidad, Categoria FROM Productos";
 
-    try (Connection con = conex.getConnection(); 
-         PreparedStatement pst = con.prepareStatement(sql);
-         ResultSet rs = pst.executeQuery()) {
-
-        while (rs.next()) {
-            Productoclass producto = new Productoclass();
-
-            producto.setId(rs.getInt("idProductos")); // Asegúrate que "idProductos" es el nombre correcto de la columna
-            producto.setNombre(rs.getString("Nombre_producto")); // Usa el nombre exacto de la columna
-            producto.setPrecio(rs.getDouble("Precio")); // Obtén el precio de la columna "Precio"
-            producto.setCantidad(rs.getInt("Cantidad")); // Obtén la cantidad de la columna "Cantidad"
-            producto.setCategoria(rs.getString("Categoria")); // Obtén la categoría de la columna "Categoria"
-            productos.add(producto);
-        }
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Error al obtener productos: " + e.toString());
+    // Métodos para stock
+    @Override
+    public int getStock() {
+        return stock;
     }
 
-    return productos;
-}
-    
-    
-    public List<Productoclass> obtenerClientesProductoscatego(String categoria) {
-        List<Productoclass> productos = new ArrayList<>();
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    // Método para obtener productos desde la BD
+    public List<Producto> obtenerProductos() {
+        List<Producto> productos = new ArrayList<>();
         Conexion conex = new Conexion();
-        String sql = "SELECT idProductos, Nombre_producto, Precio, Cantidad, Categoria FROM Productos WHERE Categoria LIKE ?";
-        try (Connection con = conex.getConnection(); 
-             PreparedStatement pst = con.prepareStatement(sql)) {
-            // Configurar el parámetro de la consulta con el número de celular proporcionado
-            pst.setString(1, "%" + categoria + "%");
-            
-            // Ejecutar la consulta
-            try (ResultSet rs = pst.executeQuery()) {
-                while (rs.next()) {
-                     Productoclass producto = new Productoclass();
-            
-            producto.setId(rs.getInt("idProductos")); // Asegúrate que "idProductos" es el nombre correcto de la columna
-            producto.setNombre(rs.getString("Nombre_producto")); // Usa el nombre exacto de la columna
-            producto.setPrecio(rs.getDouble("Precio")); // Obtén el precio de la columna "Precio"
-            producto.setCantidad(rs.getInt("Cantidad")); // Obtén la cantidad de la columna "Cantidad"
-            producto.setCategoria(rs.getString("Categoria")); // Obtén la categoría de la columna "Categoria"
-            productos.add(producto);
-                }
+        String sql = "SELECT idProductos, Nombre_producto, Precio, Cantidad, Categoria FROM Productos";
+
+        try (Connection con = conex.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
+
+            while (rs.next()) {
+                int id = rs.getInt("idProductos");
+                String nombre = rs.getString("Nombre_producto");
+                double precio = rs.getDouble("Precio");
+                int cantidad = rs.getInt("Cantidad");
+                String categoria = rs.getString("Categoria");
+
+                // Crear producto
+                Productoclass producto = new Productoclass();
+                producto.setId(id);
+                producto.setNombre(nombre);
+                producto.setPrecio(precio);
+                producto.setCantidad(cantidad);
+                producto.setCategoria(categoria);
+                producto.setStock(cantidad); // Asignamos el stock correctamente
+
+                productos.add(producto);
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al obtener productos por cateroria: " + e.toString());
+            JOptionPane.showMessageDialog(null, "Error al obtener productos: " + e.toString());
         }
         return productos;
     }
-    
-    
-    
+
+    public List<Producto> obtenerClientesProductoscatego(String categoria) {
+        List<Producto> productos = new ArrayList<>();
+        Conexion conex = new Conexion();
+        String sql = "SELECT idProductos, Nombre_producto, Precio, Cantidad, Categoria FROM Productos WHERE Categoria LIKE ?";
+
+        try (Connection con = conex.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+            pst.setString(1, "%" + categoria + "%");
+
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("idProductos");
+                    String nombre = rs.getString("Nombre_producto");
+                    double precio = rs.getDouble("Precio");
+                    int cantidad = rs.getInt("Cantidad");
+                    String categoriaBD = rs.getString("Categoria");
+
+                    Productoclass producto = new Productoclass();
+                    producto.setId(id);
+                    producto.setNombre(nombre);
+                    producto.setPrecio(precio);
+                    producto.setCantidad(cantidad);
+                    producto.setCategoria(categoriaBD);
+                    producto.setStock(cantidad); 
+
+                    productos.add(producto);
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al obtener productos por categoría: " + e.toString());
+        }
+        return productos;
+    }
+
+    // Método para validar stock en ticket
+    private boolean validarStockEnTicket(List<Producto> listaProductos) {
+        for (Producto producto : listaProductos) {
+            if (producto.getStock() < 1) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

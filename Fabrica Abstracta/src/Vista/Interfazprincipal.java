@@ -1,4 +1,3 @@
-
 package Vista;
 
 import Conexion.Conexion;
@@ -26,8 +25,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 
-
-
 public class Interfazprincipal extends javax.swing.JFrame {
     
     private static Interfazprincipal instance;
@@ -44,15 +41,12 @@ public class Interfazprincipal extends javax.swing.JFrame {
     public double getContadorVenta() {
         return totalVentasDelDia;
     }
-    
     public static Interfazprincipal getInstance() {
         if (instance == null) {
             instance = new Interfazprincipal();
         }
         return instance;
-    }
-    
-    
+    }    
     public Interfazprincipal() {
      
         initComponents();
@@ -61,21 +55,14 @@ public class Interfazprincipal extends javax.swing.JFrame {
         inicializarCardLayout();
      //  agregarKeyListenerGlobal();
         agregarKeyListenerCorte();
-        ajustarInterfazSegunRol(Usuariosesion.getInstance().getRol());
-        
-        
+        ajustarInterfazSegunRol(Usuariosesion.getInstance().getRol());        
         Jtxtbusquedaproductos.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 ventaspanel.getInstance().cargarProductos(Jtxtbusquedaproductos.getText());
             }
-            
-            
-        }); 
-        
-        
-    }
-    
+        });         
+    }    
     private void inicializarCardLayout() {
        
         // Inicializar CardLayout y agregar paneles
@@ -586,8 +573,7 @@ public class Interfazprincipal extends javax.swing.JFrame {
     Object[] message = {
         "Nombre de usuario:", usuarioField,
         "Contraseña:", contraseñaField
-    };
-    
+    };    
     // Mostrar JOptionPane con los campos de usuario y contraseña
     int option = JOptionPane.showConfirmDialog(null, message, "Autenticación de Administrador", JOptionPane.OK_CANCEL_OPTION);
     

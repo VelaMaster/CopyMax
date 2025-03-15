@@ -6,4 +6,6 @@ public interface Producto {
     String getCategoria();
     double getPrecio();
     int getCantidad();
+
+    public int getStock();
 }

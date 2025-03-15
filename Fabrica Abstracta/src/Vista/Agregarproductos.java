@@ -6,6 +6,7 @@ package Vista;
 
 import Modelo.Productoclass;
 import Conexion.Conexion;
+import Modelo.Producto;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyAdapter;
@@ -271,10 +272,10 @@ public void llenarTabla() {
     Productoclass productoo = new Productoclass();
     
     // Obtiene la lista de productos llamando al método obtenerProductos() de Productoclass
-    List<Productoclass> productos = productoo.obtenerProductos();
+    List<Producto> productos = productoo.obtenerProductos();
     
     // Itera sobre cada producto en la lista obtenida
-    for (Productoclass producto : productos) {
+    for (Producto producto : productos) {
         // Crea un arreglo de objetos para representar una fila de la tabla
         Object[] fila = new Object[5];
         fila[0] = producto.getId();        // Asigna el ID del producto a la primera columna

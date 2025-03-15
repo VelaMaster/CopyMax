@@ -8,7 +8,7 @@ public class FabricaUtilEscolar implements FabricaProductos {
         producto.setNombre(nombre);
         producto.setPrecio(precio);
         producto.setCantidad(cantidad);
-        producto.setCategoria("Útil Escolar");
+        producto.setCategoria("Papeleria");
         return producto;
     }
 }

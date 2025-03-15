@@ -8,6 +8,7 @@ import Modelo.Productoclass;
 import Modelo.Letraseditor;
 import Modelo.Numerosdecimaleseditor;
 import Modelo.Numeroseditor;
+import Modelo.Producto;
 import Vista.Metododepago;
 import Vista.RegistroClientes;
 import Vista.RegistroProductos;
@@ -325,9 +326,9 @@ public class Productos extends javax.swing.JPanel {
     
       public void llenarTabla() {
           Productoclass productoo = new Productoclass();
-        List<Productoclass> productos = productoo.obtenerProductos();
+        List<Producto> productos = productoo.obtenerProductos();
         
-        for (Productoclass producto : productos) {
+        for (Producto producto : productos) {
             Object[] fila = new Object[5];
             fila[0] = producto.getId();
             fila[1] = producto.getNombre();
@@ -358,10 +359,9 @@ public class Productos extends javax.swing.JPanel {
     
     // Obtener la lista actualizada de clientes
     Productoclass productoo = new Productoclass();
-    List<Productoclass> Productos = productoo.obtenerProductos();
-    
+    List<Producto> Productos = productoo.obtenerProductos();
     // Agregar las nuevas filas al modelo de la tabla
-    for (Productoclass producto : Productos) {
+    for (Producto producto : Productos) {
         Object[] fila = new Object[6];
             fila[0] = producto.getId();
             fila[1] = producto.getNombre();
@@ -373,17 +373,14 @@ public class Productos extends javax.swing.JPanel {
 }
    private void actualizarTablabus() {
     String textoBusqueda = txtregprocategoria.getText();
-    
-    // Limpia la tabla
+   
     DefaultTableModel modelo = (DefaultTableModel) Tablacproductos.getModel();
     modelo.setRowCount(0);
     
-    // Obtener la lista actualizada de clientes
     Productoclass productoo = new Productoclass();
-    List<Productoclass> Productos = productoo.obtenerClientesProductoscatego(textoBusqueda);
+    List<Producto> Productos = productoo.obtenerClientesProductoscatego(textoBusqueda);
     
-    // Agrega los registros encontrados a la tabla
-      for (Productoclass producto : Productos) {
+      for (Producto producto : Productos) {
         Object[] fila = new Object[6];
             fila[0] = producto.getId();
             fila[1] = producto.getNombre();
@@ -392,7 +389,6 @@ public class Productos extends javax.swing.JPanel {
             fila[4] = producto.getCategoria();
         modelo.addRow(fila);
     }
-   
    }
 
    public void ajustarInterfazSegunRol(String rol) {
