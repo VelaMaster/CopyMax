@@ -18,24 +18,22 @@ import java.util.List;
  * @author maxst
  */
 public class Pedidoclass {
-    
-    int numpedido, idusuario , idcliente, cantidad, numdepaginas;
-    
-    String  Nombredeusuario, Nombrecliennte, Apellidoscliente, cometarios,Celularcliente;
 
-   
+    int numpedido, idusuario, idcliente, cantidad, numdepaginas;
 
-   
+    String Nombredeusuario, Nombrecliennte, Apellidoscliente, cometarios, Celularcliente;
+
     String Servicio, Tipodecopia, Tamaño, Escala, Status;
     Date fechaEmision, Fechaentrega;
-    Date Horaemision,Horaentrega;
-    String pastafrente,pastatrasera,arillo; 
-    
+    Date Horaemision, Horaentrega;
+    String pastafrente, pastatrasera, arillo;
+
     double total, Anticipo, Resto;
 
     public int getNumpedido() {
         return numpedido;
     }
+
     public String getNombrecliennte() {
         return Nombrecliennte;
     }
@@ -43,6 +41,7 @@ public class Pedidoclass {
     public void setNombrecliennte(String Nombrecliennte) {
         this.Nombrecliennte = Nombrecliennte;
     }
+
     public void setNumpedido(int numpedido) {
         this.numpedido = numpedido;
     }
@@ -62,8 +61,8 @@ public class Pedidoclass {
     public void setIdcliente(int idcliente) {
         this.idcliente = idcliente;
     }
-    
-     public String getCelularcliente() {
+
+    public String getCelularcliente() {
         return Celularcliente;
     }
 
@@ -206,7 +205,7 @@ public class Pedidoclass {
     public void setResto(double Resto) {
         this.Resto = Resto;
     }
-    
+
     public String getPastafrente() {
         return pastafrente;
     }
@@ -230,17 +229,13 @@ public class Pedidoclass {
     public void setArillo(String arillo) {
         this.arillo = arillo;
     }
-    
 
-      
-public List<Pedidoclass> obtenerPastas() {
+    public List<Pedidoclass> obtenerPastas() {
         List<Pedidoclass> pastas = new ArrayList<>();
         Conexion conex = new Conexion();
         String sql = "SELECT Nombre_producto FROM productos WHERE Categoria LIKE 'Pasta'";
 
-        try (Connection con = conex.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
+        try (Connection con = conex.getConnection(); PreparedStatement pst = con.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
 
             while (rs.next()) {
                 Pedidoclass pasta = new Pedidoclass();
@@ -254,15 +249,12 @@ public List<Pedidoclass> obtenerPastas() {
         return pastas;
     }
 
-
-public List<Pedidoclass> obtenerarilloList() {
+    public List<Pedidoclass> obtenerarilloList() {
         List<Pedidoclass> arillos = new ArrayList<>();
         Conexion conex = new Conexion();
         String sql = "SELECT Nombre_producto FROM productos WHERE Categoria LIKE 'Arillo'";
 
-        try (Connection con = conex.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
+        try (Connection con = conex.getConnection(); PreparedStatement pst = con.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
 
             while (rs.next()) {
                 Pedidoclass Arillo = new Pedidoclass();
@@ -275,67 +267,96 @@ public List<Pedidoclass> obtenerarilloList() {
 
         return arillos;
     }
-    
-public List<Pedidoclass> obtenerpedidos() {
-    List<Pedidoclass> pedidos = new ArrayList<>();
-    Conexion conex = new Conexion();
 
-    // Consulta SQL para obtener pedidos con estado 'Pendiente'
-    String sql = "SELECT `NumPedido`, `Nombre_Usuario`, `idUsuario`, `idCliente`, `Nombre_Cliente`, " +
-                 "`Apellidos_Cliente`, `CelularCliente`, `Servicio`, `TipoDeCopia`, `Tamaño`, `Escala`, " +
-                 "`FechaEmision`, `HoraEmision`, `FechaEntrega`, `HoraEntrega`, `NumeroDePag`, `Frente`, " +
-                 "`Atras`, `Arillo`, `Comentarios`, `Total`, `Anticipo`, `Resto`, `Status`, `Cantidad`, " +
-                 "`CantidadCarta`, `CantidadOficio` FROM `pedido` WHERE `Status` = 'Pendiente'";
+    public List<Pedidoclass> obtenerpedidos() {
+        List<Pedidoclass> pedidos = new ArrayList<>();
+        Conexion conex = new Conexion();
 
-    try (Connection con = conex.getConnection();
-         PreparedStatement pst = con.prepareStatement(sql);
-         ResultSet rs = pst.executeQuery()) {
+        // Consulta SQL para obtener pedidos con estado 'Pendiente'
+        String sql = "SELECT `NumPedido`, `Nombre_Usuario`, `idUsuario`, `idCliente`, `Nombre_Cliente`, "
+                + "`Apellidos_Cliente`, `CelularCliente`, `Servicio`, `TipoDeCopia`, `Tamaño`, `Escala`, "
+                + "`FechaEmision`, `HoraEmision`, `FechaEntrega`, `HoraEntrega`, `NumeroDePag`, `Frente`, "
+                + "`Atras`, `Arillo`, `Comentarios`, `Total`, `Anticipo`, `Resto`, `Status`, `Cantidad`, "
+                + "`CantidadCarta`, `CantidadOficio` FROM `pedido` WHERE `Status` = 'Pendiente'";
 
-        // Iterar por cada fila en el ResultSet
-        while (rs.next()) {
-            Pedidoclass pedido = new Pedidoclass();
+        try (Connection con = conex.getConnection(); PreparedStatement pst = con.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
 
-            // Asignar valores de la base de datos al objeto `Pedidoclass`
-            pedido.setNumpedido(rs.getInt("NumPedido"));
-            pedido.setNombredeusuario(rs.getString("Nombre_Usuario"));
-            pedido.setIdusuario(rs.getInt("idUsuario"));
-            pedido.setIdcliente(rs.getInt("idCliente"));
-            pedido.setNombrecliennte(rs.getString("Nombre_Cliente"));
-            pedido.setApellidoscliente(rs.getString("Apellidos_Cliente"));
-            pedido.setCelularcliente(rs.getString("CelularCliente"));
-            pedido.setServicio(rs.getString("Servicio"));
-            pedido.setTipodecopia(rs.getString("TipoDeCopia"));
-            pedido.setTamaño(rs.getString("Tamaño"));
-            pedido.setEscala(rs.getString("Escala"));
-            pedido.setFechaEmision(rs.getDate("FechaEmision"));
-            pedido.setHoraemision(rs.getTime("HoraEmision"));
-            pedido.setFechaentrega(rs.getDate("FechaEntrega"));
-            pedido.setHoraentrega(rs.getTime("HoraEntrega"));
-            pedido.setNumdepaginas(rs.getInt("NumeroDePag"));
-            pedido.setPastafrente(rs.getString("Frente"));
-            pedido.setPastatrasera(rs.getString("Atras"));
-            pedido.setArillo(rs.getString("Arillo"));
-            pedido.setCometarios(rs.getString("Comentarios"));
-            pedido.setTotal(rs.getDouble("Total"));
-            pedido.setAnticipo(rs.getDouble("Anticipo"));
-            pedido.setResto(rs.getDouble("Resto"));
-            pedido.setStatus(rs.getString("Status"));
-            pedido.setCantidad(rs.getInt("Cantidad"));
+            // Iterar por cada fila en el ResultSet
+            while (rs.next()) {
+                Pedidoclass pedido = new Pedidoclass();
 
-            // Asignar valores específicos de carta y oficio
-            pedido.setCantidad(rs.getInt("CantidadCarta"));
-            pedido.setCantidad(rs.getInt("CantidadOficio"));
+                // Asignar valores de la base de datos al objeto `Pedidoclass`
+                pedido.setNumpedido(rs.getInt("NumPedido"));
+                pedido.setNombredeusuario(rs.getString("Nombre_Usuario"));
+                pedido.setIdusuario(rs.getInt("idUsuario"));
+                pedido.setIdcliente(rs.getInt("idCliente"));
+                pedido.setNombrecliennte(rs.getString("Nombre_Cliente"));
+                pedido.setApellidoscliente(rs.getString("Apellidos_Cliente"));
+                pedido.setCelularcliente(rs.getString("CelularCliente"));
+                pedido.setServicio(rs.getString("Servicio"));
+                pedido.setTipodecopia(rs.getString("TipoDeCopia"));
+                pedido.setTamaño(rs.getString("Tamaño"));
+                pedido.setEscala(rs.getString("Escala"));
+                pedido.setFechaEmision(rs.getDate("FechaEmision"));
+                pedido.setHoraemision(rs.getTime("HoraEmision"));
+                pedido.setFechaentrega(rs.getDate("FechaEntrega"));
+                pedido.setHoraentrega(rs.getTime("HoraEntrega"));
+                pedido.setNumdepaginas(rs.getInt("NumeroDePag"));
+                pedido.setPastafrente(rs.getString("Frente"));
+                pedido.setPastatrasera(rs.getString("Atras"));
+                pedido.setArillo(rs.getString("Arillo"));
+                pedido.setCometarios(rs.getString("Comentarios"));
+                pedido.setTotal(rs.getDouble("Total"));
+                pedido.setAnticipo(rs.getDouble("Anticipo"));
+                pedido.setResto(rs.getDouble("Resto"));
+                pedido.setStatus(rs.getString("Status"));
+                pedido.setCantidad(rs.getInt("Cantidad"));
 
-            // Agregar el pedido a la lista
-            pedidos.add(pedido);
+                // Asignar valores específicos de carta y oficio
+                pedido.setCantidad(rs.getInt("CantidadCarta"));
+                pedido.setCantidad(rs.getInt("CantidadOficio"));
+
+                // Agregar el pedido a la lista
+                pedidos.add(pedido);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+
+        return pedidos;
     }
 
-    return pedidos;
-}
+    // Método para guardar el estado actual en un Memento
+    public Memento guardarEstado() {
+        return new Memento(numpedido, idusuario, idcliente, cantidad, numdepaginas, Nombredeusuario, Apellidoscliente, cometarios, Celularcliente, Servicio, Tipodecopia, Tamaño, Escala, Status, fechaEmision, Fechaentrega, Horaemision, Horaentrega, pastafrente, pastatrasera, arillo, total, Anticipo, Resto);
+    }
 
-
+    // Método para restaurar el estado desde un Memento
+    public void restaurarEstado(Memento memento) {
+        this.numpedido = memento.getNumpedido();
+        this.idusuario = memento.getIdusuario();
+        this.idcliente = memento.getIdcliente();
+        this.cantidad = memento.getCantidad();
+        this.numdepaginas = memento.getNumdepaginas();
+        this.Nombredeusuario = memento.getNombredeusuario();
+        this.Apellidoscliente = memento.getApellidoscliente();
+        this.cometarios = memento.getCometarios();
+        this.Celularcliente = memento.getCelularcliente();
+        this.Servicio = memento.getServicio();
+        this.Tipodecopia = memento.getTipodecopia();
+        this.Tamaño = memento.getTamaño();
+        this.Escala = memento.getEscala();
+        this.Status = memento.getStatus();
+        this.fechaEmision = memento.getFechaEmision();
+        this.Fechaentrega = memento.getFechaentrega();
+        this.Horaemision = memento.getHoraemision();
+        this.Horaentrega = memento.getHoraentrega();
+        this.pastafrente = memento.getPastafrente();
+        this.pastatrasera = memento.getPastatrasera();
+        this.arillo = memento.getArillo();
+        this.total = memento.getTotal();
+        this.Anticipo = memento.getAnticipo();
+        this.Resto = memento.getResto();
+    }
 
 }
