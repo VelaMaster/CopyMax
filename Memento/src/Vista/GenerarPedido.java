@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package Vista;
 
 
@@ -414,9 +410,7 @@ public class GenerarPedido extends javax.swing.JPanel {
     }//GEN-LAST:event_btnGenerarPedidoActionPerformed
 
     private void btnFinalizarpedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarpedidoActionPerformed
-                
-       
-    try {
+      try {
         int numPedido = Integer.parseInt(txtNumPedido.getText());
         
         // Llamar al método para finalizar el pedido
@@ -494,9 +488,7 @@ public class GenerarPedido extends javax.swing.JPanel {
     private void VerPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VerPedidoActionPerformed
         generarReporte(Integer.parseInt(txtNumPedido.getText()));
     }//GEN-LAST:event_VerPedidoActionPerformed
-
-    
-    private void generarReporte(int numpedido) {
+        private void generarReporte(int numpedido) {
     try {
         String reporthpath = "src/Reportes/Pedido.jasper"; // Ruta del reporte
         // Parámetros del reporte
@@ -626,13 +618,11 @@ public class GenerarPedido extends javax.swing.JPanel {
 }
        
      public void actualizarpedidos(){
-     
          cargarPedidosEnTabla(Tablapedido);
          Tablapedido.revalidate();
          Tablapedido.repaint();
            
      }
- 
            
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable Tablapedido;

@@ -1209,7 +1209,7 @@ public class Pedido extends javax.swing.JFrame {
         // Crear el nombre completo del producto
         String nombreProducto = "Engargolado " + arillo;
 
-        String sql = "SELECT Precio FROM productos WHERE Nombre_producto = ? AND Categoria = 'Engargolado'";
+        String sql = "SELECT Precio FROM Productos WHERE Nombre_producto = ? AND Categoria = 'Engargolado'";
 
         try (Connection con = new Conexion().getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
             pst.setString(1, nombreProducto); // Usamos el nombre completo del producto
@@ -1516,7 +1516,7 @@ public class Pedido extends javax.swing.JFrame {
             java.sql.Time horaEntrega = horaEntregaUtil != null ? new java.sql.Time(horaEntregaUtil.getTime()) : null;
 
             // Construir la consulta SQL
-            String query = "INSERT INTO `copymax`.`pedido`(`NumPedido`, `idUsuario`, `Nombre_Usuario`, `idCliente`, `Nombre_Cliente`, "
+            String query = "INSERT INTO `Copymax`.`pedido`(`NumPedido`, `idUsuario`, `Nombre_Usuario`, `idCliente`, `Nombre_Cliente`, "
                     + "`Apellidos_Cliente`, `CelularCliente`, `Servicio`, `TipoDeCopia`, `Tamaño`, `Escala`, `FechaEmision`, "
                     + "`HoraEmision`, `FechaEntrega`, `HoraEntrega`, `NumeroDePag`, `Frente`, `Atras`, `Arillo`, `Comentarios`, "
                     + "`Total`, `Anticipo`, `Resto`, `Status`,`Cantidad`,`CantidadCarta`,`CantidadOficio`, `Servicioextra`) "

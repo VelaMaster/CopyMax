@@ -233,7 +233,7 @@ public class Pedidoclass {
     public List<Pedidoclass> obtenerPastas() {
         List<Pedidoclass> pastas = new ArrayList<>();
         Conexion conex = new Conexion();
-        String sql = "SELECT Nombre_producto FROM productos WHERE Categoria LIKE 'Pasta'";
+        String sql = "SELECT Nombre_producto FROM Productos WHERE Categoria LIKE 'Pasta'";
 
         try (Connection con = conex.getConnection(); PreparedStatement pst = con.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
 
@@ -252,7 +252,7 @@ public class Pedidoclass {
     public List<Pedidoclass> obtenerarilloList() {
         List<Pedidoclass> arillos = new ArrayList<>();
         Conexion conex = new Conexion();
-        String sql = "SELECT Nombre_producto FROM productos WHERE Categoria LIKE 'Arillo'";
+        String sql = "SELECT Nombre_producto FROM Productos WHERE Categoria LIKE 'Arillo'";
 
         try (Connection con = conex.getConnection(); PreparedStatement pst = con.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
 
