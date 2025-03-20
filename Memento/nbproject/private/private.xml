@@ -3,10 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/diego/Escritorio/CopyMax/Memento/src/Modelo/Pedidoclass.java</file>
-            <file>file:/home/diego/Escritorio/CopyMax/Memento/src/Conexion/Conexion.java</file>
-            <file>file:/home/diego/Escritorio/CopyMax/Memento/src/Vista/Pedido.java</file>
-            <file>file:/home/diego/Escritorio/CopyMax/Memento/src/Vista/GenerarPedido.java</file>
+            <file>file:/C:/Users/Alan/Documents/ITO/Dieseño%20e%20implementacion%20de%20patrones%20de%20diseño/CopyMax/Memento/src/Vista/Pedido.java</file>
+            <file>file:/C:/Users/Alan/Documents/ITO/Dieseño%20e%20implementacion%20de%20patrones%20de%20diseño/CopyMax/Memento/src/Vista/GenerarPedido.java</file>
+            <file>file:/C:/Users/Alan/Documents/ITO/Dieseño%20e%20implementacion%20de%20patrones%20de%20diseño/CopyMax/Memento/src/Modelo/Pedidoclass.java</file>
+            <file>file:/C:/Users/Alan/Documents/ITO/Dieseño%20e%20implementacion%20de%20patrones%20de%20diseño/CopyMax/Memento/src/Modelo/Caretaker.java</file>
+            <file>file:/C:/Users/Alan/Documents/ITO/Dieseño%20e%20implementacion%20de%20patrones%20de%20diseño/CopyMax/Memento/src/Vista/LoginRegistro.java</file>
+            <file>file:/C:/Users/Alan/Documents/ITO/Dieseño%20e%20implementacion%20de%20patrones%20de%20diseño/CopyMax/Memento/src/Conexion/Conexion.java</file>
+            <file>file:/C:/Users/Alan/Documents/ITO/Dieseño%20e%20implementacion%20de%20patrones%20de%20diseño/CopyMax/Memento/src/Modelo/Memento.java</file>
         </group>
     </open-files>
 </project-private>

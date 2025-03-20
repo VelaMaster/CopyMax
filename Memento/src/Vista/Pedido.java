@@ -23,6 +23,7 @@ import javax.swing.JTable;
 import java.sql.*;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
@@ -79,6 +80,10 @@ public class Pedido extends javax.swing.JFrame {
         RBreduccion.setActionCommand("REDUCCION");
         RBengrapadas.setActionCommand("ENGRAPADAS");
         RBrecortadas.setActionCommand("RECORTADAS");
+        RBunsololadocarta.setActionCommand("UN_LADO_CARTA");
+        RBunsololadooficio.setActionCommand("UN_LADO_OFICIO");
+        RBambosladoscarta.setActionCommand("AMBOS_LADOS_CARTA");
+        RBtambosladosoficio.setActionCommand("AMBOS_LADOS_OFICIO");
 
         agregarListenerengargolado(Txtnumpaginas);
         configurarCálculoAutomático();
@@ -212,6 +217,8 @@ public class Pedido extends javax.swing.JFrame {
         Limpiarbtn = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         Deshacerbtn = new javax.swing.JButton();
+        Txtusuario = new javax.swing.JTextField();
+        IdUsuario = new javax.swing.JLabel();
 
         SeleccionClientes.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         SeleccionClientes.setTitle("Seleccion de Clientes");
@@ -643,6 +650,8 @@ public class Pedido extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(lblusuario)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Txtusuario, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -768,12 +777,18 @@ public class Pedido extends javax.swing.JFrame {
                                         .addComponent(Txtresto, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(Txtanticipo, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel4)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(Jdatentrega, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(Horaentrega, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel4)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(Jdatentrega, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(Horaentrega, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                    .addGap(0, 0, Short.MAX_VALUE)
+                                    .addComponent(IdUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(152, 152, 152)))
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(Generarpedidobtn, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
                                 .addComponent(Deshacerbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
@@ -815,7 +830,8 @@ public class Pedido extends javax.swing.JFrame {
                                             .addComponent(Txtcantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel1)
-                                        .addComponent(Idpedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addComponent(Idpedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(Txtusuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel10)
@@ -906,7 +922,9 @@ public class Pedido extends javax.swing.JFrame {
                             .addComponent(Jdatentrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(Horaentrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Deshacerbtn)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(Deshacerbtn)
+                    .addComponent(IdUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
@@ -972,22 +990,41 @@ public class Pedido extends javax.swing.JFrame {
     }//GEN-LAST:event_TablaclientesMouseClicked
 
     private void GenerarpedidobtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GenerarpedidobtnActionPerformed
-        // Guardar estado actual antes de realizar cambios
-        Pedidoclass pedidoActual = new Pedidoclass();
-        // Configura los atributos del pedidoActual con los valores actuales de la interfaz
+        // 1. Guardar estado actual (para el "Deshacer")
+        Pedidoclass pedidoActual = obtenerPedidoDesdeInterfaz(); // Método auxiliar (ver abajo)
         caretaker.guardarMemento(pedidoActual.guardarEstado());
-//Variables
-        llenardatos();
 
-        double anticipo = Double.parseDouble(Txtanticipo.getText());
+        // 3. Determinar si es una creación o una actualización
+        if (Idpedido.getText().isEmpty()) {
+            // 2. Llenar datos (este método ya debería validar campos)
+            // Llama al metodo para insertar los datos
+            insertarPedido(pedidoActual);
 
-        if (anticipo == 0) {
-            JOptionPane.showMessageDialog(rootPane, "El anticipo no puede ser $ 0 ");
+            // CREACIÓN de un nuevo pedido
+            double anticipo = Double.parseDouble(Txtanticipo.getText());
+            if (anticipo == 0) {
+                JOptionPane.showMessageDialog(rootPane, "El anticipo no puede ser $0.");
+                return; // Importante: Salir si la validación falla
+            }
+            actualizarCaja(anticipo); // Solo si el anticipo es válido
+            // Limpiar la interfaz después de guardar un nuevo pedido
+            limpiarCampos();
         } else {
-            actualizarCaja(anticipo);
+            // 2. Llenar datos (este método ya debería validar campos)
+            // Llama al metodo para actualizar los datos
+            llenardatos();
+
+            // ACTUALIZACIÓN de un pedido existente
+            double anticipo = Double.parseDouble(Txtanticipo.getText());
+            if (anticipo == 0) {
+                JOptionPane.showMessageDialog(rootPane, "El anticipo no puede ser $0.");
+                return; // Importante: Salir si la validación falla
+            } else {
+                actualizarCaja(anticipo); // Solo si el anticipo es válido
+            }
+            JOptionPane.showMessageDialog(this, "Pedido actualizado correctamente.");
+
         }
-
-
     }//GEN-LAST:event_GenerarpedidobtnActionPerformed
 
     public void actualizarCaja(double anticipo) {
@@ -1037,21 +1074,21 @@ public class Pedido extends javax.swing.JFrame {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 if (!isUpdating) {
-                    calcularTotal();  // Actualiza el total cuando se ingresa texto y no está actualizándose
+                    SwingUtilities.invokeLater(() -> calcularTotal());  // Actualiza el total cuando se ingresa texto y no está actualizándose
                 }
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
                 if (!isUpdating) {
-                    calcularTotal();  // Actualiza el total cuando se elimina texto y no está actualizándose
+                    SwingUtilities.invokeLater(() -> calcularTotal());  // Actualiza el total cuando se elimina texto y no está actualizándose
                 }
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
                 if (!isUpdating) {
-                    calcularTotal();  // Actualiza el total cuando el texto cambia
+                    SwingUtilities.invokeLater(() -> calcularTotal());  // Actualiza el total cuando el texto cambia
                 }
             }
         });
@@ -1126,6 +1163,17 @@ public class Pedido extends javax.swing.JFrame {
 
             // Actualizar el resto
             actualizarRestante(precioTotal, Double.parseDouble(Txtanticipo.getText()));
+
+            // Envuelve la modificación del JTextField en SwingUtilities.invokeLater
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    double precioTotal = Double.parseDouble(Txttotal.getText());
+                    Txttotal.setText(String.format("%.2f", precioTotal));
+                    double anticipo = Double.parseDouble(Txtanticipo.getText());
+                    double resto = precioTotal - anticipo;
+                    Txtresto.setText(String.format("%.2f", resto));
+                }
+            });
 
         } catch (NumberFormatException e) {
             // Si algún valor no es válido, limpiar el campo total
@@ -1498,78 +1546,85 @@ public class Pedido extends javax.swing.JFrame {
 
     }
 
-    private void llenardatos() {
-        Conexion conex = new Conexion();
+    public void llenardatos() {
+        Conexion con = new Conexion();
+        Connection cn = con.getConnection();
+        PreparedStatement ps = null;
 
-        try {
-            // Validar las fechas y horas antes de usarlas
-            java.util.Date fechaEmisionUtil = Jdateemision.getDate();
-            java.sql.Date fechaEmision = fechaEmisionUtil != null ? new java.sql.Date(fechaEmisionUtil.getTime()) : null;
+// Primero, obtenemos un objeto Pedidoclass con la información de la interfaz.
+        Pedidoclass pedido = obtenerPedidoDesdeInterfaz();
+        if (pedido == null) {
+            // Si hay un error al obtener el pedido (por ejemplo, fechas inválidas), salimos.
+            return; // Importante: Salir si hay un error.
+        }
 
-            java.util.Date horaEmisionUtil = (java.util.Date) Horaemision.getValue();
-            java.sql.Time horaEmision = horaEmisionUtil != null ? new java.sql.Time(horaEmisionUtil.getTime()) : null;
+//Verificamos que el objeto Pedidoclass no sea null.
+        if (pedido != null) {
 
-            java.util.Date fechaEntregaUtil = Jdatentrega.getDate();
-            java.sql.Date fechaEntrega = fechaEntregaUtil != null ? new java.sql.Date(fechaEntregaUtil.getTime()) : null;
+            try {
+                // Sentencia SQL para ACTUALIZAR un pedido existente
+                String sql = "UPDATE pedido SET Nombre_Usuario=?, idUsuario=?, idCliente=?, Nombre_Cliente=?, Apellidos_Cliente=?, "
+                        + "CelularCliente=?, Servicio=?, TipoDeCopia=?, Tamaño=?, Escala=?, FechaEmision=?, HoraEmision=?, "
+                        + "FechaEntrega=?, HoraEntrega=?, NumeroDePag=?, Frente=?, Atras=?, Arillo=?, Comentarios=?, Total=?, "
+                        + "Anticipo=?, Resto=?, Status=?, Cantidad=?,ServicioExtra=? WHERE NumPedido=?";
 
-            java.util.Date horaEntregaUtil = (java.util.Date) Horaentrega.getValue();
-            java.sql.Time horaEntrega = horaEntregaUtil != null ? new java.sql.Time(horaEntregaUtil.getTime()) : null;
+                ps = cn.prepareStatement(sql);
 
-            // Construir la consulta SQL
-            String query = "INSERT INTO `Copymax`.`pedido`(`NumPedido`, `idUsuario`, `Nombre_Usuario`, `idCliente`, `Nombre_Cliente`, "
-                    + "`Apellidos_Cliente`, `CelularCliente`, `Servicio`, `TipoDeCopia`, `Tamaño`, `Escala`, `FechaEmision`, "
-                    + "`HoraEmision`, `FechaEntrega`, `HoraEntrega`, `NumeroDePag`, `Frente`, `Atras`, `Arillo`, `Comentarios`, "
-                    + "`Total`, `Anticipo`, `Resto`, `Status`,`Cantidad`,`CantidadCarta`,`CantidadOficio`, `Servicioextra`) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+                // Establecer los parámetros del PreparedStatement usando el objeto pedido:
+                ps.setString(1, pedido.getNombredeusuario());
+                ps.setInt(2, pedido.getIdusuario());
+                ps.setInt(3, pedido.getIdcliente());
+                ps.setString(4, pedido.getNombrecliennte());
+                ps.setString(5, pedido.getApellidoscliente());
+                ps.setString(6, pedido.getCelularcliente());
+                ps.setString(7, pedido.getServicio());
+                ps.setString(8, pedido.getTipodecopia());
+                ps.setString(9, pedido.getTamaño());
+                ps.setString(10, pedido.getEscala());
+                ps.setDate(11, new java.sql.Date(pedido.getFechaEmision().getTime()));
+                ps.setTime(12, new java.sql.Time(pedido.getHoraemision().getTime()));
+                ps.setDate(13, new java.sql.Date(pedido.getFechaentrega().getTime()));
+                ps.setTime(14, new java.sql.Time(pedido.getHoraentrega().getTime()));
+                ps.setInt(15, pedido.getNumdepaginas());
+                ps.setString(16, pedido.getPastafrente());
+                ps.setString(17, pedido.getPastatrasera());
+                ps.setString(18, pedido.getArillo());
+                ps.setString(19, pedido.getCometarios());
+                ps.setDouble(20, pedido.getTotal());
+                ps.setDouble(21, pedido.getAnticipo());
+                ps.setDouble(22, pedido.getResto());
+                ps.setString(23, pedido.getStatus());
+                ps.setInt(24, pedido.getCantidad());
+                ps.setString(25, pedido.getServicio());
+                ps.setInt(26, pedido.getNumpedido());  // ¡MUY IMPORTANTE! El WHERE para la actualización
 
-            try (PreparedStatement pst = conex.getConnection().prepareStatement(query)) {
-                // Establecer valores, manejando los posibles valores nulos
-                pst.setInt(1, Integer.parseInt(Idpedido.getText()));
-                pst.setInt(2, Usuariosesion.getInstance().getIdUsuario());
-                pst.setString(3, Usuariosesion.getInstance().getNombrereal());
-                pst.setInt(4, TxtIdcliente.getText().isEmpty() ? 0 : Integer.parseInt(TxtIdcliente.getText()));
-                pst.setString(5, TxtNombrecompleto.getText());
-                pst.setString(6, apellidoglobal != null ? apellidoglobal : "No");
-                pst.setString(7, TxtCelular.getText().isEmpty() ? "No" : TxtCelular.getText());
-                pst.setString(8, Comboservicio.getSelectedItem() != null ? Comboservicio.getSelectedItem().toString() : "No");
+                // Ejecutar la actualización.
+                int resultado = ps.executeUpdate();
 
-                // Validar y obtener el valor del ButtonGroup de TipoDeCopia
-                pst.setString(9, Tipodecopiagroup.getSelection() != null ? Tipodecopiagroup.getSelection().getActionCommand() : "No");
+                if (resultado > 0) {
+                    // JOptionPane.showMessageDialog(null, "Pedido Actualizado.");
 
-                // Validar y obtener el valor del ButtonGroup de Amplireduccion
-                pst.setString(11, Amplireducciongroup.getSelection() != null ? Amplireducciongroup.getSelection().getActionCommand() : "No");
-
-                pst.setString(10, Combotamaño.getSelectedItem() != null ? Combotamaño.getSelectedItem().toString() : "No especificado");
-                pst.setDate(12, fechaEmision);
-                pst.setTime(13, horaEmision);
-                pst.setDate(14, fechaEntrega);
-                pst.setTime(15, horaEntrega);
-                pst.setInt(16, Txtnumpaginas.getText().isEmpty() ? 0 : Integer.parseInt(Txtnumpaginas.getText()));
-                pst.setString(17, Combofrente.getSelectedItem() != null ? Combofrente.getSelectedItem().toString() : "No");
-                pst.setString(18, Comboatras.getSelectedItem() != null ? Comboatras.getSelectedItem().toString() : "No");
-                pst.setString(19, Comboarillo.getSelectedItem() != null ? Comboarillo.getSelectedItem().toString() : "No");
-                pst.setString(20, Txtcomentarios.getText().isEmpty() ? "No especificado" : Txtcomentarios.getText());
-                pst.setDouble(21, Txttotal.getText().isEmpty() ? 0.0 : Double.parseDouble(Txttotal.getText()));
-                pst.setDouble(22, Txtanticipo.getText().isEmpty() ? 0.0 : Double.parseDouble(Txtanticipo.getText()));
-                pst.setDouble(23, Txtresto.getText().isEmpty() ? 0.0 : Double.parseDouble(Txtresto.getText()));
-                pst.setString(24, "Pendiente");
-                pst.setInt(25, Txtcantidad.getText().isEmpty() ? 0 : Integer.parseInt(Txtcantidad.getText()));
-                pst.setInt(26, txtcartacantidad.getText().isEmpty() ? 0 : Integer.parseInt(txtcartacantidad.getText()));
-                pst.setInt(27, txtoficiocantidad.getText().isEmpty() ? 0 : Integer.parseInt(txtoficiocantidad.getText()));
-                pst.setString(28, Serviciogroup.getSelection() != null ? Serviciogroup.getSelection().getActionCommand() : "No");
-
-                // Ejecutar la consulta
-                int rowsInserted = pst.executeUpdate();
-
-                if (rowsInserted > 0) {
-                    JOptionPane.showMessageDialog(rootPane, "¡Pedido insertado exitosamente!");
                 } else {
-                    System.out.println("No se pudo insertar el pedido.");
+                    JOptionPane.showMessageDialog(null, "Error al Actualizar el pedido.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error SQL: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace(); // Imprime el error completo para depuración
+            } finally {
+                //Cierro la conexión
+                try {
+                    if (ps != null) {
+                        ps.close();
+                    }
+                    if (cn != null) {
+                        cn.close();
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Error al cerrar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
-        } catch (Exception e) {
-            // Manejo del error
-            e.printStackTrace();
+
         }
     }
 
@@ -1587,6 +1642,81 @@ public class Pedido extends javax.swing.JFrame {
         }
         for (Enumeration<AbstractButton> buttons = Ambosladosgroup.getElements(); buttons.hasMoreElements();) {
             buttons.nextElement().addActionListener(e -> calcularHojas());
+        }
+    }
+
+    //Creamos un metodo para insertar los datos del pedido
+    private void insertarPedido(Pedidoclass pedido) {
+        Conexion con = new Conexion();
+        Connection cn = con.getConnection();
+        PreparedStatement ps = null;
+
+        try {
+            // Sentencia SQL para insertar
+            String sql = "INSERT INTO pedido (Nombre_Usuario, idUsuario, idCliente, Nombre_Cliente, Apellidos_Cliente, "
+                    + "CelularCliente, Servicio, TipoDeCopia, Tamaño, Escala, FechaEmision, HoraEmision, "
+                    + "FechaEntrega, HoraEntrega, NumeroDePag, Frente, Atras, Arillo, Comentarios, Total, "
+                    + "Anticipo, Resto, Status, Cantidad, ServicioExtra) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            ps = cn.prepareStatement(sql);
+
+            // Establecer los parámetros del PreparedStatement usando el objeto pedido:
+            ps.setString(1, pedido.getNombredeusuario());
+            ps.setInt(2, pedido.getIdusuario());
+            ps.setInt(3, pedido.getIdcliente());
+            ps.setString(4, pedido.getNombrecliennte());
+            ps.setString(5, pedido.getApellidoscliente());
+            ps.setString(6, pedido.getCelularcliente());
+            ps.setString(7, pedido.getServicio());
+            ps.setString(8, pedido.getTipodecopia());
+            ps.setString(9, pedido.getTamaño());
+            ps.setString(10, pedido.getEscala());
+            ps.setDate(11, new java.sql.Date(pedido.getFechaEmision().getTime()));
+            ps.setTime(12, new java.sql.Time(pedido.getHoraemision().getTime()));
+            ps.setDate(13, new java.sql.Date(pedido.getFechaentrega().getTime()));
+            ps.setTime(14, new java.sql.Time(pedido.getHoraentrega().getTime()));
+            ps.setInt(15, pedido.getNumdepaginas());
+            ps.setString(16, pedido.getPastafrente());
+            ps.setString(17, pedido.getPastatrasera());
+            ps.setString(18, pedido.getArillo());
+            ps.setString(19, pedido.getCometarios());
+            ps.setDouble(20, pedido.getTotal());
+            ps.setDouble(21, pedido.getAnticipo());
+            ps.setDouble(22, pedido.getResto());
+            ps.setString(23, pedido.getStatus());
+            ps.setInt(24, pedido.getCantidad());
+            ps.setString(25, pedido.getServicio());
+
+            int resultado = ps.executeUpdate();
+
+            if (resultado > 0) {
+                JOptionPane.showMessageDialog(null, "Pedido Guardado.");
+                // Después de insertar, obtén el ID generado automáticamente
+                ResultSet generatedKeys = ps.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int idGenerado = generatedKeys.getInt(1);
+                    Idpedido.setText(String.valueOf(idGenerado)); // Muestra el ID en el campo
+                }
+                generatedKeys.close(); // Cierra el ResultSet
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al guardar el pedido.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error SQL: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error al cerrar la conexión: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
@@ -1766,51 +1896,201 @@ public class Pedido extends javax.swing.JFrame {
 
     private void actualizarCamposDesdePedido(Pedidoclass pedido) {
         try {
-            // Campos básicos numéricos
+
+            // ID (si está vacío, será 0, lo cual está bien para un nuevo pedido)
+            try {
+                Idpedido.setText(pedido.getNumpedido() == 0 ? "" : String.valueOf(pedido.getNumpedido()));
+            } catch (NumberFormatException e) {
+                Idpedido.setText("");  // Si hay un error, establece un ID vacío
+            }
+
+            TxtNombrecompleto.setText(pedido.getNombrecliennte());
+            TxtCelular.setText(pedido.getCelularcliente());
+            Txttotal.setText(String.valueOf(pedido.getTotal()));
+            Txtanticipo.setText(String.valueOf(pedido.getAnticipo()));
+            Txtresto.setText(String.valueOf(pedido.getResto()));
+            Comboservicio.setSelectedItem(pedido.getServicio());
+            Txtcomentarios.setText(pedido.getCometarios());
+            Combotamaño.setSelectedItem(pedido.getTamaño());
+
+            // Radio buttons - Tipo de copia.  Llamada correcta.
+            setRadioButtonSelection(Tipodecopiagroup, pedido.getTipodecopia());
+            // Radio buttons - Escala. Llamada correcta.
+            setRadioButtonSelection(Amplireducciongroup, pedido.getEscala());
+            //Radio buttons - Servicio extra
+            setRadioButtonSelection(Serviciogroup, pedido.getServicio());
+            //Radio buttons - tamaño carta.
+            //setRadioButtonSelection(Unladogroup, pedido.getTamaño());
+            //Radio buttons - tamaño oficio.
+            //setRadioButtonSelection(Ambosladosgroup, pedido.getTamaño());
+
+            // Radio buttons para Un solo lado/Ambos lados basado en el tamaño y las pastas
+            if (pedido.getPastafrente() != null && !pedido.getPastafrente().isEmpty()
+                    && pedido.getPastatrasera() != null && !pedido.getPastatrasera().isEmpty()) {
+                // Ambos lados seleccionado
+                if ("Carta".equals(pedido.getTamaño())) {
+                    RBambosladoscarta.setSelected(true);
+                } else if ("Oficio".equals(pedido.getTamaño())) {
+                    RBtambosladosoficio.setSelected(true);
+                }
+            } else {
+                // Un solo lado seleccionado
+                if ("Carta".equals(pedido.getTamaño())) {
+                    RBunsololadocarta.setSelected(true);
+                } else if ("Oficio".equals(pedido.getTamaño())) {
+                    RBunsololadooficio.setSelected(true);
+                }
+            }
+            setRadioButtonSelection(Unladogroup, pedido.getUnLadoGroupActionCommand());
+            setRadioButtonSelection(Ambosladosgroup, pedido.getAmbosLadosGroupActionCommand());
+
+            //Valores para carta u oficio
+            txtcartacantidad.setText(String.valueOf(pedido.getCantidad()));
+            txtoficiocantidad.setText(String.valueOf(pedido.getCantidad()));
+
             Txtcantidad.setText(String.valueOf(pedido.getCantidad()));
             Txtnumpaginas.setText(String.valueOf(pedido.getNumdepaginas()));
-
-            // Campos monetarios
-            Txttotal.setText(String.format("%.2f", pedido.getTotal()));
-            Txtanticipo.setText(String.format("%.2f", pedido.getAnticipo()));
-            Txtresto.setText(String.format("%.2f", pedido.getResto()));
-
-            // Comboboxes
-            Comboservicio.setSelectedItem(pedido.getServicio());
-            Combotamaño.setSelectedItem(pedido.getTamaño());
             Combofrente.setSelectedItem(pedido.getPastafrente());
             Comboatras.setSelectedItem(pedido.getPastatrasera());
             Comboarillo.setSelectedItem(pedido.getArillo());
 
-            // Fechas y horas
+            // Fechas y horas (manejo de excepciones)
             Jdateemision.setDate(pedido.getFechaEmision());
-            Jdatentrega.setDate(pedido.getFechaentrega());
             Horaemision.setValue(new java.sql.Time(pedido.getHoraemision().getTime()));
+            Jdatentrega.setDate(pedido.getFechaentrega());
             Horaentrega.setValue(new java.sql.Time(pedido.getHoraentrega().getTime()));
 
-            // Radio buttons - Servicio
-            setRadioButtonSelection(Serviciogroup, pedido.getStatus());
+            //Usuario
+            Txtusuario.setText(pedido.getNombredeusuario());
+            IdUsuario.setText(String.valueOf(pedido.getIdusuario()));
+            //Campos relacionados con el usuario
+            Clientesclass clientee = new Clientesclass();
+            List<Clientesclass> clientes = clientee.obtenerClientesPorNumero(pedido.getCelularcliente());
+            for (Clientesclass cliente : clientes) {
+                String correo = cliente.getCorreo();
+                Txtmail.setText(correo);
+                int idcliente = cliente.getId();
+                TxtIdcliente.setText(String.valueOf(idcliente));
+            }
+            // Volver a llenar los ComboBox si es necesario
+            rellenarCombos(Combofrente, Comboatras, Comboarillo);
 
-            // Radio buttons - Tipo de copia
-            setRadioButtonSelection(Tipodecopiagroup, pedido.getTipodecopia());
+            // Establecer la selección
+            Combofrente.setSelectedItem(pedido.getPastafrente());
+            Comboatras.setSelectedItem(pedido.getPastatrasera());
+            Comboarillo.setSelectedItem(pedido.getArillo());
 
-            // Radio buttons - Escala
-            setRadioButtonSelection(Amplireducciongroup, pedido.getEscala());
-
-
-            // Campos de cliente
-            TxtNombrecompleto.setText(pedido.getNombrecliennte());
-            TxtCelular.setText(pedido.getCelularcliente());
-            Txtmail.setText(""); // Necesitarías agregar email a Pedidoclass
-            TxtIdcliente.setText(String.valueOf(pedido.getIdcliente()));
-            apellidoglobal = pedido.getApellidoscliente();
-
-            // Comentarios
-            Txtcomentarios.setText(pedido.getCometarios());
-
+            // Forzar actualización de la interfaz
+            Combofrente.repaint();
+            Comboatras.repaint();
+            Comboarillo.repaint();
+            this.revalidate();
+            this.repaint();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al restaurar estado: " + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+
+    public void llenardatosactualizar(Pedidoclass pedido) {
+        //Desactivo la opción de cambiar la fecha al actualizar un pedido.
+        Jdatentrega.setEnabled(false);
+
+        //Establesco la fecha y hora
+        Jdatentrega.setDate(pedido.getFechaentrega());
+        Horaentrega.setValue(new java.sql.Time(pedido.getHoraentrega().getTime()));
+
+        Idpedido.setText(String.valueOf(pedido.getNumpedido()));
+        TxtNombrecompleto.setText(pedido.getNombrecliennte());
+        TxtCelular.setText(pedido.getCelularcliente());
+        Txttotal.setText(String.valueOf(pedido.getTotal()));
+        Txtanticipo.setText(String.valueOf(pedido.getAnticipo()));
+        Txtresto.setText(String.valueOf(pedido.getResto()));
+        Comboservicio.setSelectedItem(pedido.getServicio());
+        Txtcomentarios.setText(pedido.getCometarios());
+        Combotamaño.setSelectedItem(pedido.getTamaño());
+
+        //Se habilitan los componentes.
+        Txtcantidad.setEnabled(true);
+        Txtnumpaginas.setEnabled(true);
+        txtcartacantidad.setEnabled(true);
+        txtoficiocantidad.setEnabled(true);
+
+        //Verifico que servicio es
+        if ("Copias".equals(pedido.getServicio())) {
+            //Establesco tipo de copiado
+            if ("2 PAGINAS EN 1 HOJA".equals(pedido.getTipodecopia())) {
+                RBcdospaginasenunahoja.setSelected(true);
+            }
+            if ("TAL COMO ESTA".equals(pedido.getTipodecopia())) {
+                RBtalcomoesta.setSelected(true);
+            }
+            if ("CENTRAR".equals(pedido.getTipodecopia())) {
+                RBcentrar.setSelected(true);
+            }
+
+            //Establesco los servicios
+            if ("AMPLIACION".equals(pedido.getEscala())) {
+                RBampliacion.setSelected(true);
+            }
+            if ("REDUCCION".equals(pedido.getEscala())) {
+                RBreduccion.setSelected(true);
+            }
+            if ("ENGRAPADAS".equals(pedido.getServicio())) {
+                RBengrapadas.setSelected(true);
+            }
+            if ("RECORTADAS".equals(pedido.getServicio())) {
+                RBrecortadas.setSelected(true);
+            }
+
+            Txtcantidad.setText(String.valueOf(pedido.getCantidad()));
+            //Establesco la cantidad de hojas de un solo lado
+            if (!"".equals(pedido.getPastafrente()) && !"".equals(pedido.getPastatrasera())) {
+                //Ambos lados
+                if ("CARTA".equals(pedido.getTamaño())) {
+                    RBambosladoscarta.setSelected(true);
+                    txtcartacantidad.setText(String.valueOf(pedido.getCantidad()));
+                }
+                if ("OFICIO".equals(pedido.getTamaño())) {
+                    RBtambosladosoficio.setSelected(true);
+                    txtoficiocantidad.setText(String.valueOf(pedido.getCantidad()));
+                }
+                jComboBox3.setSelectedItem(pedido.getPastafrente());
+
+            } else {
+                //Un solo Lado 
+                if ("CARTA".equals(pedido.getTamaño())) {
+                    RBunsololadocarta.setSelected(true);
+                    txtcartacantidad.setText(String.valueOf(pedido.getCantidad()));
+                }
+                if ("OFICIO".equals(pedido.getTamaño())) {
+                    RBunsololadooficio.setSelected(true);
+                    txtoficiocantidad.setText(String.valueOf(pedido.getCantidad()));
+                }
+            }
+
+        }
+
+        if ("Engargolados".equals(pedido.getServicio())) {
+            Combofrente.setEnabled(true); // Deshabilitar la Opción 3
+            Comboatras.setEnabled(true);
+            Comboarillo.setEnabled(true);
+            Txtnumpaginas.setEnabled(true);
+            Combofrente.setSelectedItem(pedido.getPastafrente());
+            Comboatras.setSelectedItem(pedido.getPastatrasera());
+            Comboarillo.setSelectedItem(pedido.getArillo());
+            Txtnumpaginas.setText(String.valueOf(pedido.getNumdepaginas()));
+        }
+
+        //Obtengo datos del cliente.  Esto está bien.
+        Clientesclass clientee = new Clientesclass();
+        List<Clientesclass> clientes = clientee.obtenerClientesPorNumero(pedido.getCelularcliente());
+        for (Clientesclass cliente : clientes) {
+            String correo = cliente.getCorreo();
+            Txtmail.setText(correo);
+            int idcliente = cliente.getId();
+            TxtIdcliente.setText(String.valueOf(idcliente));
         }
     }
 
@@ -1823,6 +2103,120 @@ public class Pedido extends javax.swing.JFrame {
                 break;
             }
         }
+    }
+
+    // Método auxiliar para obtener un Pedidoclass desde la interfaz
+    private Pedidoclass obtenerPedidoDesdeInterfaz() {
+        Pedidoclass pedido = new Pedidoclass();
+
+        // ID (si está vacío, será 0, lo cual está bien para un nuevo pedido)
+        try {
+            pedido.setNumpedido(Integer.parseInt(Idpedido.getText().isEmpty() ? "0" : Idpedido.getText()));
+        } catch (NumberFormatException e) {
+            pedido.setNumpedido(0);  // Si hay un error, establece un ID 0 (nuevo pedido)
+        }
+
+        pedido.setNombrecliennte(TxtNombrecompleto.getText());
+        pedido.setCelularcliente(TxtCelular.getText());
+        pedido.setTotal(Double.parseDouble(Txttotal.getText()));
+        pedido.setAnticipo(Double.parseDouble(Txtanticipo.getText()));
+        pedido.setResto(Double.parseDouble(Txtresto.getText()));
+        pedido.setServicio(Comboservicio.getSelectedItem().toString());
+        pedido.setCometarios(Txtcomentarios.getText());
+        pedido.setTamaño(Combotamaño.getSelectedItem().toString());
+
+        // Obtener valores de los RadioButtons
+        pedido.setTipodecopia(getSelectedRadioButtonValue(Tipodecopiagroup));
+        pedido.setEscala(getSelectedRadioButtonValue(Amplireducciongroup));
+        pedido.setServicio(getSelectedRadioButtonValue(Serviciogroup));
+
+        //Valores para carta u oficio
+        pedido.setCantidad(Integer.parseInt(txtcartacantidad.getText().isEmpty() ? "0" : txtcartacantidad.getText()));
+        pedido.setCantidad(Integer.parseInt(txtoficiocantidad.getText().isEmpty() ? "0" : txtoficiocantidad.getText()));
+
+        pedido.setCantidad(Integer.parseInt(Txtcantidad.getText().isEmpty() ? "0" : Txtcantidad.getText()));
+        pedido.setNumdepaginas(Integer.parseInt(Txtnumpaginas.getText().isEmpty() ? "0" : Txtnumpaginas.getText()));
+        pedido.setPastafrente(Combofrente.getSelectedItem() != null ? Combofrente.getSelectedItem().toString() : "");
+        pedido.setPastatrasera(Comboatras.getSelectedItem() != null ? Comboatras.getSelectedItem().toString() : "");
+        pedido.setArillo(Comboarillo.getSelectedItem() != null ? Comboarillo.getSelectedItem().toString() : "");
+
+        // Fechas y horas (manejo de excepciones)
+        try {
+            pedido.setFechaEmision(Jdateemision.getDate());
+            pedido.setHoraemision(new java.sql.Time(((java.util.Date) Horaemision.getValue()).getTime()));
+            pedido.setFechaentrega(Jdatentrega.getDate());
+            pedido.setHoraentrega(new java.sql.Time(((java.util.Date) Horaentrega.getValue()).getTime()));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error con las fechas/horas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            // Podrías decidir no guardar el pedido si las fechas son inválidas.
+            return null;  // Importante: Devolver null si hay un error
+        }
+
+        // Campos relacionados con el usuario (deberías tener métodos para obtener estos valores)
+        Clientesclass clientee = new Clientesclass();
+        List<Clientesclass> clientes = clientee.obtenerClientesPorNumero(TxtCelular.getText());
+        for (Clientesclass cliente : clientes) {
+            String correo = cliente.getCorreo();
+            int idcliente = cliente.getId();
+            pedido.setIdcliente(idcliente);
+        }
+
+        //Usuario
+        pedido.setNombredeusuario(Txtusuario.getText());
+        pedido.setIdusuario(Integer.parseInt(IdUsuario.getText()));
+        return pedido;
+    }
+
+    //Metodo para obtener los valores seleccionados de RadioButton
+    private String getSelectedRadioButtonValue(ButtonGroup buttonGroup) {
+        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+            if (button.isSelected()) {
+                return button.getActionCommand(); // Devuelve el valor establecido con setActionCommand
+            }
+        }
+        return null; // O una cadena vacía ("") si prefieres
+    }
+
+    //Metodo para limpiar Campos de texto
+    private void limpiarCampos() {
+        // Limpiar JTextFields
+        TxtNombrecompleto.setText("");
+        TxtCelular.setText("");
+        Txtmail.setText("");
+        TxtIdcliente.setText("");
+        Txtcomentarios.setText("");
+        Txttotal.setText("");
+        Txtanticipo.setText("");
+        Txtresto.setText("");
+        Txtcantidad.setText("");
+        Txtnumpaginas.setText("");
+        txtcartacantidad.setText("");
+        txtoficiocantidad.setText("");
+        Idpedido.setText("");
+
+        // Restablecer JComboBoxes a un valor predeterminado o a null
+        Comboservicio.setSelectedIndex(0);
+        Combotamaño.setSelectedIndex(0);
+        Combofrente.setSelectedIndex(-1);  // -1 significa "ningún elemento seleccionado"
+        Comboatras.setSelectedIndex(-1);
+        Comboarillo.setSelectedIndex(-1);
+
+        // Deseleccionar todos los JRadioButtons
+        Tipodecopiagroup.clearSelection();
+        Amplireducciongroup.clearSelection();
+        Serviciogroup.clearSelection();
+        //buttonGroup1.clearSelection();
+        //buttonGroup2.clearSelection();
+
+        // Restablecer JDateChooser y JSpinner a valores predeterminados
+        Jdateemision.setDate(new Date());  // Fecha actual
+        Jdatentrega.setDate(new Date());
+        Horaemision.setValue(new Date());   // Hora actual
+        Horaentrega.setValue(new Date());
+
+        // Bloquear combos después de limpiar (si es necesario)
+        bloquearcombos();
     }
 
     public static void main(String args[]) {
@@ -1869,6 +2263,7 @@ public class Pedido extends javax.swing.JFrame {
     private javax.swing.JButton Generarpedidobtn;
     private javax.swing.JSpinner Horaemision;
     private javax.swing.JSpinner Horaentrega;
+    private javax.swing.JLabel IdUsuario;
     private javax.swing.JTextField Idpedido;
     private com.toedter.calendar.JDateChooser Jdateemision;
     private com.toedter.calendar.JDateChooser Jdatentrega;
@@ -1898,6 +2293,7 @@ public class Pedido extends javax.swing.JFrame {
     private javax.swing.JTextField Txtnumpaginas;
     private javax.swing.JTextField Txtresto;
     private javax.swing.JTextField Txttotal;
+    private javax.swing.JTextField Txtusuario;
     private javax.swing.ButtonGroup Unladogroup;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

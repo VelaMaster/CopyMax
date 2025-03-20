@@ -73,6 +73,21 @@ public class Clientesclass {
         this.Apellidos = Apellidos;
     } 
     
+        // Método para crear un Memento (guardar el estado)
+    public ClienteMemento createMemento() {
+        return new ClienteMemento(id, Correo, Celular, Rfc, Nombre, Apellidos);
+    }
+
+    // Método para restaurar el estado desde un Memento
+    public void restoreFromMemento(ClienteMemento memento) {
+        this.id = memento.getId();
+        this.Correo = memento.getCorreo();
+        this.Celular = memento.getCelular();
+        this.Rfc = memento.getRfc();
+        this.Nombre = memento.getNombre();
+        this.Apellidos = memento.getApellidos();
+    }
+    
    
 public List<Clientesclass> obtenerClientes() {
         List<Clientesclass> clientes = new ArrayList<>();

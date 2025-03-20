@@ -35,8 +35,9 @@ public class Memento {
     private double total;
     private double Anticipo;
     private double Resto;
+    private String Unlado, Amboslados;
 
-    public Memento(int numpedido, int idusuario, int idcliente, int cantidad, int numdepaginas, String Nombredeusuario, String Apellidoscliente, String cometarios, String Celularcliente, String Servicio, String Tipodecopia, String Tamaño, String Escala, String Status, Date fechaEmision, Date Fechaentrega, Date Horaemision, Date Horaentrega, String pastafrente, String pastatrasera, String arillo, double total, double Anticipo, double Resto) {
+    public Memento(int numpedido, int idusuario, int idcliente, int cantidad, int numdepaginas, String Nombredeusuario, String Apellidoscliente, String cometarios, String Celularcliente, String Servicio, String Tipodecopia, String Tamaño, String Escala, String Status, Date fechaEmision, Date Fechaentrega, Date Horaemision, Date Horaentrega, String pastafrente, String pastatrasera, String arillo, double total, double Anticipo, double Resto, String Unlado, String Amboslados) {
         this.numpedido = numpedido;
         this.idusuario = idusuario;
         this.idcliente = idcliente;
@@ -61,6 +62,8 @@ public class Memento {
         this.total = total;
         this.Anticipo = Anticipo;
         this.Resto = Resto;
+        this.Unlado = Unlado;
+        this.Amboslados = Amboslados;
     }
 
     public int getNumpedido() {

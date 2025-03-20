@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -277,7 +278,7 @@ public class Pedidoclass {
                 + "`Apellidos_Cliente`, `CelularCliente`, `Servicio`, `TipoDeCopia`, `Tamaño`, `Escala`, "
                 + "`FechaEmision`, `HoraEmision`, `FechaEntrega`, `HoraEntrega`, `NumeroDePag`, `Frente`, "
                 + "`Atras`, `Arillo`, `Comentarios`, `Total`, `Anticipo`, `Resto`, `Status`, `Cantidad`, "
-                + "`CantidadCarta`, `CantidadOficio` FROM `pedido` WHERE `Status` = 'Pendiente'";
+                + "`CantidadCarta`, `CantidadOficio`, `Servicioextra` FROM `pedido`";
 
         try (Connection con = conex.getConnection(); PreparedStatement pst = con.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
 
@@ -313,9 +314,8 @@ public class Pedidoclass {
                 pedido.setCantidad(rs.getInt("Cantidad"));
 
                 // Asignar valores específicos de carta y oficio
-                pedido.setCantidad(rs.getInt("CantidadCarta"));
-                pedido.setCantidad(rs.getInt("CantidadOficio"));
-
+                //pedido.setCantidad(rs.getInt("CantidadCarta"));  <- Estos atributos no existen en la clase.
+                // pedido.setCantidad(rs.getInt("CantidadOficio"));
                 // Agregar el pedido a la lista
                 pedidos.add(pedido);
             }
@@ -328,7 +328,23 @@ public class Pedidoclass {
 
     // Método para guardar el estado actual en un Memento
     public Memento guardarEstado() {
-        return new Memento(numpedido, idusuario, idcliente, cantidad, numdepaginas, Nombredeusuario, Apellidoscliente, cometarios, Celularcliente, Servicio, Tipodecopia, Tamaño, Escala, Status, fechaEmision, Fechaentrega, Horaemision, Horaentrega, pastafrente, pastatrasera, arillo, total, Anticipo, Resto);
+        return new Memento(numpedido, idusuario, idcliente, cantidad, numdepaginas, Nombredeusuario, Apellidoscliente, cometarios, Celularcliente, Servicio, Tipodecopia, Tamaño, Escala, Status, fechaEmision, Fechaentrega, Horaemision, Horaentrega, pastafrente, pastatrasera, arillo, total, Anticipo, Resto,
+                this.getUnLadoGroupActionCommand(), // Nuevo campo para acción de RadioButton
+                this.getAmbosLadosGroupActionCommand() // Nuevo campo
+        );
+    }
+
+    // Métodos auxiliares para obtener los ActionCommands
+    public String getUnLadoGroupActionCommand() {
+        // Lógica para determinar el ActionCommand del grupo Unladogroup
+        return null;
+        // Lógica para determinar el ActionCommand del grupo Unladogroup
+    }
+
+    public String getAmbosLadosGroupActionCommand() {
+        // Lógica para determinar el ActionCommand del grupo Ambosladosgroup
+        return null;
+        // Lógica para determinar el ActionCommand del grupo Ambosladosgroup
     }
 
     // Método para restaurar el estado desde un Memento
@@ -359,4 +375,50 @@ public class Pedidoclass {
         this.Resto = memento.getResto();
     }
 
+    public Pedidoclass obtenerPedidoPorNumero(int numPedido) {
+        Pedidoclass pedido = null;
+        Conexion conex = new Conexion();
+        String sql = "SELECT * FROM pedido WHERE NumPedido = ?";
+
+        try (Connection con = conex.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, numPedido);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    pedido = new Pedidoclass();
+                    // Asignar *TODOS* los valores del ResultSet al objeto pedido
+                    pedido.setNumpedido(rs.getInt("NumPedido"));
+                    pedido.setNombredeusuario(rs.getString("Nombre_Usuario"));
+                    pedido.setIdusuario(rs.getInt("idUsuario"));
+                    pedido.setIdcliente(rs.getInt("idCliente"));
+                    pedido.setNombrecliennte(rs.getString("Nombre_Cliente"));
+                    pedido.setApellidoscliente(rs.getString("Apellidos_Cliente"));
+                    pedido.setCelularcliente(rs.getString("CelularCliente"));
+                    pedido.setServicio(rs.getString("Servicio"));
+                    pedido.setTipodecopia(rs.getString("TipoDeCopia"));
+                    pedido.setTamaño(rs.getString("Tamaño"));
+                    pedido.setEscala(rs.getString("Escala"));
+                    pedido.setFechaEmision(rs.getDate("FechaEmision"));
+                    pedido.setHoraemision(rs.getTime("HoraEmision"));
+                    pedido.setFechaentrega(rs.getDate("FechaEntrega"));
+                    pedido.setHoraentrega(rs.getTime("HoraEntrega"));
+                    pedido.setNumdepaginas(rs.getInt("NumeroDePag"));
+                    pedido.setPastafrente(rs.getString("Frente"));
+                    pedido.setPastatrasera(rs.getString("Atras"));
+                    pedido.setArillo(rs.getString("Arillo"));
+                    pedido.setCometarios(rs.getString("Comentarios"));
+                    pedido.setTotal(rs.getDouble("Total"));
+                    pedido.setAnticipo(rs.getDouble("Anticipo"));
+                    pedido.setResto(rs.getDouble("Resto"));
+                    pedido.setStatus(rs.getString("Status"));
+                    pedido.setCantidad(rs.getInt("Cantidad"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al recuperar pedido: " + e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+
+        }
+        return pedido;
+    }
 }
