@@ -13,14 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-
-
 public class Usuariosclass {
 
-    
     int id;
-    String Nombre,NombreUsuario,Apellidos,Celular,Contraseña,Rol;
-    
+    String Nombre, NombreUsuario, Apellidos, Celular, Contraseña, Rol;
+
     public int getId() {
         return id;
     }
@@ -28,6 +25,7 @@ public class Usuariosclass {
     public void setId(int id) {
         this.id = id;
     }
+
     public String getRol() {
         return Rol;
     }
@@ -75,20 +73,15 @@ public class Usuariosclass {
     public void setContraseña(String Contraseña) {
         this.Contraseña = Contraseña;
     }
-    
-    
 
-  
     // Método para obtener usuarios de la base de datos
     public List<Usuariosclass> obtenerUsuarios() {
         List<Usuariosclass> usuarios = new ArrayList<>();
         Conexion conex = new Conexion();
         String sql = "SELECT idUsuario, Nombreusuario, Nombre, Apellidos, Celular, Rol FROM Usuario";
 
-        try (Connection con = conex.getConnection(); 
-             PreparedStatement pst = con.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
-            
+        try (Connection con = conex.getConnection(); PreparedStatement pst = con.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
+
             while (rs.next()) {
                 Usuariosclass usuario = new Usuariosclass();
                 usuario.setId(rs.getInt("idUsuario"));
@@ -97,25 +90,21 @@ public class Usuariosclass {
                 usuario.setApellidos(rs.getString("Apellidos"));
                 usuario.setCelular(rs.getString("Celular"));
                 usuario.setRol(rs.getString("Rol"));
-                
                 usuarios.add(usuario);
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al obtener usuarios: " + e.toString());
+            JOptionPane.showMessageDialog(null, "Error al obtener usuarios: " + e.getMessage()); // Mejor manejo de error
         }
-
         return usuarios;
     }
-    
-     public List<Usuariosclass> obtenerUsuariosAdministradores() {
+
+    public List<Usuariosclass> obtenerUsuariosAdministradores() {
         List<Usuariosclass> usuarios = new ArrayList<>();
         Conexion conex = new Conexion();
         String sql = "SELECT Nombreusuario, Rol FROM Usuario";
 
-        try (Connection con = conex.getConnection(); 
-             PreparedStatement pst = con.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
-            
+        try (Connection con = conex.getConnection(); PreparedStatement pst = con.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
+
             while (rs.next()) {
                 Usuariosclass usuario = new Usuariosclass();
                 usuario.setId(rs.getInt("idUsuario"));
@@ -124,7 +113,7 @@ public class Usuariosclass {
                 usuario.setApellidos(rs.getString("Apellidos"));
                 usuario.setCelular(rs.getString("Celular"));
                 usuario.setRol(rs.getString("Rol"));
-                
+
                 usuarios.add(usuario);
             }
         } catch (SQLException e) {
@@ -134,20 +123,19 @@ public class Usuariosclass {
         return usuarios;
     }
 
-    
-     public List<Usuariosclass> obtenerUsuariosPorNumero(String numero) {
+    public List<Usuariosclass> obtenerUsuariosPorNumero(String numero) {
         List<Usuariosclass> usuarios = new ArrayList<>();
         Conexion conex = new Conexion();
-        String sql = "SELECT Nombre, Apellidos, Nombreusuario, Celular,Rol FROM Cliente WHERE Celular LIKE ?";
-        try (Connection con = conex.getConnection(); 
-             PreparedStatement pst = con.prepareStatement(sql)) {
-            // Configurar el parámetro de la consulta con el número de celular proporcionado
+        String sql = "SELECT idUsuario, Nombre, Apellidos, Nombreusuario, Celular, Rol FROM Usuario WHERE Celular LIKE ?"; // Incluye idUsuario
+
+        try (Connection con = conex.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+
             pst.setString(1, "%" + numero + "%");
-            
-            // Ejecutar la consulta
+
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
                     Usuariosclass usuario = new Usuariosclass();
+                    usuario.setId(rs.getInt("idUsuario")); // Obtén el ID
                     usuario.setNombre(rs.getString("Nombre"));
                     usuario.setApellidos(rs.getString("Apellidos"));
                     usuario.setNombreUsuario(rs.getString("Nombreusuario"));
@@ -157,11 +145,43 @@ public class Usuariosclass {
                 }
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al obtener clientes por número: " + e.toString());
+            JOptionPane.showMessageDialog(null, "Error al obtener usuarios por número: " + e.getMessage());// Mejor manejo de errores
         }
         return usuarios;
     }
-    
-     
-     
+
+    public void actualizarUsuarioBD(Usuariosclass usuario) {
+        Conexion conex = new Conexion();
+        //Corrección en la consulta: Incluye todos los campos a actualizar, incluyendo Contraseña si la vas a cambiar.
+        String sql = "UPDATE Usuario SET Nombreusuario = ?, Nombre = ?, Apellidos = ?, Celular = ?, Rol = ?, Contraseña = ? WHERE idUsuario = ?";
+
+        try (Connection con = conex.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setString(1, usuario.getNombreUsuario());
+            pst.setString(2, usuario.getNombre());
+            pst.setString(3, usuario.getApellidos());
+            pst.setString(4, usuario.getCelular());
+            pst.setString(5, usuario.getRol());
+            pst.setString(6, usuario.getContraseña()); //  ¡CUIDADO!  Deberías usar hashing.
+            pst.setInt(7, usuario.getId()); // Usamos el ID
+            pst.executeUpdate();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al actualizar el Usuario: " + e.getMessage());
+        }
+    }
+
+    public void eliminarUsuarioBD(int idUsuario) {
+        Conexion conex = new Conexion();
+        String sql = "DELETE FROM Usuario WHERE idUsuario = ?";
+
+        try (Connection con = conex.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, idUsuario);
+            pst.executeUpdate();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al eliminar el Usuario: " + e.getMessage());
+        }
+    }
 }
