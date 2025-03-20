@@ -1343,7 +1343,9 @@ public class Pedido extends javax.swing.JFrame {
 
             // Actualizar la interfaz con los datos restaurados
             actualizarCamposDesdePedido(pedido);
+            
             JOptionPane.showMessageDialog(this, "Estado restaurado exitosamente.");
+           
         } else {
             JOptionPane.showMessageDialog(this, "No hay estados anteriores para restaurar.");
         }
