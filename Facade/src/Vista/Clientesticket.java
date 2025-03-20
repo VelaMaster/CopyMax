@@ -4,6 +4,7 @@
  */
 package Vista;
 
+import Modelo.ClientesFacade;
 import Modelo.Clientesclass;
 import Modelo.Filtronumeros;
 import Modelo.Letraseditor;
@@ -206,7 +207,7 @@ public class Clientesticket extends javax.swing.JFrame {
  * Recorre la lista de clientes y agrega una fila en la tabla para cada cliente.
  */
     private void llenarTabla() {
-        Clientesclass clientee = new Clientesclass();
+        ClientesFacade clientee = new ClientesFacade();
         List<Clientesclass> clientes = clientee.obtenerClientes();
         
         for (Clientesclass cliente : clientes) {
@@ -224,11 +225,10 @@ public class Clientesticket extends javax.swing.JFrame {
  * Actualiza la tabla de clientes. Borra los datos actuales y rellena la tabla con información actualizada desde la base de datos.
  */
     public void actualizarTabla() {
-       // Limpiar el modelo de la tabla
         modelo.setRowCount(0);
         
         // Obtener la lista actualizada de clientes
-        Clientesclass clientee = new Clientesclass();
+        ClientesFacade clientee = new ClientesFacade();
         List<Clientesclass> clientes = clientee.obtenerClientes();
         
         // Agregar las nuevas filas al modelo de la tabla
@@ -254,7 +254,7 @@ public class Clientesticket extends javax.swing.JFrame {
         modelo.setRowCount(0);
 
         // Realiza una consulta a la base de datos para obtener los registros que coincidan con el texto de búsqueda
-        Clientesclass clientee = new Clientesclass();
+        ClientesFacade clientee = new ClientesFacade();
         List<Clientesclass> clientes = clientee.obtenerClientesPorNumero(textoBusqueda);
         
         // Agrega los registros encontrados a la tabla

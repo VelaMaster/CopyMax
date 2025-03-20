@@ -1,6 +1,6 @@
 
 package Vista;
-
+import Modelo.ClientesFacade;
 import Modelo.Clientesclass;
 import Conexion.Conexion;
 import Modelo.Filtronumeros;
@@ -359,7 +359,7 @@ public class Clientes extends javax.swing.JPanel {
  * Recorre la lista de clientes y agrega una fila en la tabla para cada cliente.
  */
 private void llenarTabla() {
-    Clientesclass clientee = new Clientesclass();
+    ClientesFacade clientee = new ClientesFacade();
     List<Clientesclass> clientes = clientee.obtenerClientes();
     
     for (Clientesclass cliente : clientes) {
@@ -396,7 +396,7 @@ private void eliminarClienteBD(String celular) {
 public void actualizarTabla() {
     modelo.setRowCount(0); // Limpiar la tabla
     
-    Clientesclass clientee = new Clientesclass();
+    ClientesFacade clientee = new ClientesFacade();
     List<Clientesclass> clientes = clientee.obtenerClientes();
     
     for (Clientesclass cliente : clientes) {
@@ -418,7 +418,7 @@ private void actualizarTablabus() {
     String textoBusqueda = txtregclicelularbusqueda.getText();
     modelo.setRowCount(0); // Limpia la tabla
     
-    Clientesclass clientee = new Clientesclass();
+    ClientesFacade clientee = new ClientesFacade();
     List<Clientesclass> clientes = clientee.obtenerClientesPorNumero(textoBusqueda);
     
     for (Clientesclass cliente : clientes) {

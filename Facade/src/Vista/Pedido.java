@@ -2,6 +2,7 @@
 package Vista;
 
 import Conexion.Conexion;
+import Modelo.ClientesFacade;
 import Modelo.Clientesclass;
 import Modelo.Filtronumeros;
 import Modelo.Letraseditor;
@@ -123,7 +124,7 @@ public class Pedido extends javax.swing.JFrame {
         }
     
         private void llenarTabla() {
-        Clientesclass clientee = new Clientesclass();
+        ClientesFacade clientee = new ClientesFacade();
         List<Clientesclass> clientes = clientee.obtenerClientes();
         
         for (Clientesclass cliente : clientes) {
@@ -1395,7 +1396,7 @@ private void validarHoraEntrega() {
         modelo.setRowCount(0);
 
         // Realiza una consulta a la base de datos para obtener los registros que coincidan con el texto de búsqueda
-        Clientesclass clientee = new Clientesclass();
+        ClientesFacade clientee = new ClientesFacade();
         List<Clientesclass> clientes = clientee.obtenerClientesPorNumero(textoBusqueda);
         
         // Agrega los registros encontrados a la tabla
