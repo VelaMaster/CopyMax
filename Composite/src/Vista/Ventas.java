@@ -746,60 +746,62 @@ private void revertirIVA() {
     }
     
     private void BtnformarpaqueteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnformarpaqueteActionPerformed
-         String nombrePaquete = JOptionPane.showInputDialog(this, "Ingrese el nombre del paquete:", "Crear Paquete", JOptionPane.PLAIN_MESSAGE);
+        // Solicitar el nombre del paquete
+    String nombrePaquete = JOptionPane.showInputDialog(this, "Ingrese el nombre del paquete:", "Crear Paquete", JOptionPane.PLAIN_MESSAGE);
 
-        if (nombrePaquete == null || nombrePaquete.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "El nombre del paquete no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+    if (nombrePaquete == null || nombrePaquete.trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "El nombre del paquete no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
-        List<ComponenteProducto> productosSeleccionados = obtenerProductosSeleccionados();
+    // Calcular el total de todas las filas
+    double total = calcularTotalTabla();
 
- //       if (productosSeleccionados.isEmpty()) {
- //           JOptionPane.showMessageDialog(this, "No hay productos seleccionados para agrupar.", "Error", JOptionPane.ERROR_MESSAGE);
- //           return;
- //       }
+    // Crear el paquete (usando el patrón Composite)
+    PaqueteDeProductos paquete = new PaqueteDeProductos(nombrePaquete);
 
-        double precioTotal = 0;
-        for (ComponenteProducto producto : productosSeleccionados) {
-            precioTotal += producto.getPrecio();
-        }
+    // Obtener el modelo de la tabla
+    DefaultTableModel model = (DefaultTableModel) jTableticket.getModel();
 
-        items.removeAll(productosSeleccionados);
-
-        PaqueteDeProductos paquete = new PaqueteDeProductos(nombrePaquete);
-        for (ComponenteProducto producto : productosSeleccionados) {
-            paquete.agregarProducto(producto);
-        }
-
-        items.add(paquete);
-        actualizarTicket();  
-        
-    }//GEN-LAST:event_BtnformarpaqueteActionPerformed
-
-  private List<ComponenteProducto> obtenerProductosSeleccionados() {
-    List<ComponenteProducto> productosSeleccionados = new ArrayList<>();
-    int[] filasSeleccionadas = jTableticket.getSelectedRows(); // Obtener las filas seleccionadas
-
-    System.out.println("Número de filas seleccionadas: " + filasSeleccionadas.length);
-
-    
-    for (int fila : filasSeleccionadas) {
-        Object valor = jTableticket.getValueAt(fila, 1); // Obtener el valor de la primera columna
-        System.out.println("Valor obtenido: " + valor);
-
+    // Recorrer todas las filas para agregar los productos al paquete
+    for (int i = 0; i < model.getRowCount(); i++) {
+        Object valor = model.getValueAt(i, 1); // Columna 1: Descripción del producto
         if (valor instanceof ComponenteProducto) {
             ComponenteProducto producto = (ComponenteProducto) valor;
-            productosSeleccionados.add(producto);
-        } else {
-            System.out.println("El valor no es una instancia de ComponenteProducto");
+            paquete.agregarProducto(producto);
         }
     }
 
-    return productosSeleccionados;
-}
+    // Limpiar la tabla
+    limpiarTabla();
 
+    // Agregar el paquete como una nueva fila en la tabla
+    Object[] nuevaFila = {1, nombrePaquete, total,total}; // Ajusta las columnas según tu tabla
+    model.addRow(nuevaFila);
+
+    // Actualizar la tabla
+   
     
+    }//GEN-LAST:event_BtnformarpaqueteActionPerformed
+
+private double calcularTotalTabla() {
+    DefaultTableModel model = (DefaultTableModel) jTableticket.getModel();
+    double total = 0;
+
+    for (int i = 0; i < model.getRowCount(); i++) {
+        // Obtener el valor de la columna que contiene el total (ajusta el índice de la columna)
+        Object valor = model.getValueAt(i, 3); // Columna 3: Total
+        if (valor instanceof Double) {
+            total += (Double) valor;
+        }
+    }
+
+    return total;
+}
+    private void limpiarTabla() {
+    DefaultTableModel model = (DefaultTableModel) jTableticket.getModel();
+    model.setRowCount(0); // Eliminar todas las filas
+}
     
    private void abrirMetodoPagoFrame() {
         double totalVenta = obtenerTotalVentaActual(); // Obtener el total de la venta actual
