@@ -5,12 +5,14 @@
 package Vista;
 
 import Conexion.Conexion;
+import Modelo.ComponenteProducto;
 import Modelo.Productoclass;
 import Vista.Metododepago;
 import Modelo.Productosprecios;
 import Modelo.Usuariosesion;
 import Modelo.Venta;
 import Modelo.Numeroseditor;
+import Modelo.PaqueteDeProductos;
 import Vista.Agregarproductos;
 import java.sql.ResultSet;
 import Vista.Clientesticket;
@@ -48,7 +50,7 @@ import javax.swing.table.DefaultTableModel;
  * @author maxst
  */
 public class Ventas extends javax.swing.JPanel {
-    
+    private List<ComponenteProducto> items = new ArrayList<>();
     private static Ventas instance;
     private DefaultTableModel modelo;
     private Venta ventadatos;
@@ -172,6 +174,7 @@ public class Ventas extends javax.swing.JPanel {
         lblcliente = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        Btnformarpaquete = new javax.swing.JButton();
 
         jButton2.setText("jButton2");
 
@@ -443,6 +446,14 @@ public class Ventas extends javax.swing.JPanel {
             }
         });
 
+        Btnformarpaquete.setBackground(new java.awt.Color(255, 255, 255));
+        Btnformarpaquete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ventas (Custom) (Custom).png"))); // NOI18N
+        Btnformarpaquete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnformarpaqueteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout TicketLayout = new javax.swing.GroupLayout(Ticket);
         Ticket.setLayout(TicketLayout);
         TicketLayout.setHorizontalGroup(
@@ -454,12 +465,15 @@ public class Ventas extends javax.swing.JPanel {
                         .addGroup(TicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(TicketLayout.createSequentialGroup()
                                 .addComponent(jLabel2)
-                                .addGap(47, 47, 47)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
                                 .addComponent(jButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(Btnclientesseleccion))
+                                .addGap(18, 18, 18)
+                                .addComponent(Btnclientesseleccion)
+                                .addGap(18, 18, 18)
+                                .addComponent(Btnformarpaquete)
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(TicketLayout.createSequentialGroup()
                                 .addComponent(lblusuarioactual)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -478,14 +492,15 @@ public class Ventas extends javax.swing.JPanel {
                     .addGroup(TicketLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(TicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, TicketLayout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                             .addGroup(TicketLayout.createSequentialGroup()
+                                .addComponent(Btnclientesseleccion)
+                                .addGap(20, 20, 20))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, TicketLayout.createSequentialGroup()
                                 .addGroup(TicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jButton1)
-                                    .addComponent(Btnclientesseleccion))
-                                .addGap(20, 20, 20)))
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(Btnformarpaquete, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(TicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblcliente)
                             .addComponent(lblusuarioactual)))
@@ -709,6 +724,83 @@ private void revertirIVA() {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    
+     // Método para agregar un producto al ticket
+    private void agregarProductoAlTicket(ComponenteProducto producto) {
+        items.add(producto);
+        actualizarTicket();
+    }
+    
+     // Método para actualizar el ticket
+    private void actualizarTicket() {
+        StringBuilder ticket = new StringBuilder("Ticket de Venta:\n");
+        double total = 0;
+
+        for (ComponenteProducto item : items) {
+            ticket.append(item.getDescripcion()).append("\n");
+            total += item.getPrecio();
+        }
+
+        ticket.append("Total: $").append(total);
+        
+    }
+    
+    private void BtnformarpaqueteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnformarpaqueteActionPerformed
+         String nombrePaquete = JOptionPane.showInputDialog(this, "Ingrese el nombre del paquete:", "Crear Paquete", JOptionPane.PLAIN_MESSAGE);
+
+        if (nombrePaquete == null || nombrePaquete.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El nombre del paquete no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        List<ComponenteProducto> productosSeleccionados = obtenerProductosSeleccionados();
+
+ //       if (productosSeleccionados.isEmpty()) {
+ //           JOptionPane.showMessageDialog(this, "No hay productos seleccionados para agrupar.", "Error", JOptionPane.ERROR_MESSAGE);
+ //           return;
+ //       }
+
+        double precioTotal = 0;
+        for (ComponenteProducto producto : productosSeleccionados) {
+            precioTotal += producto.getPrecio();
+        }
+
+        items.removeAll(productosSeleccionados);
+
+        PaqueteDeProductos paquete = new PaqueteDeProductos(nombrePaquete);
+        for (ComponenteProducto producto : productosSeleccionados) {
+            paquete.agregarProducto(producto);
+        }
+
+        items.add(paquete);
+        actualizarTicket();  
+        
+    }//GEN-LAST:event_BtnformarpaqueteActionPerformed
+
+  private List<ComponenteProducto> obtenerProductosSeleccionados() {
+    List<ComponenteProducto> productosSeleccionados = new ArrayList<>();
+    int[] filasSeleccionadas = jTableticket.getSelectedRows(); // Obtener las filas seleccionadas
+
+    System.out.println("Número de filas seleccionadas: " + filasSeleccionadas.length);
+
+    
+    for (int fila : filasSeleccionadas) {
+        Object valor = jTableticket.getValueAt(fila, 1); // Obtener el valor de la primera columna
+        System.out.println("Valor obtenido: " + valor);
+
+        if (valor instanceof ComponenteProducto) {
+            ComponenteProducto producto = (ComponenteProducto) valor;
+            productosSeleccionados.add(producto);
+        } else {
+            System.out.println("El valor no es una instancia de ComponenteProducto");
+        }
+    }
+
+    return productosSeleccionados;
+}
+
+    
+    
    private void abrirMetodoPagoFrame() {
         double totalVenta = obtenerTotalVentaActual(); // Obtener el total de la venta actual
         Metododepago  metodoPagoFrame = new Metododepago(totalVenta,this);
@@ -989,7 +1081,7 @@ public boolean validarStockEnTicket(List<Productoclass> productos) {
     
   
   private void addDeleteRowListener() {
-    jTableticket.getSelectionModel().addListSelectionListener(e -> {
+  jTableticket.getSelectionModel().addListSelectionListener(e -> {
         // Dejar esto vacío o agregar lógica adicional si se necesita
     });
 
@@ -1024,6 +1116,8 @@ public boolean validarStockEnTicket(List<Productoclass> productos) {
                             }
                         }
                     }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Seleccione una fila para eliminar.");
                 }
             }
         }
@@ -1049,11 +1143,11 @@ public boolean validarStockEnTicket(List<Productoclass> productos) {
     }
 
     private void eliminarProducto(int row) {
-        double totalProducto = (double) modelo.getValueAt(row, 3);
-        subtotalOriginal -= totalProducto;
-        modelo.removeRow(row);
-        actualizarSubtotal();
-        JOptionPane.showMessageDialog(null, "Producto eliminado exitosamente.");
+          double totalProducto = (double) modelo.getValueAt(row, 3);
+    subtotalOriginal -= totalProducto;
+    modelo.removeRow(row);
+    actualizarSubtotal();
+    JOptionPane.showMessageDialog(null, "Producto eliminado exitosamente.");
     }
     
     private void actualizarSubtotal() {
@@ -1166,6 +1260,7 @@ private List<String> dividirDescripcionEnLineas(String descripcion, int maxLengt
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnVenta;
     private javax.swing.JButton Btnclientesseleccion;
+    private javax.swing.JButton Btnformarpaquete;
     private javax.swing.JPanel Cuenta;
     private javax.swing.JCheckBox Jcheckdescuento;
     private javax.swing.JCheckBox Jcheckimpuesto;

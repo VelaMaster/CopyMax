@@ -12,11 +12,12 @@ import javax.swing.JOptionPane;
 /**
  * @author Artorias<maxstell5549@hotmail.com>
  */
-public class Productoclass {
+public class Productoclass implements ComponenteProducto {
 
     int id,cantidad;
     String Nombre,Categoria,icono;
     double precio;
+    
     
     public int getId() {
         return id;
@@ -120,6 +121,16 @@ public class Productoclass {
         }
         return productos;
     }
+
+    @Override
+    public String getDescripcion() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    public interface ComponenteProducto { // esto implemtena la 
+    double getPrecio();
+    String getDescripcion();
+}
     
     
     
