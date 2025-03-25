@@ -1,3 +1,7 @@
+# Equipo:
+![image](https://github.com/user-attachments/assets/c6e1f504-2649-4852-af83-32ece4d69c00)
+
+
 # Punto de Venta Copy Max
 ## Video para implemetnacion y capeta de documentos 
 
