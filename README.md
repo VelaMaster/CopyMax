@@ -1,6 +1,11 @@
 # Equipo:
-![image](https://github.com/user-attachments/assets/c6e1f504-2649-4852-af83-32ece4d69c00)
-
+Bautista Fabian Max
+Celis Delgado Jorge Eduardo
+Flores Guzmán Alan Ismael
+García Osorio Bolívar
+Pérez Barrios Diego
+Perez Martínez Edith Esmeralda
+Sixto Morales Ángel
 
 # Punto de Venta Copy Max
 ## Video para implemetnacion y capeta de documentos 
