@@ -1,3 +1,19 @@
+# Equipo:
+Bautista Fabian Max
+
+Celis Delgado Jorge Eduardo
+
+Flores Guzmán Alan Ismael
+
+García Osorio Bolívar
+
+Pérez Barrios Diego
+
+Perez Martínez Edith Esmeralda
+
+Sixto Morales Ángel
+
+
 # Punto de Venta Copy Max
 ## Video para implemetnacion y capeta de documentos 
 
