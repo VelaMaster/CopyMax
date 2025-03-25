@@ -3,6 +3,9 @@ package Vista;
 
 import Modelo.Clientesclass;
 import Conexion.Conexion;
+import Modelo.Cliente;
+import Modelo.ClienteBD;
+import Modelo.ClienteImplementacion;
 import Modelo.Filtronumeros;
 import Modelo.Letraseditor;
 import Modelo.Numeroseditor;
@@ -359,16 +362,17 @@ public class Clientes extends javax.swing.JPanel {
  * Recorre la lista de clientes y agrega una fila en la tabla para cada cliente.
  */
 private void llenarTabla() {
-    Clientesclass clientee = new Clientesclass();
-    List<Clientesclass> clientes = clientee.obtenerClientes();
+    ClienteImplementacion clienteBD = new ClienteBD();
+    Cliente cliente = new Cliente(clienteBD);
+    List<Clientesclass> clientes = cliente.obtenerClientes();
     
-    for (Clientesclass cliente : clientes) {
+    for (Clientesclass c : clientes) {
         Object[] fila = new Object[5];
-        fila[0] = cliente.getNombre();
-        fila[1] = cliente.getApellidos();
-        fila[2] = cliente.getCelular();
-        fila[3] = cliente.getRfc();
-        fila[4] = cliente.getCorreo();
+        fila[0] = c.getNombre();
+        fila[1] = c.getApellidos();
+        fila[2] = c.getCelular();
+        fila[3] = c.getRfc();
+        fila[4] = c.getCorreo();
         modelo.addRow(fila);
     }
 }
@@ -395,17 +399,17 @@ private void eliminarClienteBD(String celular) {
  */
 public void actualizarTabla() {
     modelo.setRowCount(0); // Limpiar la tabla
+    ClienteImplementacion clienteBD = new ClienteBD();
+    Cliente cliente = new Cliente(clienteBD);
+    List<Clientesclass> clientes = cliente.obtenerClientes();
     
-    Clientesclass clientee = new Clientesclass();
-    List<Clientesclass> clientes = clientee.obtenerClientes();
-    
-    for (Clientesclass cliente : clientes) {
+    for (Clientesclass c : clientes) {
         Object[] fila = new Object[5];
-        fila[0] = cliente.getNombre();
-        fila[1] = cliente.getApellidos();
-        fila[2] = cliente.getCelular();
-        fila[3] = cliente.getRfc();
-        fila[4] = cliente.getCorreo();
+        fila[0] = c.getNombre();
+        fila[1] = c.getApellidos();
+        fila[2] = c.getCelular();
+        fila[3] = c.getRfc();
+        fila[4] = c.getCorreo();
         modelo.addRow(fila);
     }
 }

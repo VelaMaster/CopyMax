@@ -1,9 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelo;
-
 
 import Conexion.Conexion;
 import java.sql.Connection;
@@ -14,9 +9,7 @@ import java.util.List;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
-
 public class Clientesclass {
-
    
     int id;
     String Correo;
@@ -73,34 +66,6 @@ public class Clientesclass {
         this.Apellidos = Apellidos;
     } 
     
-   
-public List<Clientesclass> obtenerClientes() {
-        List<Clientesclass> clientes = new ArrayList<>();
-        Conexion conex = new Conexion();
-        String sql = "SELECT Nombre, Apellidos, Celular, RFC, Correo FROM Cliente";
-
-        try (Connection con = conex.getConnection(); 
-             PreparedStatement pst = con.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
-            
-            while (rs.next()) {
-                Clientesclass cliente = new Clientesclass();
-                
-                cliente.setNombre(rs.getString("Nombre"));
-                cliente.setApellidos(rs.getString("Apellidos"));
-                cliente.setCelular(rs.getString("Celular"));
-                cliente.setRfc(rs.getString("RFC"));
-                cliente.setCorreo(rs.getString("Correo"));
-                
-                clientes.add(cliente);
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al obtener clientes: " + e.toString());
-        }
-
-        return clientes;
-    }
-
   public List<Clientesclass> obtenerClientesPorNumero(String numero) {
         List<Clientesclass> clientes = new ArrayList<>();
         Conexion conex = new Conexion();
@@ -139,11 +104,8 @@ public List<Clientesclass> obtenerClientes() {
             
             while (rs.next()) {
                 Clientesclass cliente = new Clientesclass();
-                
                 cliente.setId(rs.getInt("idCliente"));
-                cliente.setNombre(rs.getString("Nombre"));
-                
-                
+                cliente.setNombre(rs.getString("Nombre"));                
                 clientes.add(cliente);
             }
         } catch (SQLException e) {

@@ -2,6 +2,9 @@
 package Vista;
 
 import Conexion.Conexion;
+import Modelo.Cliente;
+import Modelo.ClienteBD;
+import Modelo.ClienteImplementacion;
 import Modelo.Clientesclass;
 import Modelo.Filtronumeros;
 import Modelo.Letraseditor;
@@ -123,16 +126,18 @@ public class Pedido extends javax.swing.JFrame {
         }
     
         private void llenarTabla() {
-        Clientesclass clientee = new Clientesclass();
-        List<Clientesclass> clientes = clientee.obtenerClientes();
-        
-        for (Clientesclass cliente : clientes) {
+
+            ClienteImplementacion clienteBD = new ClienteBD();
+            Cliente cliente = new Cliente(clienteBD);
+            List<Clientesclass> clientes = cliente.obtenerClientes();
+            
+        for (Clientesclass c : clientes) {
             Object[] fila = new Object[5]; // Cambiar a 5 ya que solo tienes 5 columnas
-            fila[0] = cliente.getNombre();
-            fila[1] = cliente.getApellidos();
-            fila[2] = cliente.getCelular();
-            fila[3] = cliente.getRfc();
-            fila[4] = cliente.getCorreo();
+            fila[0] = c.getNombre();
+            fila[1] = c.getApellidos();
+            fila[2] = c.getCelular();
+            fila[3] = c.getRfc();
+            fila[4] = c.getCorreo();
             modelo.addRow(fila);
         }
     }
