@@ -6,6 +6,11 @@
             <file>file:/home/diego/Escritorio/CopyMax/Bridge/src/Modelo/Clientesclass.java</file>
             <file>file:/home/diego/Escritorio/CopyMax/Bridge/src/Vista/Clientesticket.java</file>
             <file>file:/home/diego/Escritorio/CopyMax/Bridge/src/Vista/Pedido.java</file>
+            <file>file:/home/diego/Escritorio/CopyMax/Bridge/src/Modelo/ClienteBase.java</file>
+            <file>file:/home/diego/Escritorio/CopyMax/Bridge/src/Modelo/ClienteImplementacion.java</file>
+            <file>file:/home/diego/Escritorio/CopyMax/Bridge/src/Modelo/Cliente.java</file>
+            <file>file:/home/diego/Escritorio/CopyMax/Bridge/src/Modelo/ClienteBD.java</file>
+            <file>file:/home/diego/Escritorio/CopyMax/Bridge/src/Vista/Clientes.java</file>
         </group>
     </open-files>
 </project-private>

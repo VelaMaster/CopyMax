@@ -64,55 +64,6 @@ public class Clientesclass {
 
     public void setApellidos(String Apellidos) {
         this.Apellidos = Apellidos;
-    } 
-    
-  public List<Clientesclass> obtenerClientesPorNumero(String numero) {
-        List<Clientesclass> clientes = new ArrayList<>();
-        Conexion conex = new Conexion();
-        String sql = "SELECT Nombre, Apellidos, Celular, RFC, Correo FROM Cliente WHERE Celular LIKE ?";
-        try (Connection con = conex.getConnection(); 
-             PreparedStatement pst = con.prepareStatement(sql)) {
-            // Configurar el parámetro de la consulta con el número de celular proporcionado
-            pst.setString(1, "%" + numero + "%");
-            
-            // Ejecutar la consulta
-            try (ResultSet rs = pst.executeQuery()) {
-                while (rs.next()) {
-                    Clientesclass cliente = new Clientesclass();
-                    cliente.setNombre(rs.getString("Nombre"));
-                    cliente.setApellidos(rs.getString("Apellidos"));
-                    cliente.setCelular(rs.getString("Celular"));
-                    cliente.setRfc(rs.getString("RFC"));
-                    cliente.setCorreo(rs.getString("Correo"));
-                    clientes.add(cliente);
-                }
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al obtener clientes por número: " + e.toString());
-        }
-        return clientes;
-    }
-    
-    public List<Clientesclass> obtenerClientesidnombre() {
-        List<Clientesclass> clientes = new ArrayList<>();
-        Conexion conex = new Conexion();
-        String sql = "SELECT idCliente, Nombre FROM Cliente";
-
-        try (Connection con = conex.getConnection(); 
-             PreparedStatement pst = con.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
-            
-            while (rs.next()) {
-                Clientesclass cliente = new Clientesclass();
-                cliente.setId(rs.getInt("idCliente"));
-                cliente.setNombre(rs.getString("Nombre"));                
-                clientes.add(cliente);
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al obtener clientes: " + e.toString());
-        }
-
-        return clientes;
     }
     
 }
