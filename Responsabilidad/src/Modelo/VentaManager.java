@@ -5,10 +5,7 @@ import Conexion.Conexion;
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-/**
- *
- * @author Artorias<maxstell5549@hotmail.com>
- */
+
 public class VentaManager {
     private static VentaManager instance;
     private double totalVentasDelDia;
