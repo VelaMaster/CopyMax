@@ -3,6 +3,7 @@ package Vista;
 
 import Conexion.Conexion;
 import Modelo.Clientesclass;
+import Modelo.ConcreteClientesMediator;
 import Modelo.Filtronumeros;
 import Modelo.Letraseditor;
 import Modelo.Numeroseditor;
@@ -977,9 +978,10 @@ public class Pedido extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        RegistroClientes ventanaRegistroClientes = new RegistroClientes();
+                Interfazprincipal interfaz = Interfazprincipal.getInstance(); // Obtén la instancia de Interfazprincipal
+        ConcreteClientesMediator mediator = interfaz.clientesMediator; // Accede a la instancia del Mediator
+        RegistroClientes ventanaRegistroClientes = new RegistroClientes(mediator); // Pasa el Mediator
         ventanaRegistroClientes.setVisible(true);
-        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void TxtNombrecompletoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtNombrecompletoActionPerformed

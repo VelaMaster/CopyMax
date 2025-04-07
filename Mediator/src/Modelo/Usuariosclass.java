@@ -13,14 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-
-
 public class Usuariosclass {
+    private UsuarioMediator mediator;
 
-    
     int id;
-    String Nombre,NombreUsuario,Apellidos,Celular,Contraseña,Rol;
-    
+    String Nombre, NombreUsuario, Apellidos, Celular, Contraseña, Rol;
+
     public int getId() {
         return id;
     }
@@ -28,6 +26,7 @@ public class Usuariosclass {
     public void setId(int id) {
         this.id = id;
     }
+
     public String getRol() {
         return Rol;
     }
@@ -75,20 +74,33 @@ public class Usuariosclass {
     public void setContraseña(String Contraseña) {
         this.Contraseña = Contraseña;
     }
-    
-    
 
-  
+    public void setMediator(UsuarioMediator mediator) {
+        this.mediator = mediator;
+    }
+
+    public void eliminarUsuario(int idUsuario) {
+        // Mover aquí la lógica de eliminación de Usuariospan
+        Conexion conex = new Conexion();
+        String consulta = "DELETE FROM Usuario WHERE idUsuario = ?";
+        try (
+                PreparedStatement pst = conex.getConnection().prepareCall(consulta)) {
+            pst.setInt(1, idUsuario);
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Usuario Eliminado Con Exito !!!");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al eliminar cliente: " + e.toString());
+        }
+    }
+
     // Método para obtener usuarios de la base de datos
     public List<Usuariosclass> obtenerUsuarios() {
         List<Usuariosclass> usuarios = new ArrayList<>();
         Conexion conex = new Conexion();
         String sql = "SELECT idUsuario, Nombreusuario, Nombre, Apellidos, Celular, Rol FROM Usuario";
 
-        try (Connection con = conex.getConnection(); 
-             PreparedStatement pst = con.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
-            
+        try (Connection con = conex.getConnection(); PreparedStatement pst = con.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
+
             while (rs.next()) {
                 Usuariosclass usuario = new Usuariosclass();
                 usuario.setId(rs.getInt("idUsuario"));
@@ -97,7 +109,7 @@ public class Usuariosclass {
                 usuario.setApellidos(rs.getString("Apellidos"));
                 usuario.setCelular(rs.getString("Celular"));
                 usuario.setRol(rs.getString("Rol"));
-                
+
                 usuarios.add(usuario);
             }
         } catch (SQLException e) {
@@ -106,16 +118,14 @@ public class Usuariosclass {
 
         return usuarios;
     }
-    
-     public List<Usuariosclass> obtenerUsuariosAdministradores() {
+
+    public List<Usuariosclass> obtenerUsuariosAdministradores() {
         List<Usuariosclass> usuarios = new ArrayList<>();
         Conexion conex = new Conexion();
         String sql = "SELECT Nombreusuario, Rol FROM Usuario";
 
-        try (Connection con = conex.getConnection(); 
-             PreparedStatement pst = con.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
-            
+        try (Connection con = conex.getConnection(); PreparedStatement pst = con.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
+
             while (rs.next()) {
                 Usuariosclass usuario = new Usuariosclass();
                 usuario.setId(rs.getInt("idUsuario"));
@@ -124,7 +134,7 @@ public class Usuariosclass {
                 usuario.setApellidos(rs.getString("Apellidos"));
                 usuario.setCelular(rs.getString("Celular"));
                 usuario.setRol(rs.getString("Rol"));
-                
+
                 usuarios.add(usuario);
             }
         } catch (SQLException e) {
@@ -134,16 +144,14 @@ public class Usuariosclass {
         return usuarios;
     }
 
-    
-     public List<Usuariosclass> obtenerUsuariosPorNumero(String numero) {
+    public List<Usuariosclass> obtenerUsuariosPorNumero(String numero) {
         List<Usuariosclass> usuarios = new ArrayList<>();
         Conexion conex = new Conexion();
         String sql = "SELECT Nombre, Apellidos, Nombreusuario, Celular,Rol FROM Cliente WHERE Celular LIKE ?";
-        try (Connection con = conex.getConnection(); 
-             PreparedStatement pst = con.prepareStatement(sql)) {
+        try (Connection con = conex.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
             // Configurar el parámetro de la consulta con el número de celular proporcionado
             pst.setString(1, "%" + numero + "%");
-            
+
             // Ejecutar la consulta
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
@@ -161,7 +169,5 @@ public class Usuariosclass {
         }
         return usuarios;
     }
-    
-     
-     
+
 }

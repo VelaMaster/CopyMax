@@ -1,4 +1,3 @@
-
 package Vista;
 
 import Modelo.Clientesclass;
@@ -6,6 +5,8 @@ import Conexion.Conexion;
 import Modelo.Filtronumeros;
 import Modelo.Letraseditor;
 import Modelo.Numeroseditor;
+import Modelo.ClientesMediator;
+import Modelo.ConcreteClientesMediator;
 import java.awt.Color;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -20,11 +21,15 @@ public class Clientes extends javax.swing.JPanel {
 
     // Modelo de tabla para mostrar datos de clientes
     private DefaultTableModel modelo;
+    private ClientesMediator mediator;
+    private Clientes clientesPanel;
+    private Clientesclass clientesClass;
+    private ConcreteClientesMediator clientesMediator;
 
     public Clientes() {
         // Inicializa los componentes de la interfaz gráfica
         initComponents();
-        
+
         // Crea el modelo de tabla y define las columnas para los datos de clientes
         modelo = new DefaultTableModel();
         modelo.addColumn("Nombre");        // Columna para el nombre del cliente
@@ -32,15 +37,22 @@ public class Clientes extends javax.swing.JPanel {
         modelo.addColumn("Celular");       // Columna para el número de celular
         modelo.addColumn("RFC");           // Columna para el RFC
         modelo.addColumn("Correo");        // Columna para el correo electrónico
-        
+
         // Asigna el modelo de tabla a la tabla Tablaclientes
         Tablaclientes.setModel(modelo);
-        
-        // Llama al método para llenar la tabla con datos de clientes
-        llenarTabla();
-        
         // Llama al método para personalizar el diseño de la tabla
         tabladiseño();
+
+    }
+
+    public void setMediator(ClientesMediator mediator) {
+        this.mediator = mediator;
+        // Inicializar la tabla a través del mediator
+        this.mediator.obtenerClientes();
+    }
+
+    public DefaultTableModel getModeloTabla() {
+        return modelo;
     }
 
     private void tabladiseño() {
@@ -56,12 +68,26 @@ public class Clientes extends javax.swing.JPanel {
             Tablaclientes.getColumnModel().getColumn(2).setMaxWidth(120); // Máximo ancho para Celular
             Tablaclientes.getColumnModel().getColumn(3).setMaxWidth(160); // Máximo ancho para RFC
             Tablaclientes.getColumnModel().getColumn(4).setMaxWidth(220); // Máximo ancho para Correo
-            
+
             // Ajusta la altura de cada fila para una visualización más clara
             Tablaclientes.setRowHeight(30);
         }
     }
-  
+
+    public void actualizarTablaUI(List<Clientesclass> clientes) {
+        modelo.setRowCount(0);
+        for (Clientesclass cliente : clientes) {
+            modelo.addRow(new Object[]{
+                cliente.getNombre(),
+                cliente.getApellidos(),
+                cliente.getCelular(),
+                cliente.getRfc(),
+                cliente.getCorreo()
+            });
+        }
+        modelo.fireTableDataChanged(); // Forzar refresco visual
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -224,231 +250,192 @@ public class Clientes extends javax.swing.JPanel {
         });
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    
+
     private void BtnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnModificarActionPerformed
-       // Obtiene la fila seleccionada en la tabla Tablaclientes
-        int selectedRow = Tablaclientes.getSelectedRow();
-        if (selectedRow != -1) {  // Extrae los datos del cliente de la fila seleccionada
-            String nombre = (String) modelo.getValueAt(selectedRow, 0);
-            String apellidos = (String) modelo.getValueAt(selectedRow, 1);
-            String celular = (String) modelo.getValueAt(selectedRow, 2);
-            String rfc = (String) modelo.getValueAt(selectedRow, 3);
-            String correo = (String) modelo.getValueAt(selectedRow, 4);
-            
-            // Crea una instancia de Clientesclass para almacenar los datos del cliente
-            Clientesclass cliente = new Clientesclass();
-            cliente.setNombre(nombre);
-            cliente.setApellidos(apellidos);
-            cliente.setCelular(celular);
-            cliente.setRfc(rfc);
-            cliente.setCorreo(correo);
-
-           
-        // Llama al método para actualizar el cliente en la base de datos
-        actualizarClienteBD(cliente);
-    } else {
-        // Muestra un mensaje si no hay una fila seleccionada
-            JOptionPane.showMessageDialog(this, "Seleccione una fila para modificar.");
+        if (mediator != null) {
+            int selectedRow = Tablaclientes.getSelectedRow();
+            if (selectedRow != -1) {
+                mediator.modificarCliente(selectedRow);
+            } else {
+                JOptionPane.showMessageDialog(this, "Seleccione una fila.");
+            }
         }
-        
-        
     }//GEN-LAST:event_BtnModificarActionPerformed
-    
+
     public void actualizarClienteBD(Clientesclass cliente) {
-    // Crea una conexión a la base de datos
-    Conexion conex = new Conexion();
-    
-    // Consulta SQL para actualizar el registro de un cliente en la base de datos
-    String consulta = "UPDATE Cliente SET Nombre = ?, Apellidos = ?, RFC = ?, Correo = ? WHERE Celular = ?";
-    
-    try (
-        // Prepara la consulta para su ejecución
-        PreparedStatement pst = conex.getConnection().prepareCall(consulta)) {
-        
-        // Establece los parámetros de la consulta con los datos del cliente
-        pst.setString(1, cliente.getNombre());
-        pst.setString(2, cliente.getApellidos());
-        pst.setString(3, cliente.getRfc());
-        pst.setString(4, cliente.getCorreo());
-        pst.setString(5, cliente.getCelular());
-        
-        // Ejecuta la actualización en la base de datos
-        pst.executeUpdate();
-        
-        // Muestra un mensaje de éxito al usuario
-        JOptionPane.showMessageDialog(null, "Cliente Modificado Con Exito !!!");
-    } catch (SQLException e) {
-        // Muestra un mensaje de error en caso de fallo
-        JOptionPane.showMessageDialog(null, "Error al modificar cliente: " + e.toString());
-    }
-}
+        // Crea una conexión a la base de datos
+        Conexion conex = new Conexion();
 
-    
+        // Consulta SQL para actualizar el registro de un cliente en la base de datos
+        String consulta = "UPDATE Cliente SET Nombre = ?, Apellidos = ?, RFC = ?, Correo = ? WHERE Celular = ?";
+
+        try (
+                // Prepara la consulta para su ejecución
+                PreparedStatement pst = conex.getConnection().prepareCall(consulta)) {
+
+            // Establece los parámetros de la consulta con los datos del cliente
+            pst.setString(1, cliente.getNombre());
+            pst.setString(2, cliente.getApellidos());
+            pst.setString(3, cliente.getRfc());
+            pst.setString(4, cliente.getCorreo());
+            pst.setString(5, cliente.getCelular());
+
+            // Ejecuta la actualización en la base de datos
+            pst.executeUpdate();
+
+            // Muestra un mensaje de éxito al usuario
+            JOptionPane.showMessageDialog(null, "Cliente Modificado Con Exito !!!");
+        } catch (SQLException e) {
+            // Muestra un mensaje de error en caso de fallo
+            JOptionPane.showMessageDialog(null, "Error al modificar cliente: " + e.toString());
+        }
+    }
+
+
     private void BtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEliminarActionPerformed
-       // Obtiene la fila seleccionada en la tabla Tablaclientes
-    int selectedRow = Tablaclientes.getSelectedRow();
-
-    if (selectedRow != -1) { // Verifica si hay una fila seleccionada
-        // Obtiene el número de celular del cliente seleccionado para identificar el registro en la base de datos
-        String celular = (String) modelo.getValueAt(selectedRow, 2);
-
-        // Llama al método para eliminar el cliente de la base de datos usando el celular como identificador
-        eliminarClienteBD(celular);
-
-        // Elimina la fila de la tabla en la interfaz gráfica
-        modelo.removeRow(selectedRow);
-    } else {
-        // Muestra un mensaje si no hay una fila seleccionada
-        JOptionPane.showMessageDialog(this, "Seleccione una fila para eliminar.");
-    }
+        if (mediator != null) {
+            mediator.eliminarCliente(Tablaclientes.getSelectedRow());
+        }
     }//GEN-LAST:event_BtnEliminarActionPerformed
 
     private void BtnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnNuevoActionPerformed
-         
-    // Se abre la venta de Registro Cleintes   
-     RegistroClientes  regi = new RegistroClientes();
-     
-     regi.setVisible(true);
-     
-     
+        if (mediator != null) {
+            mediator.agregarNuevoCliente();
+        }
     }//GEN-LAST:event_BtnNuevoActionPerformed
 
     /**
- * Evento que se ejecuta cuando el campo de texto txtregclicelularbusqueda gana el foco.
- * Si el texto es el valor por defecto "Numero a buscar", lo limpia y cambia el color de texto a negro.
- * También aplica un filtro para restringir la entrada a solo números.
- * 
- * @param evt Evento de foco ganado.
- */
+     * Evento que se ejecuta cuando el campo de texto txtregclicelularbusqueda
+     * gana el foco. Si el texto es el valor por defecto "Numero a buscar", lo
+     * limpia y cambia el color de texto a negro. También aplica un filtro para
+     * restringir la entrada a solo números.
+     *
+     * @param evt Evento de foco ganado.
+     */
     private void txtregclicelularbusquedaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtregclicelularbusquedaFocusGained
-        if (txtregclicelularbusqueda.getText().equals("Numero a buscar")){
-        txtregclicelularbusqueda.setText("");
-        txtregclicelularbusqueda.setForeground(Color.black);
-        
-        PlainDocument doc = (PlainDocument)  txtregclicelularbusqueda.getDocument();
-        doc.setDocumentFilter(new Filtronumeros());
-       }
+        if (txtregclicelularbusqueda.getText().equals("Numero a buscar")) {
+            txtregclicelularbusqueda.setText("");
+            txtregclicelularbusqueda.setForeground(Color.black);
+
+            PlainDocument doc = (PlainDocument) txtregclicelularbusqueda.getDocument();
+            doc.setDocumentFilter(new Filtronumeros());
+        }
     }//GEN-LAST:event_txtregclicelularbusquedaFocusGained
 
     /**
- * Evento que se ejecuta cuando el campo de texto txtregclicelularbusqueda pierde el foco.
- * Si el campo está vacío, restaura el texto por defecto "Numero a buscar" y cambia el color a gris.
- * 
- * @param evt Evento de foco perdido.
- */
+     * Evento que se ejecuta cuando el campo de texto txtregclicelularbusqueda
+     * pierde el foco. Si el campo está vacío, restaura el texto por defecto
+     * "Numero a buscar" y cambia el color a gris.
+     *
+     * @param evt Evento de foco perdido.
+     */
     private void txtregclicelularbusquedaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtregclicelularbusquedaFocusLost
-         if (txtregclicelularbusqueda.getText().isEmpty()){
-        txtregclicelularbusqueda.setForeground(new Color(204, 204, 204));
-        txtregclicelularbusqueda.setText("Numero a buscar");
+        if (txtregclicelularbusqueda.getText().isEmpty()) {
+            txtregclicelularbusqueda.setForeground(new Color(204, 204, 204));
+            txtregclicelularbusqueda.setText("Numero a buscar");
         }
     }//GEN-LAST:event_txtregclicelularbusquedaFocusLost
 
     /**
- * Acción ejecutada al hacer clic en el botón Btnactualizar.
- * Llama al método actualizarTabla para recargar los datos en la tabla.
- * 
- * @param evt Evento de acción sobre el botón.
- */
+     * Acción ejecutada al hacer clic en el botón Btnactualizar. Llama al método
+     * actualizarTabla para recargar los datos en la tabla.
+     *
+     * @param evt Evento de acción sobre el botón.
+     */
     private void BtnactualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnactualizarActionPerformed
-        actualizarTabla();
+        if (mediator != null) {
+            mediator.actualizarTabla();
+        }
     }//GEN-LAST:event_BtnactualizarActionPerformed
-    
-     /**
- * Llena la tabla de clientes con datos obtenidos desde la base de datos.
- * Recorre la lista de clientes y agrega una fila en la tabla para cada cliente.
- */
-private void llenarTabla() {
-    Clientesclass clientee = new Clientesclass();
-    List<Clientesclass> clientes = clientee.obtenerClientes();
-    
-    for (Clientesclass cliente : clientes) {
-        Object[] fila = new Object[5];
-        fila[0] = cliente.getNombre();
-        fila[1] = cliente.getApellidos();
-        fila[2] = cliente.getCelular();
-        fila[3] = cliente.getRfc();
-        fila[4] = cliente.getCorreo();
-        modelo.addRow(fila);
-    }
-}
 
-/**
- * Elimina un cliente de la base de datos usando su número de celular como identificador.
- * 
- * @param celular Número de celular del cliente a eliminar.
- */
-private void eliminarClienteBD(String celular) {
-    Conexion conex = new Conexion();
-    String consulta = "DELETE FROM Cliente WHERE Celular = ?";
-    try (PreparedStatement pst = conex.getConnection().prepareCall(consulta)) {
-        pst.setString(1, celular);
-        pst.executeUpdate();
-        JOptionPane.showMessageDialog(null, "Cliente Eliminado Con Exito !!!");
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Error al eliminar cliente: " + e.toString());
-    }
-}
+    /**
+     * Llena la tabla de clientes con datos obtenidos desde la base de datos.
+     * Recorre la lista de clientes y agrega una fila en la tabla para cada
+     * cliente.
+     */
+    private void llenarTabla() {
+        Clientesclass clientee = new Clientesclass();
+        List<Clientesclass> clientes = clientee.obtenerClientes();
 
-/**
- * Actualiza la tabla de clientes. Borra los datos actuales y rellena la tabla con información actualizada desde la base de datos.
- */
-public void actualizarTabla() {
-    modelo.setRowCount(0); // Limpiar la tabla
-    
-    Clientesclass clientee = new Clientesclass();
-    List<Clientesclass> clientes = clientee.obtenerClientes();
-    
-    for (Clientesclass cliente : clientes) {
-        Object[] fila = new Object[5];
-        fila[0] = cliente.getNombre();
-        fila[1] = cliente.getApellidos();
-        fila[2] = cliente.getCelular();
-        fila[3] = cliente.getRfc();
-        fila[4] = cliente.getCorreo();
-        modelo.addRow(fila);
+        for (Clientesclass cliente : clientes) {
+            Object[] fila = new Object[5];
+            fila[0] = cliente.getNombre();
+            fila[1] = cliente.getApellidos();
+            fila[2] = cliente.getCelular();
+            fila[3] = cliente.getRfc();
+            fila[4] = cliente.getCorreo();
+            modelo.addRow(fila);
+        }
     }
-}
 
-/**
- * Actualiza la tabla de clientes según el texto de búsqueda ingresado.
- * Filtra clientes en la base de datos que coincidan con el número ingresado en txtregclicelularbusqueda y actualiza la tabla.
- */
-private void actualizarTablabus() {
-    String textoBusqueda = txtregclicelularbusqueda.getText();
-    modelo.setRowCount(0); // Limpia la tabla
-    
-    Clientesclass clientee = new Clientesclass();
-    List<Clientesclass> clientes = clientee.obtenerClientesPorNumero(textoBusqueda);
-    
-    for (Clientesclass cliente : clientes) {
-        Object[] fila = new Object[5];
-        fila[0] = cliente.getNombre();
-        fila[1] = cliente.getApellidos();
-        fila[2] = cliente.getCelular();
-        fila[3] = cliente.getRfc();
-        fila[4] = cliente.getCorreo();
-        modelo.addRow(fila);
+    /**
+     * Elimina un cliente de la base de datos usando su número de celular como
+     * identificador.
+     *
+     * @param celular Número de celular del cliente a eliminar.
+     */
+    private void eliminarClienteBD(String celular) {
+        Conexion conex = new Conexion();
+        String consulta = "DELETE FROM Cliente WHERE Celular = ?";
+        try (PreparedStatement pst = conex.getConnection().prepareCall(consulta)) {
+            pst.setString(1, celular);
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Cliente Eliminado Con Exito !!!");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al eliminar cliente: " + e.toString());
+        }
     }
-}
 
-/**
- * Ajusta la interfaz de usuario según el rol del usuario.
- * Si el rol es "Estandar", desactiva los botones de modificación y eliminación de clientes.
- * Si el rol es otro, habilita estos botones.
- * 
- * @param rol El rol del usuario actual.
- */
-public void ajustarInterfazSegunRol(String rol) {
-    if ("Estandar".equals(rol)) {
-        BtnModificar.setEnabled(false);
-        BtnEliminar.setEnabled(false);
-    } else {
-        BtnModificar.setEnabled(true);
-        BtnEliminar.setEnabled(true);
+    /**
+     * Actualiza la tabla de clientes. Borra los datos actuales y rellena la
+     * tabla con información actualizada desde la base de datos.
+     */
+    public void actualizarTabla() {
+        modelo.setRowCount(0); // Limpiar la tabla
+
+        Clientesclass clientee = new Clientesclass();
+        List<Clientesclass> clientes = clientee.obtenerClientes();
+
+        for (Clientesclass cliente : clientes) {
+            Object[] fila = new Object[5];
+            fila[0] = cliente.getNombre();
+            fila[1] = cliente.getApellidos();
+            fila[2] = cliente.getCelular();
+            fila[3] = cliente.getRfc();
+            fila[4] = cliente.getCorreo();
+            modelo.addRow(fila);
+        }
     }
-}
-      
+
+    /**
+     * Actualiza la tabla de clientes según el texto de búsqueda ingresado.
+     * Filtra clientes en la base de datos que coincidan con el número ingresado
+     * en txtregclicelularbusqueda y actualiza la tabla.
+     */
+    private void actualizarTablabus() {
+        String textoBusqueda = txtregclicelularbusqueda.getText();
+        if (mediator != null) {
+            mediator.buscarClientesPorNumero(textoBusqueda);
+        }
+    }
+
+    /**
+     * Ajusta la interfaz de usuario según el rol del usuario. Si el rol es
+     * "Estandar", desactiva los botones de modificación y eliminación de
+     * clientes. Si el rol es otro, habilita estos botones.
+     *
+     * @param rol El rol del usuario actual.
+     */
+    public void ajustarInterfazSegunRol(String rol) {
+        if ("Estandar".equals(rol)) {
+            BtnModificar.setEnabled(false);
+            BtnEliminar.setEnabled(false);
+        } else {
+            BtnModificar.setEnabled(true);
+            BtnEliminar.setEnabled(true);
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton BtnEliminar;
     public javax.swing.JButton BtnModificar;
