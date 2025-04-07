@@ -1,9 +1,10 @@
-
 package Vista;
 
 import Conexion.Conexion;
+import Modelo.Clientesclass;
+import Modelo.ConcreteClientesMediator;
 import Modelo.Usuariosclass;
-import Modelo.Usuariosesion; 
+import Modelo.Usuariosesion;
 import Modelo.Filtronumeros;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
@@ -27,21 +28,31 @@ import java.awt.Color;
 public class LoginRegistro extends javax.swing.JFrame {
 
     Usuariosclass usuarios = new Usuariosclass();
-    
-    
+
+    private Clientes clientesPanel;
+    private Clientesclass clientesClass;
+    private ConcreteClientesMediator clientesMediator;
+
     public LoginRegistro() {
         initComponents();
-       
-        // Configurar el redondeo para txtfieldusuario1
-       
-     //  txtfieldusuario1.putClientProperty( "JComponent.roundRect", true );
-     //   Jpassingreso.putClientProperty( "JComponent.roundRect", true ); 
-    //    BtnIngresar.putClientProperty( "JButton.buttonType", "roundRect" );
-    
-    }
-    
 
-    
+        // Inicializar el Mediator y sus componentes
+        clientesPanel = new Clientes();
+        clientesClass = new Clientesclass();
+        clientesMediator = new ConcreteClientesMediator();
+
+        // Registrar los componentes con el Mediator
+        clientesMediator.registrarClientePanel(clientesPanel);
+        clientesMediator.registrarClientesClass(clientesClass);
+
+        // Establecer el Mediator en el panel de clientes
+        clientesPanel.setMediator(clientesMediator);
+        // Configurar el redondeo para txtfieldusuario1
+        //  txtfieldusuario1.putClientProperty( "JComponent.roundRect", true );
+        //   Jpassingreso.putClientProperty( "JComponent.roundRect", true ); 
+        //    BtnIngresar.putClientProperty( "JButton.buttonType", "roundRect" );
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -392,22 +403,22 @@ public class LoginRegistro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtfieldusuario1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfieldusuario1FocusGained
-        
-        if (txtfieldusuario1.getText().equals("Nombre de usuario")){
-         txtfieldusuario1.setText("");
-         txtfieldusuario1.setForeground(Color.black);
-         
+
+        if (txtfieldusuario1.getText().equals("Nombre de usuario")) {
+            txtfieldusuario1.setText("");
+            txtfieldusuario1.setForeground(Color.black);
+
         }
     }//GEN-LAST:event_txtfieldusuario1FocusGained
 
     private void txtfieldusuario1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfieldusuario1FocusLost
-        
-       if (txtfieldusuario1.getText().isEmpty()){
-        txtfieldusuario1.setForeground(new Color(204, 204, 204));
-        txtfieldusuario1.setText("Nombre de usuario");
-        } 
-       
-        
+
+        if (txtfieldusuario1.getText().isEmpty()) {
+            txtfieldusuario1.setForeground(new Color(204, 204, 204));
+            txtfieldusuario1.setText("Nombre de usuario");
+        }
+
+
     }//GEN-LAST:event_txtfieldusuario1FocusLost
 
     private void LogcloseFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_LogcloseFocusGained
@@ -415,24 +426,24 @@ public class LoginRegistro extends javax.swing.JFrame {
     }//GEN-LAST:event_LogcloseFocusGained
 
     private void LogcloseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LogcloseMouseClicked
-       
+
     }//GEN-LAST:event_LogcloseMouseClicked
 
     private void LogcloseMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LogcloseMousePressed
-       ImageIcon icono = new ImageIcon("src\\Imagenes\\vista.png");
-       Logclose.setIcon(icono);
-       Jpassingreso.setEchoChar('\u0000');
-       
+        ImageIcon icono = new ImageIcon("src\\Imagenes\\vista.png");
+        Logclose.setIcon(icono);
+        Jpassingreso.setEchoChar('\u0000');
+
     }//GEN-LAST:event_LogcloseMousePressed
 
     private void LogcloseMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LogcloseMouseReleased
         ImageIcon icono = new ImageIcon("src\\Imagenes\\cerrar-ojo.png");
-       Logclose.setIcon(icono);
-       Jpassingreso.setEchoChar('*');
+        Logclose.setIcon(icono);
+        Jpassingreso.setEchoChar('*');
     }//GEN-LAST:event_LogcloseMouseReleased
 
     private void JpassingresoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_JpassingresoFocusGained
-         if(Jpassingreso.getText().equals("Contraseña")){
+        if (Jpassingreso.getText().equals("Contraseña")) {
             Jpassingreso.setEchoChar('*');
             Jpassingreso.setText("");
             Jpassingreso.setForeground(Color.black);
@@ -440,7 +451,7 @@ public class LoginRegistro extends javax.swing.JFrame {
     }//GEN-LAST:event_JpassingresoFocusGained
 
     private void JpassingresoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_JpassingresoFocusLost
-                if (Jpassingreso.getText().isEmpty()){
+        if (Jpassingreso.getText().isEmpty()) {
 
             Jpassingreso.setForeground(new Color(204, 204, 204));
             Jpassingreso.setText("Contraseña");
@@ -448,35 +459,35 @@ public class LoginRegistro extends javax.swing.JFrame {
     }//GEN-LAST:event_JpassingresoFocusLost
 
     private void txtregistroNombreFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtregistroNombreFocusGained
-          
-        if (txtregistroNombre.getText().equals("Nombre")){
-         txtregistroNombre.setText("");
-         txtregistroNombre.setForeground(Color.black);
+
+        if (txtregistroNombre.getText().equals("Nombre")) {
+            txtregistroNombre.setText("");
+            txtregistroNombre.setForeground(Color.black);
         }
-               
+
     }//GEN-LAST:event_txtregistroNombreFocusGained
 
     private void txtregistroNombreFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtregistroNombreFocusLost
-      if (txtregistroNombre.getText().isEmpty()){
-        txtregistroNombre.setForeground(new Color(204, 204, 204));
-        txtregistroNombre.setText("Nombre");
-        } else if (txtregistroNombre.getText().isEmpty()){
+        if (txtregistroNombre.getText().isEmpty()) {
+            txtregistroNombre.setForeground(new Color(204, 204, 204));
+            txtregistroNombre.setText("Nombre");
+        } else if (txtregistroNombre.getText().isEmpty()) {
             txtregistroNombre.setText("Nombre");
         }
     }//GEN-LAST:event_txtregistroNombreFocusLost
 
     private void txtfielregistrapellidosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfielregistrapellidosFocusGained
-      if (txtfielregistrapellidos.getText().equals("Apellidos")){
-         txtfielregistrapellidos.setText("");
-        txtfielregistrapellidos.setForeground(Color.black);
+        if (txtfielregistrapellidos.getText().equals("Apellidos")) {
+            txtfielregistrapellidos.setText("");
+            txtfielregistrapellidos.setForeground(Color.black);
         }
     }//GEN-LAST:event_txtfielregistrapellidosFocusGained
 
     private void txtfielregistrapellidosFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfielregistrapellidosFocusLost
-        if (txtfielregistrapellidos.getText().isEmpty()){
-        txtfielregistrapellidos.setForeground(new Color(204, 204, 204));
-        txtfielregistrapellidos.setText("Apellidos");
-        } 
+        if (txtfielregistrapellidos.getText().isEmpty()) {
+            txtfielregistrapellidos.setForeground(new Color(204, 204, 204));
+            txtfielregistrapellidos.setText("Apellidos");
+        }
     }//GEN-LAST:event_txtfielregistrapellidosFocusLost
 
     private void txtfielregistrapellidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtfielregistrapellidosActionPerformed
@@ -484,21 +495,21 @@ public class LoginRegistro extends javax.swing.JFrame {
     }//GEN-LAST:event_txtfielregistrapellidosActionPerformed
 
     private void txtregcelularFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtregcelularFocusGained
-       if (txtregcelular.getText().equals("Celular")){
-         txtregcelular.setText("");
-        txtregcelular.setForeground(Color.black);
-        
-        PlainDocument doc = (PlainDocument) txtregcelular.getDocument();
-        doc.setDocumentFilter(new Filtronumeros());
-       }
-       
+        if (txtregcelular.getText().equals("Celular")) {
+            txtregcelular.setText("");
+            txtregcelular.setForeground(Color.black);
+
+            PlainDocument doc = (PlainDocument) txtregcelular.getDocument();
+            doc.setDocumentFilter(new Filtronumeros());
+        }
+
     }//GEN-LAST:event_txtregcelularFocusGained
 
     private void txtregcelularFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtregcelularFocusLost
-        if (txtregcelular.getText().isEmpty()){
-            
-        txtregcelular.setForeground(new Color(204, 204, 204));
-        txtregcelular.setText("Celular");
+        if (txtregcelular.getText().isEmpty()) {
+
+            txtregcelular.setForeground(new Color(204, 204, 204));
+            txtregcelular.setText("Celular");
         }
     }//GEN-LAST:event_txtregcelularFocusLost
 
@@ -507,18 +518,18 @@ public class LoginRegistro extends javax.swing.JFrame {
     }//GEN-LAST:event_txtregcelularActionPerformed
 
     private void txtfieldregisNombreUsuarioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfieldregisNombreUsuarioFocusGained
-         if (txtfieldregisNombreUsuario.getText().equals("Nombre de Usuario")){
-         txtfieldregisNombreUsuario.setText("");
-         txtfieldregisNombreUsuario.setForeground(Color.black);
+        if (txtfieldregisNombreUsuario.getText().equals("Nombre de Usuario")) {
+            txtfieldregisNombreUsuario.setText("");
+            txtfieldregisNombreUsuario.setForeground(Color.black);
         }
-               
+
     }//GEN-LAST:event_txtfieldregisNombreUsuarioFocusGained
 
     private void txtfieldregisNombreUsuarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfieldregisNombreUsuarioFocusLost
-        if (txtfieldregisNombreUsuario.getText().isEmpty()){
-        txtfieldregisNombreUsuario.setForeground(new Color(204, 204, 204));
-       txtfieldregisNombreUsuario.setText("Nombre de Usuario");
-        } 
+        if (txtfieldregisNombreUsuario.getText().isEmpty()) {
+            txtfieldregisNombreUsuario.setForeground(new Color(204, 204, 204));
+            txtfieldregisNombreUsuario.setText("Nombre de Usuario");
+        }
     }//GEN-LAST:event_txtfieldregisNombreUsuarioFocusLost
 
     private void txtfieldregisNombreUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtfieldregisNombreUsuarioActionPerformed
@@ -526,66 +537,65 @@ public class LoginRegistro extends javax.swing.JFrame {
     }//GEN-LAST:event_txtfieldregisNombreUsuarioActionPerformed
 
     private void ComboRolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboRolActionPerformed
-       if(ComboRol.getSelectedIndex()==1){
-           JTextField usuarioField = new JTextField();
-                        JPasswordField passwordField = new JPasswordField();
-                        Object[] message = {
-                            "Usuario:", usuarioField,
-                            "Contraseña:", passwordField
-                        };
+        if (ComboRol.getSelectedIndex() == 1) {
+            JTextField usuarioField = new JTextField();
+            JPasswordField passwordField = new JPasswordField();
+            Object[] message = {
+                "Usuario:", usuarioField,
+                "Contraseña:", passwordField
+            };
 
-                        int option = JOptionPane.showConfirmDialog(null, message, "Ingrese autorizacion de Administrador", JOptionPane.OK_CANCEL_OPTION);
-                        if (option == JOptionPane.OK_OPTION) {
-                            String usuario = usuarioField.getText();
-                            String contrasena = new String(passwordField.getPassword());
+            int option = JOptionPane.showConfirmDialog(null, message, "Ingrese autorizacion de Administrador", JOptionPane.OK_CANCEL_OPTION);
+            if (option == JOptionPane.OK_OPTION) {
+                String usuario = usuarioField.getText();
+                String contrasena = new String(passwordField.getPassword());
 
-                            if (validarAdministrador(usuario, contrasena)) {
-                                ComboRol.setSelectedIndex(1);
-                            } else {
-                                JOptionPane.showMessageDialog(null, "Credenciales incorrectas. No puede ser Administrador");
-                                ComboRol.setSelectedIndex(0);
-                            }
-                        }
-       }   
-                  
-       
+                if (validarAdministrador(usuario, contrasena)) {
+                    ComboRol.setSelectedIndex(1);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Credenciales incorrectas. No puede ser Administrador");
+                    ComboRol.setSelectedIndex(0);
+                }
+            }
+        }
+
+
     }//GEN-LAST:event_ComboRolActionPerformed
 
-     public boolean validarAdministrador(String nombreUsuario, String contraseña) {
-    Conexion conex = new Conexion();
-    String consulta = "SELECT Nombreusuario, Rol FROM Usuario WHERE Nombreusuario = ? AND Contraseña = ?";
-    try (PreparedStatement pst = conex.getConnection().prepareStatement(consulta)) {
-        pst.setString(1, nombreUsuario);
-        pst.setString(2, contraseña);
-        
-        ResultSet rs = pst.executeQuery();
-        if (rs.next()) {
-            String rol = rs.getString("Rol");
-            return "Administrador".equals(rol);
+    public boolean validarAdministrador(String nombreUsuario, String contraseña) {
+        Conexion conex = new Conexion();
+        String consulta = "SELECT Nombreusuario, Rol FROM Usuario WHERE Nombreusuario = ? AND Contraseña = ?";
+        try (PreparedStatement pst = conex.getConnection().prepareStatement(consulta)) {
+            pst.setString(1, nombreUsuario);
+            pst.setString(2, contraseña);
+
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                String rol = rs.getString("Rol");
+                return "Administrador".equals(rol);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al validar usuario: " + e.toString());
         }
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Error al validar usuario: " + e.toString());
+        return false;
     }
-    return false;
-    }
-    
+
     private void txtregcontraseñaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtregcontraseñaFocusGained
-       
-      if (txtregcontraseña.getText().equals("Contraseña")){
-        
-          
-          txtregcontraseña.setEchoChar('*');
-          txtregcontraseña.setText("");
-          txtregcontraseña.setForeground(Color.black);
-      }
+
+        if (txtregcontraseña.getText().equals("Contraseña")) {
+
+            txtregcontraseña.setEchoChar('*');
+            txtregcontraseña.setText("");
+            txtregcontraseña.setForeground(Color.black);
+        }
     }//GEN-LAST:event_txtregcontraseñaFocusGained
 
     private void txtregcontraseñaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtregcontraseñaFocusLost
-        if (txtregcontraseña.getText().isEmpty()){
-        txtregcontraseña.setForeground(new Color(204, 204, 204));
-        txtregcontraseña.setEchoChar('\u0000');
-        txtregcontraseña.setText("Contraseña");
-        } 
+        if (txtregcontraseña.getText().isEmpty()) {
+            txtregcontraseña.setForeground(new Color(204, 204, 204));
+            txtregcontraseña.setEchoChar('\u0000');
+            txtregcontraseña.setText("Contraseña");
+        }
     }//GEN-LAST:event_txtregcontraseñaFocusLost
 
     private void JpassingresoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JpassingresoActionPerformed
@@ -602,43 +612,43 @@ public class LoginRegistro extends javax.swing.JFrame {
 
     private void Logclose1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Logclose1MousePressed
         ImageIcon icono = new ImageIcon("src\\Imagenes\\vista.png");
-       Logclose1.setIcon(icono);
-       txtregcontraseña.setEchoChar('\u0000');        // TODO add your handling code here:
+        Logclose1.setIcon(icono);
+        txtregcontraseña.setEchoChar('\u0000');        // TODO add your handling code here:
     }//GEN-LAST:event_Logclose1MousePressed
 
     private void Logclose1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Logclose1MouseReleased
-         ImageIcon icono = new ImageIcon("src\\Imagenes\\cerrar-ojo.png");
-       Logclose1.setIcon(icono);
-       txtregcontraseña.setEchoChar('*');
+        ImageIcon icono = new ImageIcon("src\\Imagenes\\cerrar-ojo.png");
+        Logclose1.setIcon(icono);
+        txtregcontraseña.setEchoChar('*');
     }//GEN-LAST:event_Logclose1MouseReleased
 
     private void txtregcontraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtregcontraseñaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtregcontraseñaActionPerformed
-   
+
     private void BtnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarActionPerformed
-       usuarios.setNombre(txtregistroNombre.getText());
-       usuarios.setApellidos(txtfielregistrapellidos.getText());
-       usuarios.setNombreUsuario(txtfieldregisNombreUsuario.getText());
-       usuarios.setCelular(txtregcelular.getText());
-       usuarios.setContraseña(txtregcontraseña.getText());
-       usuarios.setRol((String) ComboRol.getSelectedItem());
-        
-  /*     System.out.println(usuarios.getNombre());
+        usuarios.setNombre(txtregistroNombre.getText());
+        usuarios.setApellidos(txtfielregistrapellidos.getText());
+        usuarios.setNombreUsuario(txtfieldregisNombreUsuario.getText());
+        usuarios.setCelular(txtregcelular.getText());
+        usuarios.setContraseña(txtregcontraseña.getText());
+        usuarios.setRol((String) ComboRol.getSelectedItem());
+
+        /*     System.out.println(usuarios.getNombre());
        System.out.println(usuarios.getApellidos());
        System.out.println(usuarios.getNombreUsuario());
        System.out.println(usuarios.getCelular());
        System.out.println(usuarios.getContraseña());
        System.out.println(usuarios.getRol()); */
-       limpiarEntradas();
-       PanelIngreso.setVisible(true);
-       agregarusuario(usuarios);
-       
-      
+        limpiarEntradas();
+        PanelIngreso.setVisible(true);
+        agregarusuario(usuarios);
+
+
     }//GEN-LAST:event_BtnRegistrarActionPerformed
 
-    private void limpiarEntradas(){
-        
+    private void limpiarEntradas() {
+
         txtregistroNombre.setText("Nombre de Usuario");
         txtregcelular.setText("Celular");
         txtfielregistrapellidos.setText("Apellidos");
@@ -647,87 +657,84 @@ public class LoginRegistro extends javax.swing.JFrame {
         txtregcelular.setText("Celular");
         txtregcontraseña.setEchoChar('*');
     }
-    
-    private void BtnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnIngresarActionPerformed
-   String nombreUsuario = txtfieldusuario1.getText();
-    String contraseña = new String(Jpassingreso.getPassword());
 
-    if (validarUsuario(nombreUsuario, contraseña)) {
-        JOptionPane.showMessageDialog(null, "Ingreso exitoso");
-        Ventas.getInstance().actualizarDatosUsuario();
-      //  Interfazprincipal ventana = new Interfazprincipal();
-      //  ventana.setVisible(true);
+    private void BtnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnIngresarActionPerformed
+        String nombreUsuario = txtfieldusuario1.getText();
+        String contraseña = new String(Jpassingreso.getPassword());
+
+        if (validarUsuario(nombreUsuario, contraseña)) {
+            JOptionPane.showMessageDialog(null, "Ingreso exitoso");
+            Ventas.getInstance().actualizarDatosUsuario();
+            //  Interfazprincipal ventana = new Interfazprincipal();
+            //  ventana.setVisible(true);
             Interfazprincipal mvc = new Interfazprincipal();
-            mvc.setVisible(true);  
-      
-        this.dispose(); // Cerrar la ventana de login
-        
-    } else {
-        JOptionPane.showMessageDialog(null, "Nombre de usuario o contraseña incorrectos");
-    }
+            mvc.setVisible(true);
+
+            this.dispose(); // Cerrar la ventana de login
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Nombre de usuario o contraseña incorrectos");
+        }
     }//GEN-LAST:event_BtnIngresarActionPerformed
 
-   private void agregarusuario(Usuariosclass usuario) {
-    Conexion conex = new Conexion();
-    String consulta = "INSERT INTO Usuario (Nombre, Apellidos, Nombreusuario, Celular, Contraseña, Rol) VALUES (?, ?, ?, ?, ?, ?)";
-    try (
-            PreparedStatement pst = conex.getConnection().prepareStatement(consulta)) {
-        pst.setString(1, usuario.getNombre());
-        pst.setString(2, usuario.getApellidos());
-         pst.setString(3, usuario.getNombreUsuario());
-        pst.setString(4, usuario.getCelular());
-        pst.setString(5, usuario.getContraseña());
-        pst.setString(6, usuario.getRol());
-        
-        pst.execute();
-        JOptionPane.showMessageDialog(null, "Cliente Agregado Con Exito !!!");
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Error al agregar cliente: " + e.toString());
-    }
-}
-   
-   public boolean validarUsuario(String nombreUsuario, String contraseña) {
-           
-    Conexion conex = new Conexion();
-    String consulta = "SELECT Nombreusuario, Rol, Nombre, idUsuario FROM Usuario WHERE Nombreusuario = ? AND Contraseña = ?";
-    try (
-        PreparedStatement pst = conex.getConnection().prepareStatement(consulta)) {
-        pst.setString(1, nombreUsuario);
-        pst.setString(2, contraseña);
+    private void agregarusuario(Usuariosclass usuario) {
+        Conexion conex = new Conexion();
+        String consulta = "INSERT INTO Usuario (Nombre, Apellidos, Nombreusuario, Celular, Contraseña, Rol) VALUES (?, ?, ?, ?, ?, ?)";
+        try (
+                PreparedStatement pst = conex.getConnection().prepareStatement(consulta)) {
+            pst.setString(1, usuario.getNombre());
+            pst.setString(2, usuario.getApellidos());
+            pst.setString(3, usuario.getNombreUsuario());
+            pst.setString(4, usuario.getCelular());
+            pst.setString(5, usuario.getContraseña());
+            pst.setString(6, usuario.getRol());
 
-        var rs = pst.executeQuery();
-        if (rs.next()) {
-            String nombre = rs.getString("Nombreusuario");
-            String rol = rs.getString("Rol");
-            String nombreal = rs.getString("Nombre");
-            int idusuario = rs.getInt("idUsuario");
-            Usuariosesion.getInstance(nombre, rol, nombreal, idusuario); // Guardar información del usuario en la sesión
-            return true;
+            pst.execute();
+            JOptionPane.showMessageDialog(null, "Cliente Agregado Con Exito !!!");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al agregar cliente: " + e.toString());
         }
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Error al validar usuario: " + e.toString());
     }
-    return false;
-}
+
+    public boolean validarUsuario(String nombreUsuario, String contraseña) {
+
+        Conexion conex = new Conexion();
+        String consulta = "SELECT Nombreusuario, Rol, Nombre, idUsuario FROM Usuario WHERE Nombreusuario = ? AND Contraseña = ?";
+        try (
+                PreparedStatement pst = conex.getConnection().prepareStatement(consulta)) {
+            pst.setString(1, nombreUsuario);
+            pst.setString(2, contraseña);
+
+            var rs = pst.executeQuery();
+            if (rs.next()) {
+                String nombre = rs.getString("Nombreusuario");
+                String rol = rs.getString("Rol");
+                String nombreal = rs.getString("Nombre");
+                int idusuario = rs.getInt("idUsuario");
+                Usuariosesion.getInstance(nombre, rol, nombreal, idusuario); // Guardar información del usuario en la sesión
+                return true;
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al validar usuario: " + e.toString());
+        }
+        return false;
+    }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-       
-      
-         // Establece el estilo Flat Light
-       
+
+        // Establece el estilo Flat Light
         //  FlatDarkLaf.setup();   //Look and feel Black 
         FlatLightLaf.setup();
-      
+
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             new LoginRegistro().setVisible(true);
         });
-        
-        
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

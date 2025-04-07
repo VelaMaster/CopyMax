@@ -1,10 +1,10 @@
-
 package Vista;
 
 import Modelo.Usuariosclass;
 import Conexion.Conexion;
 import Modelo.Letraseditor;
 import Modelo.Numeroseditor;
+import Modelo.UsuarioMediator;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.SQLException;
@@ -16,17 +16,19 @@ import java.sql.ResultSet;
 public class Usuariospan extends javax.swing.JPanel {
 
     private DefaultTableModel modelo;
-     
+    private UsuarioMediator mediator;
+
     public Usuariospan() {
         initComponents();
-        modelo = new DefaultTableModel(){
-        boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, true 
+        modelo = new DefaultTableModel() {
+            boolean[] canEdit = new boolean[]{
+                false, true, true, true, true, true
             };
-        public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
             }
-    };
+        };
         modelo.addColumn("idUsuario");
         modelo.addColumn("Nombre de Usuario");
         modelo.addColumn("Nombre");
@@ -34,35 +36,38 @@ public class Usuariospan extends javax.swing.JPanel {
         modelo.addColumn("Celular");
         modelo.addColumn("Rol");
         Tablausuarios.setModel(modelo);
-        
-        
-        llenarTabla();
+
         tabladiseño();
     }
 
-  private void tabladiseño(){
-    // Asignar el editor personalizado a las columnas específicas
+    public void setMediator(UsuarioMediator mediator) {
+        this.mediator = mediator;
+        ajustarInterfazSegunRol(mediator.getRolUsuarioActual());
+        llenarTablaDesdeBD(); // Llenar la tabla una vez que el mediador esté disponible
+    }
+
+    private void tabladiseño() {
+        // Asignar el editor personalizado a las columnas específicas
         Tablausuarios.setSize(650, 400);
         Tablausuarios.getColumnModel().getColumn(2).setCellEditor(new Letraseditor());
         Tablausuarios.getColumnModel().getColumn(3).setCellEditor(new Letraseditor());
-        Tablausuarios.getColumnModel().getColumn(4).setCellEditor(new Numeroseditor()); 
+        Tablausuarios.getColumnModel().getColumn(4).setCellEditor(new Numeroseditor());
         Tablausuarios.getColumnModel().getColumn(5).setCellEditor(new Letraseditor());
         if (Tablausuarios.getColumnModel().getColumnCount() > 0) {
-        
-        Tablausuarios.getColumnModel().getColumn(0).setMaxWidth(90);
-        Tablausuarios.getColumnModel().getColumn(1).setMaxWidth(150);       
-        Tablausuarios.getColumnModel().getColumn(2).setMaxWidth(120);
-        Tablausuarios.getColumnModel().getColumn(3).setMaxWidth(160); 
-        Tablausuarios.getColumnModel().getColumn(4).setMaxWidth(140);
-        Tablausuarios.getColumnModel().getColumn(5).setMaxWidth(150);
-        
-       Tablausuarios.setRowHeight(30);
-     
-}
-        
-        
-        
-  }
+
+            Tablausuarios.getColumnModel().getColumn(0).setMaxWidth(90);
+            Tablausuarios.getColumnModel().getColumn(1).setMaxWidth(150);
+            Tablausuarios.getColumnModel().getColumn(2).setMaxWidth(120);
+            Tablausuarios.getColumnModel().getColumn(3).setMaxWidth(160);
+            Tablausuarios.getColumnModel().getColumn(4).setMaxWidth(140);
+            Tablausuarios.getColumnModel().getColumn(5).setMaxWidth(150);
+
+            Tablausuarios.setRowHeight(30);
+
+        }
+
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -166,46 +171,30 @@ public class Usuariospan extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnModificarActionPerformed
-     int selectedRow = Tablausuarios.getSelectedRow();
+        int selectedRow = Tablausuarios.getSelectedRow();
         if (selectedRow != -1) {
-            // Obtener los valores de la fila seleccionada
             int idUsuario = (int) modelo.getValueAt(selectedRow, 0);
             String nombreusario = (String) modelo.getValueAt(selectedRow, 1);
             String nombre = (String) modelo.getValueAt(selectedRow, 2);
             String apellidos = (String) modelo.getValueAt(selectedRow, 3);
             String celular = (String) modelo.getValueAt(selectedRow, 4);
             String rol = (String) modelo.getValueAt(selectedRow, 5);
-            
-            System.out.println(nombre);
-            System.out.println(nombreusario);
-            System.out.println(apellidos);
-            System.out.println(celular);
-            System.out.println(rol);
-            
-            // Actualizar en la base de datos
-            Conexion conex = new Conexion();
-            String consulta = "UPDATE Usuario SET Nombreusuario = ?, Nombre = ?, Apellidos = ?, Celular = ?, Rol = ? WHERE idUsuario = ?";
-            try (Connection con = conex.getConnection(); 
-                 PreparedStatement pst = con.prepareStatement(consulta)) {
-                pst.setString(1, nombreusario);
-                pst.setString(2, nombre);
-                pst.setString(3, apellidos);
-                pst.setString(4, celular);
-                pst.setString(5, rol);
-                pst.setInt(6, idUsuario);
-                pst.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Usuario Modificado Con Exito !!!");
-                llenarTabla(); // Volver a llenar la tabla después de la actualización
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "Error al modificar Usuario: " + e.toString());
-            }
+
+            Usuariosclass usuario = new Usuariosclass();
+            usuario.setId(idUsuario);
+            usuario.setNombreUsuario(nombreusario);
+            usuario.setNombre(nombre);
+            usuario.setApellidos(apellidos);
+            usuario.setCelular(celular);
+            usuario.setRol(rol);
+
+            mediator.solicitarActualizacionUsuario(usuario);
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione una fila para modificar.");
         }
-        
     }//GEN-LAST:event_BtnModificarActionPerformed
-    
-   public void actualizarClienteBD(Usuariosclass usuarios) {
+
+    public void actualizarClienteBD(Usuariosclass usuarios) {
         Conexion conex = new Conexion();
         String consulta = "UPDATE Usuario SET Nombreusuario = ?, Nombre = ?, Apellidos = ?, Rol = ? ,Celular= ? WHERE idUsuario = ?";
         try (
@@ -215,56 +204,46 @@ public class Usuariospan extends javax.swing.JPanel {
             pst.setString(3, usuarios.getApellidos());
             pst.setString(4, usuarios.getRol());
             pst.setString(5, usuarios.getCelular());
-            pst.setInt(6,usuarios.getId());
+            pst.setInt(6, usuarios.getId());
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Usuario Modificado Con Exito !!!");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al modificar Usuario: " + e.toString());
         }
-        
+
     }
 
 
-    
     private void BtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEliminarActionPerformed
-         int selectedRow = Tablausuarios.getSelectedRow();
+        int selectedRow = Tablausuarios.getSelectedRow();
         if (selectedRow != -1) {
             int idusuario = (int) modelo.getValueAt(selectedRow, 0);
-
-            eliminarClienteBD(idusuario);
-            modelo.removeRow(selectedRow);
+            mediator.solicitarEliminacionUsuario(idusuario);
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione una fila para eliminar.");
         }
     }//GEN-LAST:event_BtnEliminarActionPerformed
 
     private void BtnactualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnactualizarActionPerformed
-        actualizarTabla();
+        llenarTablaDesdeBD();
     }//GEN-LAST:event_BtnactualizarActionPerformed
-    
-      private void llenarTabla() {
+
+    private void llenarTablaDesdeBD() {
         modelo.setRowCount(0); // Borrar todas las filas existentes
-        Conexion conex = new Conexion();
-        String sql = "SELECT idUsuario, Nombreusuario, Nombre, Apellidos, Celular, Rol FROM Usuario";
-        try (Connection con = conex.getConnection(); 
-             PreparedStatement pst = con.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
-            while (rs.next()) {
-                Object[] fila = new Object[6];
-                fila[0] = rs.getInt("idUsuario");
-                fila[1] = rs.getString("Nombreusuario");
-                fila[2] = rs.getString("Nombre");
-                fila[3] = rs.getString("Apellidos");
-                fila[4] = rs.getString("Celular");
-                fila[5] = rs.getString("Rol");
-                modelo.addRow(fila);
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al obtener usuarios: " + e.toString());
+        List<Usuariosclass> usuarios = mediator.obtenerUsuariosBD();
+        for (Usuariosclass usuario : usuarios) {
+            Object[] fila = new Object[6];
+            fila[0] = usuario.getId();
+            fila[1] = usuario.getNombreUsuario();
+            fila[2] = usuario.getNombre();
+            fila[3] = usuario.getApellidos();
+            fila[4] = usuario.getCelular();
+            fila[5] = usuario.getRol();
+            modelo.addRow(fila);
         }
     }
-      
-      private void eliminarClienteBD(int idusuario) {
+
+    private void eliminarClienteBD(int idusuario) {
         Conexion conex = new Conexion();
         String consulta = "DELETE FROM Usuario WHERE idUsuario = ?";
         try (
@@ -276,40 +255,22 @@ public class Usuariospan extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Error al eliminar cliente: " + e.toString());
         }
     }
-     
-   public void actualizarTabla() {
-    // Limpiar el modelo de la tabla
-    modelo.setRowCount(0);
-    
-    // Obtener la lista actualizada de clientes
-    Usuariosclass usuarioo = new Usuariosclass();
-    List<Usuariosclass> usuario = usuarioo.obtenerUsuarios();
-    
-    // Agregar las nuevas filas al modelo de la tabla
-    for (Usuariosclass usuariooo : usuario) {
-            Object[] fila = new Object[6];
-            fila[0] = usuariooo.getId();
-            fila[1] = usuariooo.getNombreUsuario();
-            fila[2] = usuariooo.getNombre();
-            fila[3] = usuariooo.getApellidos();
-            fila[4] = usuariooo.getCelular();
-            fila[5] = usuariooo.getRol();
-            modelo.addRow(fila);
-        }
-}
-  
 
-   public void ajustarInterfazSegunRol(String rol) {
+    public void actualizarTabla() {
+        llenarTablaDesdeBD();
+    }
+
+    public void ajustarInterfazSegunRol(String rol) {
         if ("Estandar".equals(rol)) {
             BtnModificar.setEnabled(false);
             BtnEliminar.setEnabled(false);
-            
+
         } else {
             BtnModificar.setEnabled(true);
             BtnEliminar.setEnabled(true);
         }
     }
-      
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton BtnEliminar;
     public javax.swing.JButton BtnModificar;

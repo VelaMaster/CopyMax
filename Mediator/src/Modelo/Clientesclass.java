@@ -4,7 +4,6 @@
  */
 package Modelo;
 
-
 import Conexion.Conexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,10 +13,8 @@ import java.util.List;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
-
 public class Clientesclass {
 
-   
     int id;
     String Correo;
     String Celular;
@@ -32,15 +29,15 @@ public class Clientesclass {
     public void setCorreo(String Correo) {
         this.Correo = Correo;
     }
-    
-    
-     public int getId() {
+
+    public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
     }
+
     public String getCelular() {
         return Celular;
     }
@@ -71,27 +68,24 @@ public class Clientesclass {
 
     public void setApellidos(String Apellidos) {
         this.Apellidos = Apellidos;
-    } 
-    
-   
-public List<Clientesclass> obtenerClientes() {
+    }
+
+    public List<Clientesclass> obtenerClientes() {
         List<Clientesclass> clientes = new ArrayList<>();
         Conexion conex = new Conexion();
         String sql = "SELECT Nombre, Apellidos, Celular, RFC, Correo FROM Cliente";
 
-        try (Connection con = conex.getConnection(); 
-             PreparedStatement pst = con.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
-            
+        try (Connection con = conex.getConnection(); PreparedStatement pst = con.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
+
             while (rs.next()) {
                 Clientesclass cliente = new Clientesclass();
-                
+
                 cliente.setNombre(rs.getString("Nombre"));
                 cliente.setApellidos(rs.getString("Apellidos"));
                 cliente.setCelular(rs.getString("Celular"));
                 cliente.setRfc(rs.getString("RFC"));
                 cliente.setCorreo(rs.getString("Correo"));
-                
+
                 clientes.add(cliente);
             }
         } catch (SQLException e) {
@@ -101,15 +95,14 @@ public List<Clientesclass> obtenerClientes() {
         return clientes;
     }
 
-  public List<Clientesclass> obtenerClientesPorNumero(String numero) {
+    public List<Clientesclass> obtenerClientesPorNumero(String numero) {
         List<Clientesclass> clientes = new ArrayList<>();
         Conexion conex = new Conexion();
         String sql = "SELECT Nombre, Apellidos, Celular, RFC, Correo FROM Cliente WHERE Celular LIKE ?";
-        try (Connection con = conex.getConnection(); 
-             PreparedStatement pst = con.prepareStatement(sql)) {
+        try (Connection con = conex.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
             // Configurar el parámetro de la consulta con el número de celular proporcionado
             pst.setString(1, "%" + numero + "%");
-            
+
             // Ejecutar la consulta
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
@@ -127,23 +120,20 @@ public List<Clientesclass> obtenerClientes() {
         }
         return clientes;
     }
-    
+
     public List<Clientesclass> obtenerClientesidnombre() {
         List<Clientesclass> clientes = new ArrayList<>();
         Conexion conex = new Conexion();
         String sql = "SELECT idCliente, Nombre FROM Cliente";
 
-        try (Connection con = conex.getConnection(); 
-             PreparedStatement pst = con.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
-            
+        try (Connection con = conex.getConnection(); PreparedStatement pst = con.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
+
             while (rs.next()) {
                 Clientesclass cliente = new Clientesclass();
-                
+
                 cliente.setId(rs.getInt("idCliente"));
                 cliente.setNombre(rs.getString("Nombre"));
-                
-                
+
                 clientes.add(cliente);
             }
         } catch (SQLException e) {
@@ -152,5 +142,33 @@ public List<Clientesclass> obtenerClientes() {
 
         return clientes;
     }
-    
+
+    public void actualizarClienteBD(Clientesclass cliente) {
+        Conexion conex = new Conexion();
+        String consulta = "UPDATE Cliente SET Nombre = ?, Apellidos = ?, RFC = ?, Correo = ? WHERE Celular = ?";
+
+        try (PreparedStatement pst = conex.getConnection().prepareCall(consulta)) {
+            pst.setString(1, cliente.getNombre());
+            pst.setString(2, cliente.getApellidos());
+            pst.setString(3, cliente.getRfc());
+            pst.setString(4, cliente.getCorreo());
+            pst.setString(5, cliente.getCelular());
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Cliente Modificado Con Exito !!!");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al modificar cliente: " + e.toString());
+        }
+    }
+
+    public void eliminarClienteBD(String celular) {
+        Conexion conex = new Conexion();
+        String consulta = "DELETE FROM Cliente WHERE Celular = ?";
+        try (PreparedStatement pst = conex.getConnection().prepareCall(consulta)) {
+            pst.setString(1, celular);
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Cliente Eliminado Con Exito !!!");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al eliminar cliente: " + e.toString());
+        }
+    }
 }
