@@ -29,24 +29,10 @@ public class LoginRegistro extends javax.swing.JFrame {
 
     Usuariosclass usuarios = new Usuariosclass();
 
-    private Clientes clientesPanel;
-    private Clientesclass clientesClass;
-    private ConcreteClientesMediator clientesMediator;
 
     public LoginRegistro() {
         initComponents();
 
-        // Inicializar el Mediator y sus componentes
-        clientesPanel = new Clientes();
-        clientesClass = new Clientesclass();
-        clientesMediator = new ConcreteClientesMediator();
-
-        // Registrar los componentes con el Mediator
-        clientesMediator.registrarClientePanel(clientesPanel);
-        clientesMediator.registrarClientesClass(clientesClass);
-
-        // Establecer el Mediator en el panel de clientes
-        clientesPanel.setMediator(clientesMediator);
         // Configurar el redondeo para txtfieldusuario1
         //  txtfieldusuario1.putClientProperty( "JComponent.roundRect", true );
         //   Jpassingreso.putClientProperty( "JComponent.roundRect", true ); 

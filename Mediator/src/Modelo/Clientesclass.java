@@ -145,7 +145,7 @@ public class Clientesclass {
 
     public void actualizarClienteBD(Clientesclass cliente) {
         Conexion conex = new Conexion();
-        String consulta = "UPDATE Cliente SET Nombre = ?, Apellidos = ?, RFC = ?, Correo = ? WHERE Celular = ?";
+        String consulta = "UPDATE Cliente SET Nombre=?, Apellidos=?, RFC=?, Correo=? WHERE Celular=?";
 
         try (PreparedStatement pst = conex.getConnection().prepareCall(consulta)) {
             pst.setString(1, cliente.getNombre());
@@ -169,6 +169,23 @@ public class Clientesclass {
             JOptionPane.showMessageDialog(null, "Cliente Eliminado Con Exito !!!");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al eliminar cliente: " + e.toString());
+        }
+    }
+
+    public void agregarClienteBD(Clientesclass cliente) {
+        Conexion conex = new Conexion();
+        String consulta = "INSERT INTO Cliente (Nombre, Apellidos, Celular, RFC,Correo) VALUES (?, ?, ?, ?,?)";
+        try (
+                PreparedStatement pst = conex.getConnection().prepareCall(consulta)) {
+            pst.setString(1, cliente.getNombre());
+            pst.setString(2, cliente.getApellidos());
+            pst.setString(3, cliente.getCelular());
+            pst.setString(4, cliente.getRfc());
+            pst.setString(5, cliente.getCorreo());
+            pst.execute();
+            JOptionPane.showMessageDialog(null, "Cliente Agregado Con Exito !!!");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al agregar cliente: " + e.toString());
         }
     }
 }

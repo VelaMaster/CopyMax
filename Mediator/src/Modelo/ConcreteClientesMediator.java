@@ -5,6 +5,7 @@
 package Modelo;
 
 import Vista.Clientes;
+import Vista.RegistroClientes;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -47,11 +48,16 @@ public class ConcreteClientesMediator implements ClientesMediator {
     @Override
     public void agregarNuevoCliente() {
         if (clientesPanel != null) {
-            //RegistroClientes regi = new RegistroClientes();
-            //regi.setVisible(true);
-            // Aquí podríamos tener una forma de comunicar desde RegistroClientes
-            // al Mediator cuando se guarda un nuevo cliente para refrescar la tabla.
-            // Para este ejemplo, lo haremos mediante el botón "Actualizar".
+            RegistroClientes registro = new RegistroClientes(this); // Pass the mediator
+            registro.setVisible(true);
+        }
+    }
+
+    // Method to handle saving a new client
+    public void guardarNuevoCliente(Clientesclass cliente) {
+        if (clientesClass != null) {
+            clientesClass.agregarClienteBD(cliente); // Call the method in Clientesclass
+            obtenerClientes(); // Refresh the table
         }
     }
 

@@ -5,6 +5,7 @@
 package Vista;
 
 import Conexion.Conexion;
+import Modelo.ConcreteClientesMediator;
 import Modelo.Productoclass;
 import Vista.Metododepago;
 import Modelo.Productosprecios;
@@ -704,9 +705,10 @@ private void revertirIVA() {
     }//GEN-LAST:event_BtnclientesseleccionActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        RegistroClientes ventanaRegistroClientes = new RegistroClientes();
+        Interfazprincipal interfaz = Interfazprincipal.getInstance(); // Obtén la instancia de Interfazprincipal
+        ConcreteClientesMediator mediator = interfaz.clientesMediator; // Accede a la instancia del Mediator
+        RegistroClientes ventanaRegistroClientes = new RegistroClientes(mediator); // Pasa el Mediator
         ventanaRegistroClientes.setVisible(true);
-
     }//GEN-LAST:event_jButton1ActionPerformed
 
    private void abrirMetodoPagoFrame() {

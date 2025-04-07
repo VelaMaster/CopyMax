@@ -4,6 +4,7 @@ import Modelo.Clientesclass;
 import Conexion.Conexion;
 import Modelo.FiltroLetras;
 import Modelo.Filtromayusculas;
+import Modelo.ClientesMediator;
 import Modelo.Filtronumeros;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
@@ -18,11 +19,12 @@ import java.sql.SQLException;
  */
 public class RegistroClientes extends javax.swing.JFrame {
   //  Conexion cone = main.getCone();
-    
+    private ClientesMediator mediator;
     Clientesclass clientes = new Clientesclass();
  
-    public RegistroClientes() {
+    public RegistroClientes(ClientesMediator mediator) {
         initComponents();
+        this.mediator = mediator;
         agregarKeyListenerGlobal();
         PlainDocument doc = (PlainDocument) TxtCelular.getDocument();
         doc.setDocumentFilter(new Filtronumeros());
@@ -220,10 +222,12 @@ public class RegistroClientes extends javax.swing.JFrame {
 
         // LOGICA MYSQL
         
-        agregarClienteBD(clientes);
-        this.dispose();
-       clien.actualizarTabla();
-       
+        if (mediator != null) {
+            mediator.guardarNuevoCliente(clientes);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Error: El mediador no ha sido inicializado.");
+        }
     }//GEN-LAST:event_BtnAgregarActionPerformed
 
     private void TxtcorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtcorreoActionPerformed

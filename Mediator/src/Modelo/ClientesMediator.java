@@ -21,6 +21,8 @@ public interface ClientesMediator {
 
     void buscarClientesPorNumero(String numero);
 
+    void guardarNuevoCliente(Clientesclass cliente);
+
     void agregarNuevoCliente(); // Para el botón Nuevo
 
     void modificarCliente(int selectedRow); // Para el botón Modificar

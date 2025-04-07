@@ -6,6 +6,7 @@ import Modelo.Filtronumeros;
 import Modelo.Letraseditor;
 import Modelo.Numeroseditor;
 import Modelo.ClientesMediator;
+import Modelo.ConcreteClientesMediator;
 import java.awt.Color;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -21,6 +22,9 @@ public class Clientes extends javax.swing.JPanel {
     // Modelo de tabla para mostrar datos de clientes
     private DefaultTableModel modelo;
     private ClientesMediator mediator;
+    private Clientes clientesPanel;
+    private Clientesclass clientesClass;
+    private ConcreteClientesMediator clientesMediator;
 
     public Clientes() {
         // Inicializa los componentes de la interfaz gráfica
@@ -36,12 +40,9 @@ public class Clientes extends javax.swing.JPanel {
 
         // Asigna el modelo de tabla a la tabla Tablaclientes
         Tablaclientes.setModel(modelo);
-
-        // Llama al método para llenar la tabla con datos de clientes
-        llenarTabla();
-
         // Llama al método para personalizar el diseño de la tabla
         tabladiseño();
+
     }
 
     public void setMediator(ClientesMediator mediator) {
@@ -74,16 +75,17 @@ public class Clientes extends javax.swing.JPanel {
     }
 
     public void actualizarTablaUI(List<Clientesclass> clientes) {
-        modelo.setRowCount(0); // Limpiar la tabla
+        modelo.setRowCount(0);
         for (Clientesclass cliente : clientes) {
-            Object[] fila = new Object[5];
-            fila[0] = cliente.getNombre();
-            fila[1] = cliente.getApellidos();
-            fila[2] = cliente.getCelular();
-            fila[3] = cliente.getRfc();
-            fila[4] = cliente.getCorreo();
-            modelo.addRow(fila);
+            modelo.addRow(new Object[]{
+                cliente.getNombre(),
+                cliente.getApellidos(),
+                cliente.getCelular(),
+                cliente.getRfc(),
+                cliente.getCorreo()
+            });
         }
+        modelo.fireTableDataChanged(); // Forzar refresco visual
     }
 
     @SuppressWarnings("unchecked")
@@ -251,7 +253,12 @@ public class Clientes extends javax.swing.JPanel {
 
     private void BtnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnModificarActionPerformed
         if (mediator != null) {
-            mediator.modificarCliente(Tablaclientes.getSelectedRow());
+            int selectedRow = Tablaclientes.getSelectedRow();
+            if (selectedRow != -1) {
+                mediator.modificarCliente(selectedRow);
+            } else {
+                JOptionPane.showMessageDialog(this, "Seleccione una fila.");
+            }
         }
     }//GEN-LAST:event_BtnModificarActionPerformed
 
@@ -407,19 +414,8 @@ public class Clientes extends javax.swing.JPanel {
      */
     private void actualizarTablabus() {
         String textoBusqueda = txtregclicelularbusqueda.getText();
-        modelo.setRowCount(0); // Limpia la tabla
-
-        Clientesclass clientee = new Clientesclass();
-        List<Clientesclass> clientes = clientee.obtenerClientesPorNumero(textoBusqueda);
-
-        for (Clientesclass cliente : clientes) {
-            Object[] fila = new Object[5];
-            fila[0] = cliente.getNombre();
-            fila[1] = cliente.getApellidos();
-            fila[2] = cliente.getCelular();
-            fila[3] = cliente.getRfc();
-            fila[4] = cliente.getCorreo();
-            modelo.addRow(fila);
+        if (mediator != null) {
+            mediator.buscarClientesPorNumero(textoBusqueda);
         }
     }
 
