@@ -25,7 +25,15 @@ public class Conexion {
         try {
             String url = "jdbc:mysql://127.0.0.1:3306/Copymax";
             String user = "root";
-            String password = "";
+<<<<<<< HEAD
+            String password = "123456";
+=======
+<<<<<<< HEAD
+            String password = "123456";
+=======
+            String password = "1234";
+>>>>>>> 5caf5ec57ac91f35e4b1bbe3c1c4b629658cadeb
+>>>>>>> 7a63e29c94f0124b1bee99a5797f8fd01da9dd56
             connection = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "No se pudo conectar a la base de datos, error: " + e.toString());

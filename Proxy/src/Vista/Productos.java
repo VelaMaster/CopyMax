@@ -1,6 +1,7 @@
 
 package Vista;
 
+import Adapter.JsonAdapter;
 import Conexion.Conexion;
 import Modelo.Clientesclass;
 import Modelo.Productoclass;
@@ -12,6 +13,8 @@ import Vista.Metododepago;
 import Vista.RegistroClientes;
 import Vista.RegistroProductos;
 import java.awt.Color;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -80,6 +83,7 @@ public class Productos extends javax.swing.JPanel {
         BtnModificar = new javax.swing.JButton();
         BtnEliminar = new javax.swing.JButton();
         Btnactualizar = new javax.swing.JButton();
+        Btnactualizar1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 204, 204));
 
@@ -97,6 +101,7 @@ public class Productos extends javax.swing.JPanel {
         ));
         Tablacproductos.setColumnSelectionAllowed(true);
         jScrollPane1.setViewportView(Tablacproductos);
+        Tablacproductos.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/clasificacion (Custom).png"))); // NOI18N
@@ -160,30 +165,42 @@ public class Productos extends javax.swing.JPanel {
             }
         });
 
+        Btnactualizar1.setBackground(new java.awt.Color(153, 255, 153));
+        Btnactualizar1.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
+        Btnactualizar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/actualizar-flecha.png"))); // NOI18N
+        Btnactualizar1.setText("Adapter");
+        Btnactualizar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btnactualizar1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(64, 64, 64)
-                .addComponent(BtnNuevo)
-                .addGap(60, 60, 60)
-                .addComponent(BtnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(BtnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(65, 65, 65)
-                .addComponent(Btnactualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44))
-            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1)
-                        .addGap(52, 52, 52)
-                        .addComponent(txtregprocategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(55, 55, 55)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 798, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 798, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(BtnNuevo)
+                                .addGap(35, 35, 35)
+                                .addComponent(BtnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(50, 50, 50)
+                                .addComponent(BtnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(23, 23, 23)
+                                .addComponent(Btnactualizar1)
+                                .addGap(18, 18, 18)
+                                .addComponent(Btnactualizar))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(52, 52, 52)
+                                .addComponent(txtregprocategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(31, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -194,12 +211,14 @@ public class Productos extends javax.swing.JPanel {
                     .addComponent(txtregprocategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BtnNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(BtnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(BtnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Btnactualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(BtnNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(BtnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(Btnactualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(Btnactualizar1))
+                    .addComponent(BtnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
         );
@@ -322,6 +341,10 @@ public class Productos extends javax.swing.JPanel {
        
         Ventas.getInstance().cargarProductos("");
     }//GEN-LAST:event_BtnactualizarActionPerformed
+
+    private void Btnactualizar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btnactualizar1ActionPerformed
+       exportarProductosJson();  // Llamar al método de exportación
+    }//GEN-LAST:event_Btnactualizar1ActionPerformed
     
       public void llenarTabla() {
           Productoclass productoo = new Productoclass();
@@ -351,6 +374,7 @@ public class Productos extends javax.swing.JPanel {
         }
         
     }
+      
      
    public void actualizarTabla() {
     // Limpiar el modelo de la tabla
@@ -405,12 +429,45 @@ public class Productos extends javax.swing.JPanel {
             BtnEliminar.setEnabled(true);
         }
     }
+   public void exportarProductosJson() {
+    try {
+        // Obtener la lista de productos
+        Productoclass productoo = new Productoclass();
+        List<Productoclass> productos = productoo.obtenerProductos();
+
+        // Crear el adaptador JSON
+        JsonAdapter<List<Productoclass>> adapter = new JsonAdapter<>();
+
+        // Convertir la lista a formato JSON
+        String json = adapter.convertirAFormato(productos);
+
+        // Guardar el JSON en un archivo
+        guardarJsonEnArchivo(json, "productos.json");
+
+        // Mostrar confirmación
+        JOptionPane.showMessageDialog(null, "Productos exportados correctamente en productos.json");
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Error al exportar productos a JSON: " + e.getMessage());
+    }
+}
+
+private void guardarJsonEnArchivo(String json, String nombreArchivo) {
+    try (FileWriter file = new FileWriter(nombreArchivo)) {
+        file.write(json);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
       
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton BtnEliminar;
     public javax.swing.JButton BtnModificar;
     private javax.swing.JButton BtnNuevo;
     private javax.swing.JButton Btnactualizar;
+    private javax.swing.JButton Btnactualizar1;
     private javax.swing.JTable Tablacproductos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
