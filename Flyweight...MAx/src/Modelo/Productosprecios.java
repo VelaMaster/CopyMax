@@ -19,6 +19,10 @@ public class Productosprecios {
         this.direccionicon= icono;
     }
 
+    public Productosprecios() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     public String getDireccionicon() {
         return direccionicon;
     }

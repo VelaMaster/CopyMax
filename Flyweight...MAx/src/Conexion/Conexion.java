@@ -1,5 +1,6 @@
 package Conexion;
 
+import Modelo.ProductosFactory;
 import Modelo.Productosprecios;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -58,14 +59,14 @@ public class Conexion {
      * Obtiene una lista de productos desde la base de datos.
      * Cada producto contiene nombre, precio e ícono.
      * 
+     * @param sql
      * @return List<Productosprecios> una lista de objetos Productosprecios con los datos obtenidos de la base de datos.
      * 
      */
     
-    public List<Productosprecios> obtenerProductosfiltro() {
+    public List<Productosprecios> obtenerProductosfiltro(String sql) {
         List<Productosprecios> productos = new ArrayList<>();
-        String sql = "SELECT Nombre_producto, Precio, Icono FROM Productos WHERE Cantidad > 0 AND Categoria IN ('Copia / Impresion', 'Papelería', 'Engargolado');";
-
+       
         try (Connection con = getConnection(); 
              PreparedStatement pst = con.prepareStatement(sql);
              ResultSet rs = pst.executeQuery()) {
@@ -124,7 +125,7 @@ public class Conexion {
                 String nombre = rs.getString("Nombre_producto");
                 double precio = rs.getDouble("Precio");
                 String icono = rs.getString("Icono");
-                productos.add(new Productosprecios(nombre, precio, icono)); // Agregar producto a la lista
+               productos.add(ProductosFactory.getProducto(nombre, precio, icono)); // Agregar producto a la lista
             }
         }
     } catch (SQLException e) {

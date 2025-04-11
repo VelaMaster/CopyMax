@@ -722,7 +722,70 @@ private void revertirIVA() {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-      // aca va el filtro 
+      
+       
+        String[] opciones = {"Categoria", "$ Mayor", "$ Menor", "Inicio", "Cancelar"};
+        int seleccion = JOptionPane.showOptionDialog(
+            null, 
+            "Seleccione una opción de ordenamiento:", 
+            "Menú de Opciones", 
+            JOptionPane.DEFAULT_OPTION, 
+            JOptionPane.QUESTION_MESSAGE, 
+            null, 
+            opciones, 
+            opciones[0]
+        );
+
+        // Estructura switch para manejar la selección
+        switch(seleccion) {
+            case 0:
+                              
+                JOptionPane.showMessageDialog(null, "Ordenando por Categoría");
+                String sql = "SELECT  Nombre_producto, Precio, Categoria, Icono FROM Productos WHERE Cantidad > 0 AND Categoria IN ('Copia / Impresion', 'Papelería', 'Engargolado', 'Pasta', 'Arillo') ORDER BY  Categoria ASC,    Precio DESC ; ";
+                Ventas.getInstance().cargarProductos(sql);
+                repaint();
+                        
+                break;
+                
+            case 1:
+                JOptionPane.showMessageDialog(null, "Ordenando por Mayor Precio");
+        
+                String sql2 = "SELECT idProductos, Nombre_producto, Precio, Categoria, Icono " +
+             "FROM Productos WHERE Cantidad > 0 " +
+             "ORDER BY Precio DESC";
+                Ventas.getInstance().cargarProductos(sql2);
+                repaint();
+                
+                break;
+                
+            case 2:
+                JOptionPane.showMessageDialog(null, "Ordenando por Menor Precio");
+                String sql3 = "SELECT idProductos, Nombre_producto, Precio, Categoria, Icono " +
+             "FROM Productos WHERE Cantidad > 0 " +
+             "ORDER BY Precio ASC";
+                Ventas.getInstance().cargarProductos(sql3);
+                repaint();
+                
+                break;
+                
+            case 3:
+                JOptionPane.showMessageDialog(null, "Ordenado Inicial");
+                String sql4 = "SELECT Nombre_producto, Precio, Icono FROM Productos WHERE Cantidad > 0 AND Categoria IN ('Copia / Impresion', 'Papelería', 'Engargolado');";
+                Ventas.getInstance().cargarProductos(sql4);
+                repaint();
+                
+                break;
+            
+             case 4:
+                JOptionPane.showMessageDialog(null, "Operación cancelada");
+                // Lógica para cancelar
+                break;
+                
+            default:
+                JOptionPane.showMessageDialog(null, "No se seleccionó ninguna opción");
+                // Lógica por defecto (cuando se cierra el diálogo)
+                break;
+        }
       
       
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -796,7 +859,7 @@ private void revertirIVA() {
 
     // Obtener productos con el filtro aplicado
     Conexion conexion = new Conexion();
-    List<Productosprecios> productos = conexion.obtenerProductos();
+    List<Productosprecios> productos = conexion.obtenerProductosfiltro(filtro);
 
     for (Productosprecios producto : productos) {
         JButton botonProducto = new JButton("<html>" + producto.getNombre() + "<br>MXN $ " + producto.getPrecio() + "</html>");
