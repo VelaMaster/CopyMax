@@ -12,4 +12,3 @@ public class FabricaDefault implements FabricaProductos {
         return producto;
     }
 }
-
