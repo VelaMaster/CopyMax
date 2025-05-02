@@ -6,6 +6,10 @@ package Vista;
 
 import Modelo.Productoclass;
 import Conexion.Conexion;
+import Modelo.FabricaProducto;
+import Modelo.FabricaProductoConcreto;
+import Modelo.Producto;
+import Modelo.ServicioProductos;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyAdapter;
@@ -267,26 +271,21 @@ public void updateTable(List<Productoclass> products) {
     
     
 public void llenarTabla() {
-    // Crea una instancia de Productoclass para acceder a los productos disponibles
-    Productoclass productoo = new Productoclass();
-    
-    // Obtiene la lista de productos llamando al método obtenerProductos() de Productoclass
-    List<Productoclass> productos = productoo.obtenerProductos();
-    
-    // Itera sobre cada producto en la lista obtenida
-    for (Productoclass producto : productos) {
-        // Crea un arreglo de objetos para representar una fila de la tabla
+    ServicioProductos servicio = new ServicioProductos();
+    List<Producto> productos = servicio.obtenerProductosDesdeFabrica(new FabricaProductoConcreto());
+
+
+    for (Producto producto : productos) {
         Object[] fila = new Object[5];
-        fila[0] = producto.getId();        // Asigna el ID del producto a la primera columna
-        fila[1] = producto.getNombre();    // Asigna el nombre del producto a la segunda columna
-        fila[2] = producto.getPrecio();    // Asigna el precio unitario a la tercera columna
-        fila[3] = producto.getCantidad();  // Asigna la cantidad disponible a la cuarta columna
-        fila[4] = producto.getCategoria(); // Asigna la categoría a la quinta columna
-        
-        // Agrega la fila al modelo de la tabla
+        fila[0] = producto.getId();
+        fila[1] = producto.getNombre();
+        fila[2] = producto.getPrecio();
+        fila[3] = producto.getCantidad();
+        fila[4] = producto.getCategoria();
         modelo.addRow(fila);
     }
 }
+
 
 private void agregarKeyListenerGlobal() {
     // Agrega un despachador de eventos de teclado que escuche todas las teclas presionadas

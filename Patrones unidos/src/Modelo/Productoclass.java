@@ -83,7 +83,8 @@ public class Productoclass implements Producto{
         JOptionPane.showMessageDialog(null, "Error al obtener productos: " + e.toString());
     }
     return productos;
-    }    
+    }
+// no mover arriba iguak se ocupa para abstract y metodo abstracto    
     
     public List<Productoclass> obtenerClientesProductoscatego(String categoria) {
         List<Productoclass> productos = new ArrayList<>();
