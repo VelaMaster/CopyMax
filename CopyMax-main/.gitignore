@@ -1,0 +1,15 @@
+/nbproject/private/
+/build/
+/dist/
+/Builder/build/
+/Builder/dist/
+/Fabrica Abstracta/dist/
+/Metodo de fabricacion/dist/
+/Memento/dist/
+/Facade/dist/
+<<<<<<< HEAD
+/Bridge/dist/
+=======
+/Composite/dist/
+>>>>>>> refs/remotes/origin/main
+/Adapter/dist/
