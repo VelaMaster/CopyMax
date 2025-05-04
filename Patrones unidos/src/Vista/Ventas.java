@@ -46,6 +46,8 @@ import javax.swing.JTextField;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import Modelo.StockObserver;
+
 
 /**
  *
@@ -63,6 +65,23 @@ public class Ventas extends javax.swing.JPanel {
     private double contaventas;
     String clienteactual="General";
     private JPanel productosPanel = new JPanel();
+    
+    
+    
+    //OBSERVER INICIO
+     private List<StockObserver> observadores = new ArrayList<>();
+    
+    public void agregarObservador(StockObserver observer) {
+        observadores.add(observer);
+    }
+
+    public void notificarVenta() {
+        for (StockObserver o : observadores) {
+            o.actualizarStock();
+        }
+    }
+    //OBSERVER FINAL
+    
     
      public static Ventas getInstance() {
         if (instance == null) {
@@ -608,6 +627,9 @@ private void revertirIVA() {
     cobro(); 
     
     System.out.println(obtenerItemsDeJTable());
+        notificarVenta(); // 🔔 Aquí notificas a los observadores
+
+    
     
     }//GEN-LAST:event_BtnVentaActionPerformed
     public void ActualizarinventarioBd() {
@@ -633,6 +655,9 @@ private void revertirIVA() {
 
         // Confirmar la transacción
         conex.getConnection().commit();
+        notificarVenta(); //notifiicar la venta del observer
+        
+        
         JOptionPane.showMessageDialog(null, "Venta guardada y stock actualizado correctamente.");
     } catch (SQLException e) {
         try {

@@ -80,28 +80,27 @@ public class Interfazprincipal extends javax.swing.JFrame {
        
         // Inicializar CardLayout y agregar paneles
         cardLayout = new CardLayout();
-        Panelacambiar.setLayout(cardLayout);
+    Panelacambiar.setLayout(cardLayout);
 
-        // Crear instancias de los paneles
-        Productos productos = new Productos();
-        clientesPanel = new Clientes();
-        ventaspanel = Ventas.getInstance();
-        Estadistica pedidoesta = new Estadistica();
-        Usuariospan usuariopanel = new Usuariospan();
-        GenerarPedido pedido = new GenerarPedido();
-        Reportes reporte = new Reportes();
-      
-        // Agregar los paneles al CardLayout
-        Panelacambiar.add(ventaspanel, "Ventas");
-        Panelacambiar.add(productos,"Productos");
-        Panelacambiar.add(clientesPanel, "Clientes");
-        Panelacambiar.add(pedidoesta,"Estadistica");
-        Panelacambiar.add(usuariopanel,"Usuario");
-        Panelacambiar.add(pedido,"Pedido");
-        Panelacambiar.add(reporte,"Reportes");
-        // Panel Deafeult panelacambiar
-        
-    }
+    Productos productos = Productos.getInstance(); // singleton
+    clientesPanel = new Clientes();
+    ventaspanel = Ventas.getInstance();
+    ventaspanel.agregarObservador(productos); // observador
+
+    Estadistica pedidoesta = new Estadistica();
+    Usuariospan usuariopanel = new Usuariospan();
+    GenerarPedido pedido = new GenerarPedido();
+    Reportes reporte = new Reportes();
+
+    Panelacambiar.add(ventaspanel, "Ventas");
+    Panelacambiar.add(productos, "Productos");
+    Panelacambiar.add(clientesPanel, "Clientes");
+    Panelacambiar.add(pedidoesta, "Estadistica");
+    Panelacambiar.add(usuariopanel, "Usuario");
+    Panelacambiar.add(pedido, "Pedido");
+    Panelacambiar.add(reporte, "Reportes");
+}
+
     
     private void agregarKeyListenerGlobal() {
     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
