@@ -12,11 +12,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-/**
- *
- * @author maxst
- */
 public class Pedidoclass {
     
     int numpedido, idusuario , idcliente, cantidad, numdepaginas;

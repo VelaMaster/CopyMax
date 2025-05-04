@@ -5,12 +5,16 @@
 package Vista;
 
 import Conexion.Conexion;
+import Modelo.FabricaProducto;
+import Modelo.FabricaProductoConcreto;
 import Modelo.Productoclass;
 import Vista.Metododepago;
 import Modelo.Productosprecios;
 import Modelo.Usuariosesion;
 import Modelo.Venta;
 import Modelo.Numeroseditor;
+import Modelo.Producto;
+import Modelo.ServicioProductos;
 import Vista.Agregarproductos;
 import java.sql.ResultSet;
 import Vista.Clientesticket;
@@ -42,6 +46,8 @@ import javax.swing.JTextField;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import Modelo.StockObserver;
+
 
 /**
  *
@@ -59,6 +65,23 @@ public class Ventas extends javax.swing.JPanel {
     private double contaventas;
     String clienteactual="General";
     private JPanel productosPanel = new JPanel();
+    
+    
+    
+    //OBSERVER INICIO
+     private List<StockObserver> observadores = new ArrayList<>();
+    
+    public void agregarObservador(StockObserver observer) {
+        observadores.add(observer);
+    }
+
+    public void notificarVenta() {
+        for (StockObserver o : observadores) {
+            o.actualizarStock();
+        }
+    }
+    //OBSERVER FINAL
+    
     
      public static Ventas getInstance() {
         if (instance == null) {
@@ -604,6 +627,9 @@ private void revertirIVA() {
     cobro(); 
     
     System.out.println(obtenerItemsDeJTable());
+        notificarVenta(); // 🔔 Aquí notificas a los observadores
+
+    
     
     }//GEN-LAST:event_BtnVentaActionPerformed
     public void ActualizarinventarioBd() {
@@ -629,6 +655,9 @@ private void revertirIVA() {
 
         // Confirmar la transacción
         conex.getConnection().commit();
+        notificarVenta(); //notifiicar la venta del observer
+        
+        
         JOptionPane.showMessageDialog(null, "Venta guardada y stock actualizado correctamente.");
     } catch (SQLException e) {
         try {
@@ -667,26 +696,22 @@ private void revertirIVA() {
  * Verifica que haya productos en el ticket antes de abrir la ventana de métodos de pago.
  */
     
-    private void cobro(){
-   // Validar el stock antes de continuar
-    Productoclass listaProductos = new Productoclass();
-    
-    if (!validarStockEnTicket(listaProductos.obtenerProductos())) {
-        return; // Rompe el método si alguna cantidad excede el stock
+private void cobro() {
+    ServicioProductos servicio = new ServicioProductos();
+    FabricaProducto fabrica = new FabricaProductoConcreto();
+    List<Producto> productos = servicio.obtenerProductosDesdeFabrica(fabrica);
+
+    if (!validarStockEnTicket(productos)) {
+        return;
     }
     jTableticket.repaint();
     jTableticket.revalidate();
-
-    if (this.jTableticket.getRowCount() == 0) {
-        // La tabla está vacía
+    if (jTableticket.getRowCount() == 0) {
         JOptionPane.showMessageDialog(null, "Agregue un producto a la venta");
     } else {
-        // La tabla tiene productos
         abrirMetodoPagoFrame();
     }
-    
-    }
-    
+}    
     private void txtTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTotalActionPerformed
@@ -850,7 +875,7 @@ public void agregarProductoAlTicket(Productosprecios producto) {
 } 
    
 // Método para validar que las cantidades en el ticket no excedan el stock disponible
-public boolean validarStockEnTicket(List<Productoclass> productos) {
+public boolean validarStockEnTicket(List<Producto> productos) {
     int filas = modelo.getRowCount();
 
     // Recorrer cada fila del ticket (tabla)
@@ -869,7 +894,7 @@ public boolean validarStockEnTicket(List<Productoclass> productos) {
         }
 
         // Buscar el producto correspondiente en la lista de productos
-        for (Productoclass producto : productos) {
+        for (Producto producto : productos) {
             if (producto.getNombre().equals(nombreProductoTicket)) {
                 if (cantidadSolicitada > producto.getCantidad()) {
                     // Si la cantidad excede el stock, muestra un mensaje y rompe el flujo

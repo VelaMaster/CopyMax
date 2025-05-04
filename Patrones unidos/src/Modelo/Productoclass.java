@@ -9,15 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-/**
- * @author Artorias<maxstell5549@hotmail.com>
- */
-public class Productoclass {
+public class Productoclass implements Producto{
 
     int id,cantidad;
     String Nombre,Categoria,icono;
     double precio;
     
+    @Override
     public int getId() {
         return id;
     }
@@ -46,6 +44,7 @@ public class Productoclass {
         return Nombre;
     }
 
+    @Override
     public void setNombre(String Nombre) {
         this.Nombre = Nombre;
     }
@@ -65,33 +64,27 @@ public class Productoclass {
     public void setPrecio(double precio) {
         this.precio = precio;
     }
-    
-   public List<Productoclass> obtenerProductos() {
-    List<Productoclass> productos = new ArrayList<>();
+    // No mover se usa con abstract y metodo abstracto
+    public List<Producto> obtenerProductos() {
+    List<Producto> productos = new ArrayList<>();
     Conexion conex = new Conexion();
     String sql = "SELECT idProductos, Nombre_producto, Precio, Cantidad, Categoria FROM Productos";
+    FabricaProducto fabrica = new FabricaProductoConcreto();
 
     try (Connection con = conex.getConnection(); 
          PreparedStatement pst = con.prepareStatement(sql);
          ResultSet rs = pst.executeQuery()) {
 
         while (rs.next()) {
-            Productoclass producto = new Productoclass();
-
-            producto.setId(rs.getInt("idProductos")); // Asegúrate que "idProductos" es el nombre correcto de la columna
-            producto.setNombre(rs.getString("Nombre_producto")); // Usa el nombre exacto de la columna
-            producto.setPrecio(rs.getDouble("Precio")); // Obtén el precio de la columna "Precio"
-            producto.setCantidad(rs.getInt("Cantidad")); // Obtén la cantidad de la columna "Cantidad"
-            producto.setCategoria(rs.getString("Categoria")); // Obtén la categoría de la columna "Categoria"
+            Producto producto = fabrica.crearProducto(rs); // se crea con FactoryMethod + AbstractFactory
             productos.add(producto);
         }
     } catch (SQLException e) {
         JOptionPane.showMessageDialog(null, "Error al obtener productos: " + e.toString());
     }
-
     return productos;
-}
-    
+    }
+// no mover arriba iguak se ocupa para abstract y metodo abstracto    
     
     public List<Productoclass> obtenerClientesProductoscatego(String categoria) {
         List<Productoclass> productos = new ArrayList<>();

@@ -2,12 +2,16 @@
 package Vista;
 
 import Conexion.Conexion;
-import Modelo.Clientesclass;
+import Modelo.FabricaProducto;
+import Modelo.FabricaProductoConcreto;
 import Modelo.Productoclass;
-
 import Modelo.Letraseditor;
 import Modelo.Numerosdecimaleseditor;
 import Modelo.Numeroseditor;
+import Modelo.Producto;
+import Modelo.ServicioProductos;
+import Modelo.StockNotifier;
+import Modelo.StockObserver;
 import Vista.Metododepago;
 import Vista.RegistroClientes;
 import Vista.RegistroProductos;
@@ -22,7 +26,7 @@ import java.util.List;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-public class Productos extends javax.swing.JPanel {
+public class Productos extends javax.swing.JPanel implements StockObserver {
        
     private static Productos instance;    
     private DefaultTableModel modelo;
@@ -36,6 +40,9 @@ public class Productos extends javax.swing.JPanel {
         modelo.addColumn("Cantidad");
         modelo.addColumn("Categoría");
         Tablacproductos.setModel(modelo);
+        StockNotifier.getInstance().agregarObservador(this); //OBSERVER
+
+        
         llenarTabla();
         tabladiseño();
     }
@@ -322,22 +329,25 @@ public class Productos extends javax.swing.JPanel {
        
         Ventas.getInstance().cargarProductos("");
     }//GEN-LAST:event_BtnactualizarActionPerformed
-    
-      public void llenarTabla() {
-          Productoclass productoo = new Productoclass();
-        List<Productoclass> productos = productoo.obtenerProductos();
-        
-        for (Productoclass producto : productos) {
-            Object[] fila = new Object[5];
-            fila[0] = producto.getId();
-            fila[1] = producto.getNombre();
-            fila[2] = producto.getPrecio();
-            fila[3] = producto.getCantidad();
-            fila[4] = producto.getCategoria();
-             modelo.addRow(fila);
-        }
+public void llenarTabla() {
+    // Instanciar el servicio y la fábrica
+    ServicioProductos servicio = new ServicioProductos();
+    FabricaProducto fabrica = new FabricaProductoConcreto();
+
+    // Obtener la lista de productos usando el patrón combinado
+    List<Producto> productos = servicio.obtenerProductosDesdeFabrica(fabrica);
+
+    // Rellenar la tabla con los productos
+    for (Producto producto : productos) {
+        Object[] fila = new Object[5];
+        fila[0] = producto.getId();
+        fila[1] = producto.getNombre();
+        fila[2] = producto.getPrecio();
+        fila[3] = producto.getCantidad();
+        fila[4] = producto.getCategoria();
+        modelo.addRow(fila);
     }
-      
+}
       private void eliminarProductoBD(int idProducto) {
         Conexion conex = new Conexion();
         String consulta = "DELETE FROM Productos WHERE idProductos = ?";
@@ -352,25 +362,23 @@ public class Productos extends javax.swing.JPanel {
         
     }
      
-   public void actualizarTabla() {
-    // Limpiar el modelo de la tabla
+public void actualizarTabla() {
     modelo.setRowCount(0);
-    
-    // Obtener la lista actualizada de clientes
-    Productoclass productoo = new Productoclass();
-    List<Productoclass> Productos = productoo.obtenerProductos();
-    
-    // Agregar las nuevas filas al modelo de la tabla
-    for (Productoclass producto : Productos) {
-        Object[] fila = new Object[6];
-            fila[0] = producto.getId();
-            fila[1] = producto.getNombre();
-            fila[2] = producto.getPrecio();
-            fila[3] = producto.getCantidad();
-            fila[4] = producto.getCategoria();
+    ServicioProductos servicio = new ServicioProductos();
+    FabricaProducto fabrica = new FabricaProductoConcreto();
+    List<Producto> productos = servicio.obtenerProductosDesdeFabrica(fabrica);
+
+    for (Producto producto : productos) {
+        Object[] fila = new Object[5];
+        fila[0] = producto.getId();
+        fila[1] = producto.getNombre();
+        fila[2] = producto.getPrecio();
+        fila[3] = producto.getCantidad();
+        fila[4] = producto.getCategoria();
         modelo.addRow(fila);
     }
 }
+
    private void actualizarTablabus() {
     String textoBusqueda = txtregprocategoria.getText();
     
@@ -416,4 +424,11 @@ public class Productos extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField txtregprocategoria;
     // End of variables declaration//GEN-END:variables
+
+   @Override
+ public void actualizarStock() {
+    
+    actualizarTabla();
 }
+}
+
