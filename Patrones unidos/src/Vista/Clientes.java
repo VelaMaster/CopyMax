@@ -3,6 +3,7 @@ package Vista;
 import Modelo.Clientesclass;
 import Conexion.Conexion;
 import Modelo.ClienteMemento;
+import Modelo.ClientesFacade;
 import Modelo.Filtronumeros;
 import Modelo.Letraseditor;
 import Modelo.Numeroseditor;
@@ -379,7 +380,7 @@ public class Clientes extends javax.swing.JPanel {
      * cliente.
      */
     private void llenarTabla() {
-        Clientesclass clientee = new Clientesclass();
+        ClientesFacade clientee = new ClientesFacade();
         List<Clientesclass> clientes = clientee.obtenerClientes();
 
         for (Clientesclass cliente : clientes) {
@@ -418,7 +419,7 @@ public class Clientes extends javax.swing.JPanel {
     public void actualizarTabla() {
         modelo.setRowCount(0); // Limpiar la tabla
 
-        Clientesclass clientee = new Clientesclass();
+        ClientesFacade clientee = new ClientesFacade();
         List<Clientesclass> clientes = clientee.obtenerClientes();
 
         for (Clientesclass cliente : clientes) {
