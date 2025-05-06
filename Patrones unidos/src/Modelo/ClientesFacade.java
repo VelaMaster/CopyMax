@@ -10,8 +10,8 @@ public class ClientesFacade {
     }
     // Método que obtiene todos los clientes
     public List<Clientesclass> obtenerClientes() {
-        return clientesclass.obtenerClientes();
-    }
+        return clientesclass.obtenerClientes(); 
+    } 
     // Método que obtiene clientes por número de celular
     public List<Clientesclass> obtenerClientesPorNumero(String numero) {
         return clientesclass.obtenerClientesPorNumero(numero);

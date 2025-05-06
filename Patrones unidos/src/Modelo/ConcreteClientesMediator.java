@@ -36,6 +36,7 @@ public class ConcreteClientesMediator implements ClientesMediator {
     public void obtenerClientes() {
         if (clientesClass != null && clientesPanel != null) {
             List<Clientesclass> clientes = clientesFacade.obtenerClientes();
+        
             clientesPanel.actualizarTablaUI(clientes);
         }
     }
