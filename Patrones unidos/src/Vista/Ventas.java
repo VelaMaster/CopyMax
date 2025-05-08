@@ -806,6 +806,7 @@ private void cobro() {
     }
     
    
+    
    public void cargarProductos() {
           
     Conexion conexion = new Conexion();
