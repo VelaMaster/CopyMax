@@ -19,7 +19,6 @@ public class ConcreteClientesMediator implements ClientesMediator {
 
     private Clientes clientesPanel;
     private Clientesclass clientesClass;
-    private ClientesFacade clientesFacade;
     private Stack<ClienteMemento> historialMementos = new Stack<>();
 
     @Override
@@ -35,7 +34,7 @@ public class ConcreteClientesMediator implements ClientesMediator {
     @Override
     public void obtenerClientes() {
         if (clientesClass != null && clientesPanel != null) {
-            List<Clientesclass> clientes = clientesFacade.obtenerClientes();
+            List<Clientesclass> clientes = clientesClass.obtenerClientes();
         
             clientesPanel.actualizarTablaUI(clientes);
         }
