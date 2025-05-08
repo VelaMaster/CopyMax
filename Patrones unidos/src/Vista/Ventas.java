@@ -5,6 +5,7 @@
 package Vista;
 
 import Conexion.Conexion;
+import Modelo.ComponenteProducto;
 import Modelo.FabricaProducto;
 import Modelo.FabricaProductoConcreto;
 import Modelo.Productoclass;
@@ -13,6 +14,7 @@ import Modelo.Productosprecios;
 import Modelo.Usuariosesion;
 import Modelo.Venta;
 import Modelo.Numeroseditor;
+import Modelo.PaqueteDeProductos;
 import Modelo.Producto;
 import Modelo.ServicioProductos;
 import Vista.Agregarproductos;
@@ -195,6 +197,7 @@ public class Ventas extends javax.swing.JPanel {
         lblcliente = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        Btnformarpaquete = new javax.swing.JButton();
 
         jButton2.setText("jButton2");
 
@@ -211,19 +214,15 @@ public class Ventas extends javax.swing.JPanel {
         txtsubtotal.setEnabled(false);
 
         Labelsubtotal.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        Labelsubtotal.setForeground(new java.awt.Color(0, 0, 0));
         Labelsubtotal.setText("SUBTOTAL:");
 
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("MXN");
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("MXN");
 
         LabelTotal.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        LabelTotal.setForeground(new java.awt.Color(0, 0, 0));
         LabelTotal.setText("TOTAL:");
 
         txtTotal.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
@@ -235,22 +234,18 @@ public class Ventas extends javax.swing.JPanel {
         });
 
         jLabel6.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
         jLabel6.setText("MXN");
 
         Labeldescuento.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        Labeldescuento.setForeground(new java.awt.Color(0, 0, 0));
 
         txtdescuento.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         txtdescuento.setEnabled(false);
 
         jLabel8.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(0, 0, 0));
         jLabel8.setText("MXN");
 
         Jcheckdescuento.setBackground(new java.awt.Color(204, 204, 204));
         Jcheckdescuento.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        Jcheckdescuento.setForeground(new java.awt.Color(0, 0, 0));
         Jcheckdescuento.setText("DESCUENTO:");
         Jcheckdescuento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -260,7 +255,6 @@ public class Ventas extends javax.swing.JPanel {
 
         Jcheckimpuesto.setBackground(new java.awt.Color(204, 204, 204));
         Jcheckimpuesto.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        Jcheckimpuesto.setForeground(new java.awt.Color(0, 0, 0));
         Jcheckimpuesto.setText("IMPUESTO:");
         Jcheckimpuesto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -273,7 +267,6 @@ public class Ventas extends javax.swing.JPanel {
 
         BtnVenta.setBackground(new java.awt.Color(204, 255, 255));
         BtnVenta.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        BtnVenta.setForeground(new java.awt.Color(0, 0, 0));
         BtnVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/marketing-directo (Custom).png"))); // NOI18N
         BtnVenta.setText("Venta");
         BtnVenta.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -439,10 +432,8 @@ public class Ventas extends javax.swing.JPanel {
         jTableticket.setRowHeight(30);
 
         lblusuarioactual.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        lblusuarioactual.setForeground(new java.awt.Color(0, 0, 0));
         lblusuarioactual.setText("Usuario:");
 
-        Btnclientesseleccion.setBackground(new java.awt.Color(255, 255, 255));
         Btnclientesseleccion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/reclutamiento.png"))); // NOI18N
         Btnclientesseleccion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -451,7 +442,6 @@ public class Ventas extends javax.swing.JPanel {
         });
 
         lblcliente.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        lblcliente.setForeground(new java.awt.Color(0, 0, 0));
         lblcliente.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblcliente.setText("Cliente: General");
         lblcliente.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -466,6 +456,14 @@ public class Ventas extends javax.swing.JPanel {
             }
         });
 
+        Btnformarpaquete.setBackground(new java.awt.Color(255, 255, 255));
+        Btnformarpaquete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ventas (Custom) (Custom).png"))); // NOI18N
+        Btnformarpaquete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnformarpaqueteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout TicketLayout = new javax.swing.GroupLayout(Ticket);
         Ticket.setLayout(TicketLayout);
         TicketLayout.setHorizontalGroup(
@@ -474,25 +472,26 @@ public class Ventas extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(TicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(TicketLayout.createSequentialGroup()
-                        .addGroup(TicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(TicketLayout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(47, 47, 47)
-                                .addComponent(jLabel9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(Btnclientesseleccion))
-                            .addGroup(TicketLayout.createSequentialGroup()
-                                .addComponent(lblusuarioactual)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblcliente, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(lblusuarioactual)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblcliente, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
                     .addGroup(TicketLayout.createSequentialGroup()
                         .addGroup(TicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addComponent(Cuenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 15, Short.MAX_VALUE))))
+                        .addGap(0, 15, Short.MAX_VALUE))
+                    .addGroup(TicketLayout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Btnclientesseleccion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Btnformarpaquete)
+                        .addGap(15, 15, 15))))
         );
         TicketLayout.setVerticalGroup(
             TicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -501,14 +500,15 @@ public class Ventas extends javax.swing.JPanel {
                     .addGroup(TicketLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(TicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, TicketLayout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                             .addGroup(TicketLayout.createSequentialGroup()
+                                .addComponent(Btnclientesseleccion)
+                                .addGap(20, 20, 20))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, TicketLayout.createSequentialGroup()
                                 .addGroup(TicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jButton1)
-                                    .addComponent(Btnclientesseleccion))
-                                .addGap(20, 20, 20)))
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(Btnformarpaquete, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(TicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblcliente)
                             .addComponent(lblusuarioactual)))
@@ -734,6 +734,64 @@ private void cobro() {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void BtnformarpaqueteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnformarpaqueteActionPerformed
+        // Solicitar el nombre del paquete
+        String nombrePaquete = JOptionPane.showInputDialog(this, "Ingrese el nombre del paquete:", "Crear Paquete", JOptionPane.PLAIN_MESSAGE);
+
+        if (nombrePaquete == null || nombrePaquete.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El nombre del paquete no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Calcular el total de todas las filas
+        double total = calcularTotalTabla();
+
+        // Crear el paquete (usando el patrón Composite)
+        PaqueteDeProductos paquete = new PaqueteDeProductos(nombrePaquete);
+
+        // Obtener el modelo de la tabla
+        DefaultTableModel model = (DefaultTableModel) jTableticket.getModel();
+
+        // Recorrer todas las filas para agregar los productos al paquete
+        for (int i = 0; i < model.getRowCount(); i++) {
+            Object valor = model.getValueAt(i, 1); // Columna 1: Descripción del producto
+            if (valor instanceof ComponenteProducto) {
+                ComponenteProducto producto = (ComponenteProducto) valor;
+                paquete.agregarProducto(producto);
+            }
+        }
+
+        // Limpiar la tabla
+        limpiarTabla();
+
+        // Agregar el paquete como una nueva fila en la tabla
+        Object[] nuevaFila = {1, nombrePaquete, total,total}; // Ajusta las columnas según tu tabla
+        model.addRow(nuevaFila);
+
+        // Actualizar la tabla
+
+    }//GEN-LAST:event_BtnformarpaqueteActionPerformed
+
+    private double calcularTotalTabla() {
+    DefaultTableModel model = (DefaultTableModel) jTableticket.getModel();
+    double total = 0;
+
+    for (int i = 0; i < model.getRowCount(); i++) {
+        // Obtener el valor de la columna que contiene el total (ajusta el índice de la columna)
+        Object valor = model.getValueAt(i, 3); // Columna 3: Total
+        if (valor instanceof Double) {
+            total += (Double) valor;
+        }
+    }
+
+    return total;
+}
+    
+     private void limpiarTabla() {
+    DefaultTableModel model = (DefaultTableModel) jTableticket.getModel();
+    model.setRowCount(0); // Eliminar todas las filas
+}
+    
    private void abrirMetodoPagoFrame() {
         double totalVenta = obtenerTotalVentaActual(); // Obtener el total de la venta actual
         Metododepago  metodoPagoFrame = new Metododepago(totalVenta,this);
@@ -1191,6 +1249,7 @@ private List<String> dividirDescripcionEnLineas(String descripcion, int maxLengt
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnVenta;
     private javax.swing.JButton Btnclientesseleccion;
+    private javax.swing.JButton Btnformarpaquete;
     private javax.swing.JPanel Cuenta;
     private javax.swing.JCheckBox Jcheckdescuento;
     private javax.swing.JCheckBox Jcheckimpuesto;
