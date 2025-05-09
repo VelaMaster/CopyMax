@@ -818,7 +818,7 @@ private void cobro() {
 
     for (Productosprecios producto : productos) {
         JButton botonProducto = new JButton("<html>" + producto.getNombre() + "<br>MXN $ " + producto.getPrecio() + "</html>");
-
+           System.out.println("pro: "+producto.getNombre());
         String iconoPath = "/Iconosproductos/" + producto.getDireccionicon();
         if (iconoPath != null && !iconoPath.isEmpty()) {
             try {
@@ -936,40 +936,51 @@ public void agregarProductoAlTicket(Productosprecios producto) {
 // Método para validar que las cantidades en el ticket no excedan el stock disponible
 public boolean validarStockEnTicket(List<Producto> productos) {
     int filas = modelo.getRowCount();
+    boolean stockValido = true;
 
-    // Recorrer cada fila del ticket (tabla)
     for (int i = 0; i < filas; i++) {
-        String nombreProductoTicket = (String) modelo.getValueAt(i, 1); // Nombre del producto
+        String nombreProductoTicket = (String) modelo.getValueAt(i, 1);
         int cantidadSolicitada;
 
         try {
-            // Convertir el valor de la tabla a entero
             cantidadSolicitada = Integer.parseInt(modelo.getValueAt(i, 0).toString());
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, 
                 "La cantidad en la fila " + (i + 1) + " no es un número válido.", 
                 "Error de Formato", JOptionPane.ERROR_MESSAGE);
-            return false; // Stock no válido debido a error en el formato
+            return false;
         }
 
-        // Buscar el producto correspondiente en la lista de productos
         for (Producto producto : productos) {
             if (producto.getNombre().equals(nombreProductoTicket)) {
-                if (cantidadSolicitada > producto.getCantidad()) {
-                    // Si la cantidad excede el stock, muestra un mensaje y rompe el flujo
-                    cantidadSolicitada = 1;
-                    modelo.setValueAt(cantidadSolicitada, i, 0); // Actualizar la tabla
+                int stockActual = producto.getCantidad();
+                
+                // 1. Si la cantidad excede el stock, ajustar al máximo disponible
+                if (cantidadSolicitada > stockActual) {
+                    modelo.setValueAt(stockActual, i, 0); // Ajusta a la cantidad máxima disponible
                     JOptionPane.showMessageDialog(null, 
-                        "La cantidad solicitada para '" + nombreProductoTicket + "' excede el stock disponible (" 
-                        + producto.getCantidad() + ").", 
-                        "Error de Stock", JOptionPane.ERROR_MESSAGE);
-                    return false; // Stock no válido
+                        "Cantidad ajustada. Solo hay " + stockActual + " unidades de '" + nombreProductoTicket + "'", 
+                        "Aviso", JOptionPane.WARNING_MESSAGE);
+                    cantidadSolicitada = stockActual; // Actualizamos la variable para las validaciones
+                }
+                
+                // 2. Alertas de estado de stock (solo si hay al menos 1 unidad)
+                if (stockActual > 0) {
+                    if (stockActual >= 1 && stockActual <= 9) {
+                        JOptionPane.showMessageDialog(null, 
+                            "¡STOCK BAJO! '" + nombreProductoTicket + "' tiene solo " + stockActual + " unidades.",
+                            "Alerta", JOptionPane.WARNING_MESSAGE);
+                    } 
+                    else if (stockActual >= 10 && stockActual <= 20) {
+                        JOptionPane.showMessageDialog(null, 
+                            "¡STOCK CRÍTICO! '" + nombreProductoTicket + "' tiene " + stockActual + " unidades.",
+                            "Alerta", JOptionPane.WARNING_MESSAGE);
+                    }
                 }
             }
         }
     }
-
-    return true; // Stock válido
+    return stockValido;
 }
     
     public void agregarProductoAlTicketstocl(Productoclass producto) {
