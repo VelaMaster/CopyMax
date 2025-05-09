@@ -6,6 +6,21 @@ import java.util.*;
 import javax.swing.JOptionPane;
 
 public class ServicioProductos {
+        // ---------------------- SINGLETON ------------------------
+    private static ServicioProductos instancia;
+
+    public ServicioProductos() {
+        // Constructor privado
+    }
+
+    public static ServicioProductos getInstancia() {
+        if (instancia == null) {
+            instancia = new ServicioProductos();
+        }
+        return instancia;
+    }
+    // --------------------------------------------------------
+
 
     public List<Producto> obtenerProductosDesdeFabrica(FabricaProducto fabrica) {
         List<Producto> productos = new ArrayList<>();

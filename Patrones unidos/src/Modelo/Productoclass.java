@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-public class Productoclass implements Producto{
+
+public class Productoclass implements Producto, ClonableProducto{
 
     int id,cantidad;
     String Nombre,Categoria,icono;
@@ -64,6 +65,17 @@ public class Productoclass implements Producto{
     public void setPrecio(double precio) {
         this.precio = precio;
     }
+        @Override
+    public Producto clonar() {
+        Productoclass clon = new Productoclass();
+        clon.setId(this.id);
+        clon.setNombre(this.Nombre);
+        clon.setPrecio(this.precio);
+        clon.setCantidad(this.cantidad);
+        clon.setCategoria(this.Categoria);
+        return clon;
+    }
+    
     // No mover se usa con abstract y metodo abstracto
     public List<Producto> obtenerProductos() {
     List<Producto> productos = new ArrayList<>();
@@ -113,7 +125,16 @@ public class Productoclass implements Producto{
         }
         return productos;
     }
-    
-    
+        @Override
+    public String toString() {
+        return "Productoclass{" +
+                "id=" + id +
+                ", nombre='" + Nombre + '\'' +
+                ", precio=" + precio +
+                ", cantidad=" + cantidad +
+                ", categoria='" + Categoria + '\'' +
+                ", icono='" + icono + '\'' +
+                '}';
+    }    
     
 }
