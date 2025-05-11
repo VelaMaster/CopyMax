@@ -2,6 +2,7 @@ package Vista;
 
 import Modelo.Clientesclass;
 import Conexion.Conexion;
+import Modelo.FiltroDocumento;
 import Modelo.FiltroLetras;
 import Modelo.Filtromayusculas;
 import Modelo.Filtronumeros;
@@ -29,9 +30,9 @@ public class RegistroClientes extends javax.swing.JFrame {
         PlainDocument DOC =(PlainDocument) TxtRfc.getDocument();
         DOC.setDocumentFilter(new Filtromayusculas());     
         PlainDocument docnombre =(PlainDocument) TxtNombre.getDocument();
-        docnombre.setDocumentFilter(new FiltroLetras());
+        docnombre.setDocumentFilter(new FiltroLetras ());
         PlainDocument docapellidos =(PlainDocument) TxtApellidos.getDocument();
-        docapellidos.setDocumentFilter(new FiltroLetras());
+        docapellidos.setDocumentFilter(new FiltroLetras ());
                
     }
     
