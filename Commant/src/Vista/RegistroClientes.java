@@ -2,6 +2,10 @@ package Vista;
 
 import Modelo.Clientesclass;
 import Conexion.Conexion;
+import Modelo.AddClientCommand;
+import Modelo.ClientCommand;
+import Modelo.ClientCommandInvoker;
+import Modelo.ClientService;
 import Modelo.FiltroLetras;
 import Modelo.Filtromayusculas;
 import Modelo.Filtronumeros;
@@ -12,37 +16,38 @@ import javax.swing.JOptionPane;
 import javax.swing.text.PlainDocument;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
 /**
  *
  * @author Artorias<maxstell5549@hotmail.com>
  */
 public class RegistroClientes extends javax.swing.JFrame {
-  //  Conexion cone = main.getCone();
-    
+    //  Conexion cone = main.getCone();
+
     Clientesclass clientes = new Clientesclass();
- 
+
     public RegistroClientes() {
         initComponents();
         agregarKeyListenerGlobal();
         PlainDocument doc = (PlainDocument) TxtCelular.getDocument();
         doc.setDocumentFilter(new Filtronumeros());
-        PlainDocument DOC =(PlainDocument) TxtRfc.getDocument();
-        DOC.setDocumentFilter(new Filtromayusculas());     
-        PlainDocument docnombre =(PlainDocument) TxtNombre.getDocument();
+        PlainDocument DOC = (PlainDocument) TxtRfc.getDocument();
+        DOC.setDocumentFilter(new Filtromayusculas());
+        PlainDocument docnombre = (PlainDocument) TxtNombre.getDocument();
         docnombre.setDocumentFilter(new FiltroLetras());
-        PlainDocument docapellidos =(PlainDocument) TxtApellidos.getDocument();
+        PlainDocument docapellidos = (PlainDocument) TxtApellidos.getDocument();
         docapellidos.setDocumentFilter(new FiltroLetras());
-               
+
     }
-    
-     private void agregarKeyListenerGlobal() {
+
+    private void agregarKeyListenerGlobal() {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
             @Override
             public boolean dispatchKeyEvent(KeyEvent e) {
                 if (e.getID() == KeyEvent.KEY_PRESSED && e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                dispose();;
+                    dispose();;
                 }
-                
+
                 return false;
             }
         });
@@ -208,28 +213,32 @@ public class RegistroClientes extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarActionPerformed
-         
-        Clientes clien = new Clientes();
+        // 1. Construir el modelo a partir de los campos de la UI
+        Clientesclass clientes = new Clientesclass();
         clientes.setNombre(TxtNombre.getText());
         clientes.setApellidos(TxtApellidos.getText());
         clientes.setCelular(TxtCelular.getText());
         clientes.setRfc(TxtRfc.getText());
         clientes.setCorreo(Txtcorreo.getText());
-                
-        limpiardatos();
 
-        // LOGICA MYSQL
-        
-        agregarClienteBD(clientes);
+        // 2. Crear el Receiver y el Command concreto
+        ClientService service = new ClientService(clientes);
+        ClientCommand addCommand = new AddClientCommand(service);
+
+        // 3. Invocar el comando
+        ClientCommandInvoker invoker = new ClientCommandInvoker();
+        invoker.setCommand(addCommand);
+        invoker.executeCommand();
+
+        // 4. Limpiar y cerrar
+        limpiardatos();
         this.dispose();
-       clien.actualizarTabla();
-       
     }//GEN-LAST:event_BtnAgregarActionPerformed
 
     private void TxtcorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtcorreoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_TxtcorreoActionPerformed
-    
+
     private void agregarClienteBD(Clientesclass cliente) {
         Conexion conex = new Conexion();
         String consulta = "INSERT INTO Cliente (Nombre, Apellidos, Celular, RFC,Correo) VALUES (?, ?, ?, ?,?)";
@@ -241,30 +250,29 @@ public class RegistroClientes extends javax.swing.JFrame {
             pst.setString(4, cliente.getRfc());
             pst.setString(5, cliente.getCorreo());
             pst.execute();
-            JOptionPane.showMessageDialog(null,"Cliente Agregado Con Exito !!!");
+            JOptionPane.showMessageDialog(null, "Cliente Agregado Con Exito !!!");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al agregar cliente: " + e.toString());
         }
     }
-    
-    public void limpiardatos(){
-        
+
+    public void limpiardatos() {
+
         TxtNombre.setText("");
         TxtApellidos.setText("");
         //filtro
-        
-        PlainDocument DOC =(PlainDocument) TxtCelular.getDocument();
+
+        PlainDocument DOC = (PlainDocument) TxtCelular.getDocument();
         DOC.setDocumentFilter(new Filtromayusculas());
         TxtCelular.setText("");
-         PlainDocument doc = (PlainDocument) TxtCelular.getDocument();
+        PlainDocument doc = (PlainDocument) TxtCelular.getDocument();
         doc.setDocumentFilter(new Filtronumeros());
-        
+
         TxtRfc.setText("");
         Txtcorreo.setText("");
-        
+
     }
 
-   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnAgregar;
