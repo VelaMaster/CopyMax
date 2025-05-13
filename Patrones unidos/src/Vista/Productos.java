@@ -330,7 +330,6 @@ public class Productos extends javax.swing.JPanel implements StockObserver {
         Ventas.getInstance().cargarProductos("");
     }//GEN-LAST:event_BtnactualizarActionPerformed
 public void llenarTabla() {
-    // Instanciar el servicio y la fábrica
     ServicioProductos servicio = new ServicioProductos();
     FabricaProducto fabrica = new FabricaProductoConcreto();
 

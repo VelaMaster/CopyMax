@@ -1,5 +1,6 @@
 package Modelo;
-public class FabricaUtilEscolar implements FabricaProductos {
+
+public class FabricaPasta implements FabricaProductos{
     @Override
     public Producto crearProducto(int id, String nombre, double precio, int cantidad) {
         Productoclass producto = new Productoclass();
@@ -7,7 +8,7 @@ public class FabricaUtilEscolar implements FabricaProductos {
         producto.setNombre(nombre);
         producto.setPrecio(precio);
         producto.setCantidad(cantidad);
-        producto.setCategoria("Papeleria");
+        producto.setCategoria("Pasta");
         return producto;
     }
 }

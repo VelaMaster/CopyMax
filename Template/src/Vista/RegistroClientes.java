@@ -72,25 +72,27 @@ public class RegistroClientes extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 204, 204));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Nombre:");
 
         TxtNombre.setMinimumSize(new java.awt.Dimension(70, 30));
         TxtNombre.setPreferredSize(new java.awt.Dimension(70, 30));
+        TxtNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TxtNombreActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(102, 102, 255));
         jLabel2.setText("Registro Clientes");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Apellidos:");
 
         TxtApellidos.setMinimumSize(new java.awt.Dimension(70, 30));
         TxtApellidos.setPreferredSize(new java.awt.Dimension(70, 30));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Celular:");
 
         TxtCelular.setMinimumSize(new java.awt.Dimension(70, 30));
@@ -100,12 +102,10 @@ public class RegistroClientes extends javax.swing.JFrame {
         TxtRfc.setPreferredSize(new java.awt.Dimension(70, 30));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("RFC: ");
 
         BtnAgregar.setBackground(new java.awt.Color(255, 255, 153));
         BtnAgregar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        BtnAgregar.setForeground(new java.awt.Color(0, 0, 0));
         BtnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/agregar-usuario (2).png"))); // NOI18N
         BtnAgregar.setText("Agregar");
         BtnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -115,7 +115,6 @@ public class RegistroClientes extends javax.swing.JFrame {
         });
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
         jLabel6.setText("Correo");
 
         Txtcorreo.setMinimumSize(new java.awt.Dimension(70, 30));
@@ -230,6 +229,10 @@ public class RegistroClientes extends javax.swing.JFrame {
     private void TxtcorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtcorreoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_TxtcorreoActionPerformed
+
+    private void TxtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TxtNombreActionPerformed
     
     private void agregarClienteBD(Clientesclass cliente) {
         Conexion conex = new Conexion();

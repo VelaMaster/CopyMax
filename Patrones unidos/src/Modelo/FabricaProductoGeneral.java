@@ -6,13 +6,23 @@ public class FabricaProductoGeneral {
         FabricaProductos fabrica;
 
         switch (categoria.toLowerCase()) {
-            case "útil escolar":
+            case "papeleria":
                 fabrica = new FabricaUtilEscolar();
                 break;
-            case "impresión":
+            case "copia/impresion":
                 fabrica = new FabricaImpresion();
                 break;
+            case "engargolado":
+                fabrica = new FabricaEngargolado();
+                break;
+            case "pasta":
+                fabrica = new FabricaPasta();
+                break;
+            case "arillo":
+                fabrica = new FabricaArillo();
+                break;
             default:
+            
                 fabrica = new FabricaDefault();
                 break;
         }

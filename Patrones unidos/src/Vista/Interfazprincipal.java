@@ -4,7 +4,6 @@ import Conexion.Conexion;
 import Modelo.Clientesclass;
 import Modelo.ConcreteClientesMediator;
 import Modelo.Usuariosesion;
-import com.sun.jdi.connect.spi.Connection;
 import java.awt.CardLayout;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;

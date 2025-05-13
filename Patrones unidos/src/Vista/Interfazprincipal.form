@@ -184,7 +184,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="btnvtasdia" pref="176" max="32767" attributes="0"/>
+                      <Component id="btnvtasdia" pref="0" max="32767" attributes="0"/>
                       <Component id="BtnEstadísticas" alignment="0" max="32767" attributes="0"/>
                       <Component id="BtnProductos" alignment="0" max="32767" attributes="0"/>
                       <Component id="Btnusuarios" alignment="0" max="32767" attributes="0"/>
