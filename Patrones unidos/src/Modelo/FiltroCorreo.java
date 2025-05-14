@@ -4,17 +4,27 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import javax.swing.JOptionPane;
+import java.util.Set;
+import java.util.HashSet;
 
-public class FiltroRFC extends DocumentFilter {
-    private Filtro siguiente;
+public class FiltroCorreo extends DocumentFilter {
+    private static final Set<String> DOMINIOS_VALIDOS = new HashSet<>();
 
-    public void setSiguiente(Filtro siguiente) {
-        this.siguiente = siguiente;
+    static {
+        DOMINIOS_VALIDOS.add("gmail.com");
+        DOMINIOS_VALIDOS.add("yahoo.com");
+        DOMINIOS_VALIDOS.add("hotmail.com");
+        DOMINIOS_VALIDOS.add("outlook.com");
+        DOMINIOS_VALIDOS.add("tec.mx");
+        DOMINIOS_VALIDOS.add("live.com");
+        DOMINIOS_VALIDOS.add("icloud.com");
+        DOMINIOS_VALIDOS.add("protonmail.com");
+        DOMINIOS_VALIDOS.add("edu.mx");
+        DOMINIOS_VALIDOS.add("correo.com");
     }
 
     @Override
     public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-        string = string.toUpperCase();
         StringBuilder nuevoTexto = new StringBuilder(fb.getDocument().getText(0, fb.getDocument().getLength()));
         nuevoTexto.insert(offset, string);
         
@@ -24,9 +34,9 @@ public class FiltroRFC extends DocumentFilter {
             mostrarError();
         }
     }
+
     @Override
     public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-        text = text.toUpperCase();
         StringBuilder nuevoTexto = new StringBuilder(fb.getDocument().getText(0, fb.getDocument().getLength()));
         nuevoTexto.replace(offset, offset + length, text);
         
@@ -38,24 +48,22 @@ public class FiltroRFC extends DocumentFilter {
     }
 
     private void mostrarError() {
-        JOptionPane.showMessageDialog(null, "El RFC debe tener exactamente 13 caracteres:\n- 4 letras al principio\n- 6 números (fecha)\n- 3 alfanuméricos al final", "Error en RFC", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null, "El correo electrónico debe tener un dominio válido:\n" + String.join(", ", DOMINIOS_VALIDOS), "Error en Correo Electrónico", JOptionPane.ERROR_MESSAGE);
     }
 
     private boolean validarParcial(String texto) {
-        if (texto.length() > 13) {
-            return false;
+        if (!texto.contains("@")) {
+            return texto.matches("[A-Za-z0-9._%+-]*");
         }
-        if (texto.length() <= 4) {
-            return texto.matches("[A-Za-z]*");
+        String[] partes = texto.split("@", 2);
+        if (partes.length == 2) {
+            String dominio = partes[1];
+            for (String valido : DOMINIOS_VALIDOS) {
+                if (valido.startsWith(dominio)) {
+                    return true;
+                }
+            }
         }
-        if (texto.length() > 4 && texto.length() <= 10) {
-            String fecha = texto.substring(4);
-            return fecha.matches("[0-9]*");
-        }
-        if (texto.length() > 10) {
-            String ultimos = texto.substring(10);
-            return ultimos.matches("[A-Za-z0-9]*");
-        }
-        return true;
+        return DOMINIOS_VALIDOS.contains(partes[1]);
     }
 }
