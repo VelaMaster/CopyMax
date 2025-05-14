@@ -16,6 +16,7 @@ import Vista.Metododepago;
 import Vista.RegistroClientes;
 import Vista.RegistroProductos;
 import java.awt.Color;
+import java.io.FileWriter;
 import java.sql.Connection;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -87,6 +88,7 @@ public class Productos extends javax.swing.JPanel implements StockObserver {
         BtnModificar = new javax.swing.JButton();
         BtnEliminar = new javax.swing.JButton();
         Btnactualizar = new javax.swing.JButton();
+        BtnNuevo1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 204, 204));
 
@@ -167,6 +169,16 @@ public class Productos extends javax.swing.JPanel implements StockObserver {
             }
         });
 
+        BtnNuevo1.setBackground(new java.awt.Color(102, 153, 255));
+        BtnNuevo1.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
+        BtnNuevo1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/agregar-producto.png"))); // NOI18N
+        BtnNuevo1.setText("Exportar");
+        BtnNuevo1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnNuevo1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -174,13 +186,15 @@ public class Productos extends javax.swing.JPanel implements StockObserver {
             .addGroup(layout.createSequentialGroup()
                 .addGap(64, 64, 64)
                 .addComponent(BtnNuevo)
-                .addGap(60, 60, 60)
+                .addGap(18, 18, 18)
                 .addComponent(BtnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(BtnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(65, 65, 65)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Btnactualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44))
+                .addGap(18, 18, 18)
+                .addComponent(BtnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(BtnNuevo1)
+                .addGap(89, 89, 89))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -205,7 +219,8 @@ public class Productos extends javax.swing.JPanel implements StockObserver {
                     .addComponent(BtnNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(BtnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(BtnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Btnactualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(Btnactualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(BtnNuevo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
@@ -329,6 +344,29 @@ public class Productos extends javax.swing.JPanel implements StockObserver {
        
         Ventas.getInstance().cargarProductos("");
     }//GEN-LAST:event_BtnactualizarActionPerformed
+
+    private void BtnNuevo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnNuevo1ActionPerformed
+        try {
+        // Crear instancia del Adapter y del servicio
+        Adapter.JsonAdapter<Producto> adapter = new Adapter.JsonAdapter<>();
+        Modelo.FabricaProducto fabrica = new Modelo.FabricaProductoConcreto();
+        Modelo.ServicioProductos servicio = Modelo.ServicioProductos.getInstancia();
+        List<Producto> productos = servicio.obtenerProductosDesdeFabrica(fabrica);
+
+        // Convertir productos a JSON
+        String json = adapter.convertirAFormato(productos);
+
+        // Guardar archivo JSON en la carpeta Descargas
+        String ruta = System.getProperty("user.home") + "/Downloads/productos.json";
+        FileWriter writer = new FileWriter(ruta);
+        writer.write(json);
+        writer.close();
+
+        JOptionPane.showMessageDialog(this, "Productos exportados correctamente a:\n" + ruta);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al exportar productos: " + e.getMessage());
+    }
+    }//GEN-LAST:event_BtnNuevo1ActionPerformed
 public void llenarTabla() {
     ServicioProductos servicio = new ServicioProductos();
     FabricaProducto fabrica = new FabricaProductoConcreto();
@@ -417,6 +455,7 @@ public void actualizarTabla() {
     public javax.swing.JButton BtnEliminar;
     public javax.swing.JButton BtnModificar;
     private javax.swing.JButton BtnNuevo;
+    private javax.swing.JButton BtnNuevo1;
     private javax.swing.JButton Btnactualizar;
     private javax.swing.JTable Tablacproductos;
     private javax.swing.JLabel jLabel1;

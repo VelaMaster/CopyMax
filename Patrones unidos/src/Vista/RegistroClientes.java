@@ -3,6 +3,7 @@ package Vista;
 import Modelo.Clientesclass;
 import Conexion.Conexion;
 import Modelo.FiltroLetras;
+import Modelo.FiltroRFC;
 import Modelo.Filtromayusculas;
 import Modelo.Filtronumeros;
 import java.awt.KeyEventDispatcher;
@@ -26,8 +27,8 @@ public class RegistroClientes extends javax.swing.JFrame {
         agregarKeyListenerGlobal();
         PlainDocument doc = (PlainDocument) TxtCelular.getDocument();
         doc.setDocumentFilter(new Filtronumeros());
-        PlainDocument DOC =(PlainDocument) TxtRfc.getDocument();
-        DOC.setDocumentFilter(new Filtromayusculas());     
+        PlainDocument DOC = (PlainDocument) TxtRfc.getDocument();
+        DOC.setDocumentFilter(new FiltroRFC());    
         PlainDocument docnombre =(PlainDocument) TxtNombre.getDocument();
         docnombre.setDocumentFilter(new FiltroLetras());
         PlainDocument docapellidos =(PlainDocument) TxtApellidos.getDocument();

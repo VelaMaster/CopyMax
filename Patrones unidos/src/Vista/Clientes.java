@@ -321,6 +321,9 @@ public class Clientes extends javax.swing.JPanel {
         if (mediator != null) {
             mediator.agregarNuevoCliente();
         }
+        RegistroClientes regi = new RegistroClientes();
+        regi.setVisible(true);
+        
     }//GEN-LAST:event_BtnNuevoActionPerformed
 
     /**

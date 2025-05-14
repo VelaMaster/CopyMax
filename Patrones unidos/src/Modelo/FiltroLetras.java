@@ -8,6 +8,7 @@ public class FiltroLetras extends DocumentFilter {
     public FiltroLetras(){
         FiltroSoloLetras filtroLetras = new FiltroSoloLetras();
         FiltroLongitud filtroLongitud = new FiltroLongitud();
+        FiltroRFC rfc = new FiltroRFC();
         
         filtroLetras.setSiguiente(filtroLongitud);
         this.filtro = filtroLetras;
