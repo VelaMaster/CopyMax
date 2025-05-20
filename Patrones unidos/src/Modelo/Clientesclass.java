@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 public class Clientesclass {
-
+    
     int id;
     String Correo;
     String Celular;

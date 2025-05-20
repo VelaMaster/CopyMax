@@ -76,7 +76,7 @@ public class Productoclass implements Producto, ClonableProducto{
         return clon;
     }
     
-    // No mover se usa con abstract y metodo abstracto
+    // No mover se usa con abstract y fabrica
     public List<Producto> obtenerProductos() {
     List<Producto> productos = new ArrayList<>();
     Conexion conex = new Conexion();
@@ -88,7 +88,7 @@ public class Productoclass implements Producto, ClonableProducto{
          ResultSet rs = pst.executeQuery()) {
 
         while (rs.next()) {
-            Producto producto = fabrica.crearProducto(rs); // se crea con FactoryMethod + AbstractFactory
+            Producto producto = fabrica.crearProducto(rs);
             productos.add(producto);
         }
     } catch (SQLException e) {
@@ -96,7 +96,7 @@ public class Productoclass implements Producto, ClonableProducto{
     }
     return productos;
     }
-// no mover arriba iguak se ocupa para abstract y metodo abstracto    
+// no mover arriba iguak se ocupa para abstract
     
     public List<Productoclass> obtenerClientesProductoscatego(String categoria) {
         List<Productoclass> productos = new ArrayList<>();

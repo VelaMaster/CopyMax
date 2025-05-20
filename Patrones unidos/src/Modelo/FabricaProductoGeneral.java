@@ -1,5 +1,5 @@
 package Modelo;
-
+    
 public class FabricaProductoGeneral {
 
     public static Producto crearProducto(int id, String nombre, double precio, int cantidad, String categoria) {
